@@ -1,45 +1,10 @@
-// ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ Add your code here ↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-
-// Call Contract
-async function PlayboardView() {
-  return await contractInteraction.Call(
-    GAME_CONTRACT_ABI_INTERFACE_JSON,
-    GAME_CONTRACT_ADDRESS,
-    "PlayboardView()"
-  );
-}
-
-async function Click(x, y, move) {
-  return await contractInteraction.Send(
-    GAME_CONTRACT_ABI_INTERFACE_JSON,
-    GAME_CONTRACT_ADDRESS,
-    null,
-    0,
-    "Click(uint256, uint256, string)",
-    x,
-    y,
-    move
-  );
-}
-
-async function Reset() {
-  return await contractInteraction.Send(
-    GAME_CONTRACT_ABI_INTERFACE_JSON,
-    GAME_CONTRACT_ADDRESS,
-    null,
-    0,
-    "Reset()"
-  );
-}
-
 // Game play
 
-// Function to generate the game board
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
   const board = [];
   const mines = [];
-​
+
   // Create an empty board
   for (let i = 0; i < rows; i++) {
     board[i] = [];
@@ -51,7 +16,7 @@ function generateBoard(rows, columns, numMines) {
       };
     }
   }
-​
+
   // Randomly place mines on the board
   let placedMines = 0;
   while (placedMines < numMines) {
@@ -63,7 +28,7 @@ function generateBoard(rows, columns, numMines) {
       placedMines++;
     }
   }
-​
+
   // Calculate the number of adjacent mines for each cell
   for (const [row, col] of mines) {
     for (let i = row - 1; i <= row + 1; i++) {
@@ -74,23 +39,23 @@ function generateBoard(rows, columns, numMines) {
       }
     }
   }
-​
+
   return board;
 }
-​
+
 // Function to reveal a cell
 function revealCell(board, row, col) {
   const cell = board[row][col];
   if (!cell.isRevealed) {
     cell.isRevealed = true;
-​
+
     // If the cell is a mine, the game is over
     if (cell.isMine) {
       console.log('Game Over!');
       // Implement game over logic here
       return;
     }
-​
+
     // If the cell has no adjacent mines, recursively reveal neighboring cells
     if (cell.adjacentMines === 0) {
       for (let i = row - 1; i <= row + 1; i++) {
@@ -103,16 +68,37 @@ function revealCell(board, row, col) {
     }
   }
 }
-​
+
 // Code
 const rows = 10;
 const columns = 10;
 const numMines = 10;
-const originalState = generateBoard(rows, columns, numMines);
-​
-function createBoard() {
-​
-}
-const board = document.getElementById('');
+const board = generateBoard(rows, columns, numMines);
 
-// ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Add your code here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('grid');
+  let squares = [];
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < columns; col++) {
+      const square = document.createElement("div");
+      square.setAttribute("data-row", row);
+      square.setAttribute("data-col", col);
+      square.setAttribute("class", 'valid');
+      square.classList.add("square");
+      grid.appendChild(square);
+      squares.push(square);
+
+      // normal click
+      square.addEventListener("click", function (e) {
+        revealCell(board, row, col);
+      });
+
+      // cntrl and left click
+      square.oncontextmenu = function (e) {
+        e.preventDefault();
+        // addFlag(square);
+      };
+    }
+  }
+})
