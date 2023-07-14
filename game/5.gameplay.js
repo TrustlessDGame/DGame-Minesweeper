@@ -9,7 +9,6 @@ let stepCount = 0;
 let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
 
-
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
   const board = [];
@@ -23,6 +22,7 @@ function generateBoard(rows, columns, numMines) {
         isMine: false,
         adjacentMines: 0,
         isRevealed: false,
+        isFlagged: false,
       };
     }
   }
@@ -60,14 +60,14 @@ function generateBoard(rows, columns, numMines) {
 }
 
 function showChooseGameLevelScreen() {
-  document.getElementById('grid').style = 'block';
+  document.getElementById("grid").style = "block";
   const gameOverScreen = document.getElementById("game-level");
-  gameOverScreen.style.display = 'block';
+  gameOverScreen.style.display = "block";
 }
 
 function hideChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
-  gameOverScreen.style.display = 'none';
+  gameOverScreen.style.display = "none";
 }
 
 function showGameOverScreen() {
@@ -82,7 +82,7 @@ function hideGameOverScreen() {
 }
 
 function startNewGame() {
-  document.getElementById('grid').style.display = 'flex';
+  document.getElementById("grid").style.display = "flex";
   board = generateBoard(rows, columns, numMines);
   drawBoard(board);
 }
@@ -90,8 +90,18 @@ function startNewGame() {
 // Function to reveal a cell
 function revealCell(board, row, col) {
   const cell = board[row][col];
+  // debugger;
+  const flagsLeft = document.querySelector("#flags-left");
+
   if (!cell.isRevealed) {
     cell.isRevealed = true;
+
+    // If the cell is flagged
+    if (cell.isFlagged) {
+      cell.isFlagged = false;
+      flags--;
+      flagsLeft.innerHTML = numMines - flags;
+    }
 
     // If the cell is a mine, the game is over
     if (cell.isMine) {
@@ -114,13 +124,15 @@ function revealCell(board, row, col) {
       }
     }
   }
+
   drawBoard(board);
 }
 
 function drawBoard(newBoard, isGameOver = false) {
   // Code to redraw the board
   const grid = document.getElementById("grid");
-  grid.classList = '';
+
+  grid.classList = "";
   while (grid.firstChild) {
     grid.removeChild(grid.firstChild);
   }
@@ -149,6 +161,12 @@ function drawBoard(newBoard, isGameOver = false) {
       const cellElement = document.querySelector(
         `[data-row="${rowIndex}"][data-col="${colIndex}"]`
       );
+      const flagsLeft = document.querySelector("#flags-left");
+
+      if (cell.isFlagged) {
+        square.classList.add("flag");
+        square.innerHTML = " 🚩";
+      }
 
       if (isGameOver && cell.isMine) {
         square.innerHTML = "💣";
@@ -168,6 +186,7 @@ function drawBoard(newBoard, isGameOver = false) {
           };
           square.classList.add(`${classNumber[cell.adjacentMines]}`);
           square.innerHTML = cell.adjacentMines;
+          flagsLeft.innerHTML = numMines - flags;
         } else {
           square.classList.add("checked");
         }
@@ -177,31 +196,35 @@ function drawBoard(newBoard, isGameOver = false) {
         revealCell(board, rowIndex, colIndex);
       });
 
-      cell.oncontextmenu = function (e) {
+      cellElement.addEventListener("contextmenu", function (e) {
+        e.stopPropagation();
         e.preventDefault();
-        addFlag(cellElement);
-      };
+        addFlag(cellElement, cell);
+      });
     });
   });
 }
 
 //add Flag with right click
-function addFlag(square) {
+function addFlag(square, cell) {
   if (gameStatus === -1) return;
 
   const flagsLeft = document.querySelector("#flags-left");
-
   if (!square.classList.contains("checked") && flags < numMines) {
     if (!square.classList.contains("flag")) {
       square.classList.add("flag");
       square.innerHTML = " 🚩";
       flags++;
+      cell.isFlagged = true;
       flagsLeft.innerHTML = numMines - flags;
+      console.log("🚀 ~ addFlag ~ square:", square.isFlagged);
+
       // checkForWin();
     } else {
       square.classList.remove("flag");
       square.innerHTML = "";
       flags--;
+      cell.isFlagged = false;
       flagsLeft.innerHTML = numMines - flags;
     }
     return;
@@ -244,18 +267,26 @@ function chooseGameLevel(level) {
 }
 
 function addChooseGameLevelEvents() {
-  document.getElementById('game-level-beginner').addEventListener('click', function () {
-    chooseGameLevel(0)
-  })
-  document.getElementById('game-level-intermediate').addEventListener('click', function () {
-    chooseGameLevel(1)
-  })
-  document.getElementById('game-level-expert').addEventListener('click', function () {
-    chooseGameLevel(2)
-  })
-  document.getElementById('game-level-pro').addEventListener('click', function () {
-    chooseGameLevel(3)
-  })
+  document
+    .getElementById("game-level-beginner")
+    .addEventListener("click", function () {
+      chooseGameLevel(0);
+    });
+  document
+    .getElementById("game-level-intermediate")
+    .addEventListener("click", function () {
+      chooseGameLevel(1);
+    });
+  document
+    .getElementById("game-level-expert")
+    .addEventListener("click", function () {
+      chooseGameLevel(2);
+    });
+  document
+    .getElementById("game-level-pro")
+    .addEventListener("click", function () {
+      chooseGameLevel(3);
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -270,23 +301,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < columns; col++) {
-      const cell = document.querySelector(
+      const cell = board[row][col];
+
+      const cellElement = document.querySelector(
         `[data-row="${row}"][data-col="${col}"]`
       );
 
       // normal click
-      cell.addEventListener("click", function (e) {
+      cellElement.addEventListener("click", function (e) {
         revealCell(board, row, col);
       });
 
       // cntrl and left click
-      cell.oncontextmenu = function (e) {
+      cellElement.addEventListener("contextmenu", function (e) {
+        e.stopPropagation();
         e.preventDefault();
-        addFlag(cell);
-      };
+        addFlag(cellElement, cell);
+      });
     }
   }
 });
+
+// document.addEventListener("contextmenu", function (event) {
+//   event.preventDefault();
+// });
 
 window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {

@@ -66,6 +66,7 @@ div {
   background-color: #cecab7;
   border-color: #9c998d;
   box-sizing: border-box;
+  pointer-events: none;
 }
 
 .bomb {
@@ -78,18 +79,22 @@ div {
 
 .one {
   color: #e76346;
+  pointer-events: none;
 }
 
 .two {
   color: #4199d3;
+  pointer-events: none;
 }
 
 .three {
   color: #57da59;
+  pointer-events: none;
 }
 
 .four {
   color: #bb41d3;
+  pointer-events: none;
 }
 
 #result {
