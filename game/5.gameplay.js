@@ -5,7 +5,7 @@ let numMines = 10;
 let flags = 0;
 let board = generateBoard(rows, columns, numMines);
 let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over
-let stepCount = 0;
+let clickCount = 0;
 let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
 
@@ -81,6 +81,18 @@ function hideGameOverScreen() {
   gameOverScreen.style.display = "none";
 }
 
+function showGameWinScreen() {
+  const gameResultScreen = document.getElementById("game-result");
+  gameResultScreen.style.display = "block";
+  const gameResultMove = document.getElementById("game-result-move");
+  gameResultMove.innerHTML = `Click count: ${clickCount}`;
+}
+
+function hideGameWinScreen() {
+  const gameResultScreen = document.getElementById("game-result");
+  gameResultScreen.style.display = "none";
+}
+
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
   board = generateBoard(rows, columns, numMines);
@@ -108,8 +120,6 @@ function revealCell(board, row, col) {
       // Implement game over logic here
       gameStatus = -1;
       showGameOverScreen(board);
-      //show ALL the bombs
-
       return;
     }
 
@@ -123,9 +133,8 @@ function revealCell(board, row, col) {
         }
       }
     }
+    drawBoard(board);
   }
-
-  drawBoard(board);
 }
 
 function drawBoard(newBoard, isGameOver = false) {
@@ -137,11 +146,10 @@ function drawBoard(newBoard, isGameOver = false) {
     grid.removeChild(grid.firstChild);
   }
   newBoard.forEach((row, rowIndex) => {
-    row.forEach((col, colIndex) => {
+    row.forEach((_, colIndex) => {
       const square = document.createElement("div");
       square.setAttribute("data-row", rowIndex);
       square.setAttribute("data-col", colIndex);
-      square.setAttribute("class", "valid");
       square.classList.add("square");
       if (gameLevel === 0) {
         grid.classList.add("beginner");
@@ -183,6 +191,10 @@ function drawBoard(newBoard, isGameOver = false) {
             2: "two",
             3: "three",
             4: "four",
+            5: "five",
+            6: "six",
+            7: "seven",
+            8: "eight"
           };
           square.classList.add(`${classNumber[cell.adjacentMines]}`);
           square.innerHTML = cell.adjacentMines;
@@ -196,9 +208,9 @@ function drawBoard(newBoard, isGameOver = false) {
         revealCell(board, rowIndex, colIndex);
       });
 
-      cellElement.addEventListener("contextmenu", function (e) {
-        e.stopPropagation();
+      cellElement.addEventListener('contextmenu', function (e) {
         e.preventDefault();
+        e.stopPropagation();
         addFlag(cellElement, cell);
       });
     });
@@ -264,6 +276,8 @@ function chooseGameLevel(level) {
   }
   hideChooseGameLevelScreen();
   startNewGame();
+  const flagsLeft = document.querySelector("#flags-left");
+  flagsLeft.innerHTML = numMines;
 }
 
 function addChooseGameLevelEvents() {
@@ -294,9 +308,6 @@ document.addEventListener("DOMContentLoaded", () => {
   addChooseGameLevelEvents();
 
   // Game logic
-  const flagsLeft = document.querySelector("#flags-left");
-  flagsLeft.innerHTML = numMines;
-
   drawBoard(board);
 
   for (let row = 0; row < rows; row++) {
@@ -330,6 +341,7 @@ window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {
     if (gameStatus === -1) {
       hideGameOverScreen();
+      hideGameWinScreen();
       showChooseGameLevelScreen();
     }
   }
