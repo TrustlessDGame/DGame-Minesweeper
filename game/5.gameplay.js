@@ -61,6 +61,8 @@ function generateBoard(rows, columns, numMines) {
 
 function showChooseGameLevelScreen() {
   document.getElementById("grid").style = "block";
+  document.getElementById("flag-info").style.display = "none";
+
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "block";
 }
@@ -68,6 +70,7 @@ function showChooseGameLevelScreen() {
 function hideChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "none";
+  document.getElementById("flag-info").style.display = "block";
 }
 
 function showGameOverScreen() {
@@ -96,6 +99,7 @@ function hideGameWinScreen() {
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
   board = generateBoard(rows, columns, numMines);
+  gameStatus = 1;
   drawBoard(board);
 }
 
@@ -212,6 +216,7 @@ function drawBoard(newBoard, isGameOver = false) {
         e.preventDefault();
         e.stopPropagation();
         addFlag(cellElement, cell);
+        console.log("🚀 ~ cell:", cell);
       });
     });
   });
@@ -229,7 +234,6 @@ function addFlag(square, cell) {
       flags++;
       cell.isFlagged = true;
       flagsLeft.innerHTML = numMines - flags;
-      console.log("🚀 ~ addFlag ~ square:", square.isFlagged);
 
       // checkForWin();
     } else {
@@ -253,7 +257,9 @@ function addFlag(square, cell) {
 }
 
 function chooseGameLevel(level) {
+  const flagsLeft = document.querySelector("#flags-left");
   gameLevel = level;
+  flags = 0;
   if (level == 0) {
     rows = 8;
     columns = 8;
@@ -274,6 +280,8 @@ function chooseGameLevel(level) {
     columns = 16;
     numMines = 80;
   }
+  flagsLeft.innerHTML = numMines;
+
   hideChooseGameLevelScreen();
   startNewGame();
   const flagsLeft = document.querySelector("#flags-left");
