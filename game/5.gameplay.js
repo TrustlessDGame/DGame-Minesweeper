@@ -138,7 +138,7 @@ function drawBoard(newBoard, isGameOver = false) {
         grid.classList.add("immediate");
       }
       if (gameLevel === 2) {
-        grid.classList.add("export");
+        grid.classList.add("expert");
       }
       if (gameLevel === 3) {
         grid.classList.add("pro");
