@@ -3,7 +3,9 @@ const rows = 10;
 const columns = 10;
 const numMines = 10;
 let board = generateBoard(rows, columns, numMines);
-let isGameOver = false;
+let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over
+let stepCount = 0;
+let playingTime = 0; // Seconds
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
@@ -66,7 +68,7 @@ function hideGameOverScreen() {
 
 function restartGame() {
   hideGameOverScreen();
-  board = generateBoard();
+  board = generateBoard(rows, columns, numMines);
   drawBoard(board);
 }
 
@@ -81,7 +83,7 @@ function revealCell(board, row, col) {
       // Implement game over logic here
       showGameOverScreen();
       drawBoard(board);
-      isGameOver = true;
+      gameStatus = -1;
       return;
     }
 
@@ -146,7 +148,7 @@ function drawBoard(newBoard) {
 
 //add Flag with right click
 function addFlag(square) {
-  if (isGameOver) return;
+  if (gameStatus === -1) return;
   if (!square.classList.contains("checked") && flags < bombAmount) {
     if (!square.classList.contains("flag")) {
       square.classList.add("flag");
@@ -188,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {
-    if (isGameOver) {
+    if (gameStatus === -1) {
       restartGame()
     }
   }
