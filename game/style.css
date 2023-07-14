@@ -41,6 +41,10 @@ body {
   width: 640px;
 }
 
+#flag-info {
+  display: none;
+}
+
 div {
   font-size: 25px;
   text-align: center;
