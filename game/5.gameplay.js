@@ -1,11 +1,13 @@
 // Game play
-const rows = 10;
-const columns = 10;
-const numMines = 10;
+let rows = 10;
+let columns = 10;
+let numMines = 10;
 let board = generateBoard(rows, columns, numMines);
 let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over
 let stepCount = 0;
 let playingTime = 0; // Seconds
+let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
+
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
@@ -56,6 +58,17 @@ function generateBoard(rows, columns, numMines) {
   return board;
 }
 
+function showChooseGameLevelScreen() {
+  document.getElementById('grid').style = 'block';
+  const gameOverScreen = document.getElementById("game-level");
+  gameOverScreen.style.display = 'block';
+}
+
+function hideChooseGameLevelScreen() {
+  const gameOverScreen = document.getElementById("game-level");
+  gameOverScreen.style.display = 'none';
+}
+
 function showGameOverScreen() {
   const gameOverScreen = document.getElementById("game-over");
   gameOverScreen.style.display = 'block';
@@ -66,8 +79,8 @@ function hideGameOverScreen() {
   gameOverScreen.style.display = 'none';
 }
 
-function restartGame() {
-  hideGameOverScreen();
+function startNewGame() {
+  document.getElementById('grid').style.display = 'flex';
   board = generateBoard(rows, columns, numMines);
   drawBoard(board);
 }
@@ -104,6 +117,7 @@ function revealCell(board, row, col) {
 function drawBoard(newBoard) {
   // Code to redraw the board
   const grid = document.getElementById("grid");
+  grid.classList = '';
   while (grid.firstChild) {
     grid.removeChild(grid.firstChild);
   }
@@ -114,6 +128,18 @@ function drawBoard(newBoard) {
       square.setAttribute("data-col", colIndex);
       square.setAttribute("class", "valid");
       square.classList.add("square");
+      if (gameLevel === 0) {
+        grid.classList.add("beginner");
+      }
+      if (gameLevel === 1) {
+        grid.classList.add("immediate");
+      }
+      if (gameLevel === 2) {
+        grid.classList.add("export");
+      }
+      if (gameLevel === 3) {
+        grid.classList.add("pro");
+      }
       grid.appendChild(square);
 
       const cell = newBoard[rowIndex][colIndex];
@@ -165,7 +191,52 @@ function addFlag(square) {
   }
 }
 
+function chooseGameLevel(level) {
+  gameLevel = level;
+  if (level == 0) {
+    rows = 8;
+    columns = 8;
+    numMines = 10;
+  }
+  if (level == 1) {
+    rows = 10;
+    columns = 10;
+    numMines = 15;
+  }
+  if (level == 2) {
+    rows = 12;
+    columns = 12;
+    numMines = 30;
+  }
+  if (level == 3) {
+    rows = 16;
+    columns = 16;
+    numMines = 80;
+  }
+  hideChooseGameLevelScreen();
+  startNewGame();
+}
+
+function addChooseGameLevelEvents() {
+  document.getElementById('game-level-beginner').addEventListener('click', function () {
+    chooseGameLevel(0)
+  })
+  document.getElementById('game-level-intermediate').addEventListener('click', function () {
+    chooseGameLevel(1)
+  })
+  document.getElementById('game-level-expert').addEventListener('click', function () {
+    chooseGameLevel(2)
+  })
+  document.getElementById('game-level-pro').addEventListener('click', function () {
+    chooseGameLevel(3)
+  })
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Init event
+  addChooseGameLevelEvents();
+
+  // Game logic
   drawBoard(board);
 
   for (let row = 0; row < rows; row++) {
@@ -191,7 +262,8 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {
     if (gameStatus === -1) {
-      restartGame()
+      hideGameOverScreen();
+      showChooseGameLevelScreen();
     }
   }
 });

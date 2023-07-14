@@ -11,13 +11,33 @@ body {
 }
 
 #grid {
+  display: none;
   height: 400px;
   width: 400px;
-  display: flex;
   flex-wrap: wrap;
   background-color: #dcd6bc;
   border: 10px solid #dcd6bc;
   margin-bottom: 10px;
+}
+
+#grid.beginner {
+  height: 320px;
+  width: 320px;
+}
+
+#grid.immediate {
+  height: 400px;
+  width: 400px;
+}
+
+#grid.expert {
+  height: 480px;
+  width: 480px;
+}
+
+#grid.pro {
+  height: 640px;
+  width: 640px;
 }
 
 div {
@@ -110,4 +130,43 @@ div {
   font-size: 20px;
   color: whitesmoke;
   margin: 0;
+}
+
+#game-level {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.game-level-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.game-level-item {
+  padding: 10px 24px;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.game-level-item.beginner {
+  background-color: #006400;
+}
+
+.game-level-item.intermediate {
+  background-color: #00008b;
+}
+
+.game-level-item.expert {
+  background-color: #4b0082;
+}
+
+.game-level-item.pro {
+  background-color: #8b0000;
 }
