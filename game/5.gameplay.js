@@ -8,6 +8,7 @@ let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over
 let clickCount = 0;
 let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
+let intervalId = null;
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
@@ -89,6 +90,8 @@ function showGameWinScreen() {
   gameResultScreen.style.display = "block";
   const gameResultMove = document.getElementById("game-result-move");
   gameResultMove.innerHTML = `Click count: ${clickCount}`;
+  const gameResultTime = document.getElementById("game-result-time");
+  gameResultTime.innerHTML = `Time: ${playingTime}s`;
 }
 
 function hideGameWinScreen() {
@@ -96,10 +99,24 @@ function hideGameWinScreen() {
   gameResultScreen.style.display = "none";
 }
 
+function startPlayingTime() {
+  intervalId = setInterval(function () {
+    playingTime += 1;
+  }, 1000)
+}
+
+function stopPlayingTime() {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+}
+
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
   board = generateBoard(rows, columns, numMines);
   gameStatus = 1;
+  playingTime = 0;
+  clickCount = 0;
   drawBoard(board);
 }
 
@@ -124,6 +141,7 @@ function revealCell(board, row, col) {
       // Implement game over logic here
       gameStatus = -1;
       showGameOverScreen(board);
+      stopPlayingTime();
       return;
     }
 
@@ -138,6 +156,13 @@ function revealCell(board, row, col) {
       }
     }
     drawBoard(board);
+
+    // Check for win condition
+    if (checkForWin()) {
+      gameStatus = 1; // Game won
+      stopPlayingTime();
+      showGameWinScreen();
+    }
   }
 }
 
@@ -284,7 +309,6 @@ function chooseGameLevel(level) {
 
   hideChooseGameLevelScreen();
   startNewGame();
-  const flagsLeft = document.querySelector("#flags-left");
   flagsLeft.innerHTML = numMines;
 }
 
@@ -328,6 +352,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // normal click
       cellElement.addEventListener("click", function (e) {
+        clickCount += 1;
         revealCell(board, row, col);
       });
 
@@ -340,10 +365,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
-
-// document.addEventListener("contextmenu", function (event) {
-//   event.preventDefault();
-// });
 
 window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {
