@@ -51,8 +51,8 @@ function revealCell(board, row, col) {
 
     // If the cell is a mine, the game is over
     if (cell.isMine) {
-      console.log('Game Over!');
       // Implement game over logic here
+      console.log('Game Over!');
       return;
     }
 
