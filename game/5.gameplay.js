@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const square = document.createElement("div");
       square.setAttribute("data-row", row);
       square.setAttribute("data-col", col);
-      square.setAttribute("class", 'valid');
+      // square.setAttribute("class", 'valid');
       square.classList.add("square");
       grid.appendChild(square);
       squares.push(square);
