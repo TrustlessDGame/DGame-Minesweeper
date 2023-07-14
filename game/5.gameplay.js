@@ -220,7 +220,6 @@ function addFlag(square, cell) {
       flags++;
       cell.isFlagged = true;
       flagsLeft.innerHTML = numMines - flags;
-      console.log("🚀 ~ addFlag ~ square:", square.isFlagged);
 
       // checkForWin();
     } else {
