@@ -1,4 +1,9 @@
 // Game play
+const rows = 10;
+const columns = 10;
+const numMines = 10;
+let board = generateBoard(rows, columns, numMines);
+let isGameOver = false;
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
@@ -49,6 +54,22 @@ function generateBoard(rows, columns, numMines) {
   return board;
 }
 
+function showGameOverScreen() {
+  const gameOverScreen = document.getElementById("game-over");
+  gameOverScreen.style.display = 'block';
+}
+
+function hideGameOverScreen() {
+  const gameOverScreen = document.getElementById("game-over");
+  gameOverScreen.style.display = 'none';
+}
+
+function restartGame() {
+  hideGameOverScreen();
+  board = generateBoard();
+  drawBoard(board);
+}
+
 // Function to reveal a cell
 function revealCell(board, row, col) {
   const cell = board[row][col];
@@ -58,7 +79,8 @@ function revealCell(board, row, col) {
     // If the cell is a mine, the game is over
     if (cell.isMine) {
       // Implement game over logic here
-      console.log("Game Over!");
+      showGameOverScreen();
+      isGameOver = true;
       return;
     }
 
@@ -121,16 +143,7 @@ function drawBoard(newBoard) {
   });
 }
 
-// Code
-const rows = 10;
-const columns = 10;
-const numMines = 10;
-const board = generateBoard(rows, columns, numMines);
-
 document.addEventListener("DOMContentLoaded", () => {
-  // const grid = document.getElementById("grid");
-  // let squares = [];
-
   drawBoard(board);
 
   for (let row = 0; row < rows; row++) {
@@ -149,6 +162,14 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         // addFlag(square);
       };
+    }
+  }
+});
+
+window.addEventListener("keydown", function (event) {
+  if (event.key === "x" || event.key === "X") {
+    if (isGameOver) {
+      restartGame()
     }
   }
 });
