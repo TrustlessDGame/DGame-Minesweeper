@@ -4,7 +4,7 @@ let columns = 10;
 let numMines = 10;
 let flags = 0;
 let board = generateBoard(rows, columns, numMines);
-let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over
+let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over, 2 Game won
 let clickCount = 0;
 let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
@@ -111,12 +111,25 @@ function stopPlayingTime() {
   }
 }
 
+function checkForWin() {
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < columns; col++) {
+      const cell = board[row][col];
+      if (!cell.isMine && !cell.isRevealed) {
+        return false; // Not all non-mine cells are revealed
+      }
+    }
+  }
+  return true; // All non-mine cells are revealed
+}
+
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
   board = generateBoard(rows, columns, numMines);
   gameStatus = 1;
   playingTime = 0;
   clickCount = 0;
+  startPlayingTime();
   drawBoard(board);
 }
 
@@ -159,7 +172,7 @@ function revealCell(board, row, col) {
 
     // Check for win condition
     if (checkForWin()) {
-      gameStatus = 1; // Game won
+      gameStatus = 2; // Game won
       stopPlayingTime();
       showGameWinScreen();
     }
@@ -169,8 +182,19 @@ function revealCell(board, row, col) {
 function drawBoard(newBoard, isGameOver = false) {
   // Code to redraw the board
   const grid = document.getElementById("grid");
-
   grid.classList = "";
+  if (gameLevel === 0) {
+    grid.classList.add("beginner");
+  }
+  if (gameLevel === 1) {
+    grid.classList.add("immediate");
+  }
+  if (gameLevel === 2) {
+    grid.classList.add("expert");
+  }
+  if (gameLevel === 3) {
+    grid.classList.add("pro");
+  }
   while (grid.firstChild) {
     grid.removeChild(grid.firstChild);
   }
@@ -180,17 +204,9 @@ function drawBoard(newBoard, isGameOver = false) {
       square.setAttribute("data-row", rowIndex);
       square.setAttribute("data-col", colIndex);
       square.classList.add("square");
-      if (gameLevel === 0) {
-        grid.classList.add("beginner");
-      }
-      if (gameLevel === 1) {
-        grid.classList.add("immediate");
-      }
-      if (gameLevel === 2) {
-        grid.classList.add("expert");
-      }
-      if (gameLevel === 3) {
-        grid.classList.add("pro");
+      if (board[rowIndex][colIndex].isMine) {
+        square.classList.add("bomb");
+
       }
       grid.appendChild(square);
 
@@ -234,6 +250,8 @@ function drawBoard(newBoard, isGameOver = false) {
       }
 
       cellElement.addEventListener("click", function (e) {
+        e.preventDefault();
+        clickCount += 1;
         revealCell(board, rowIndex, colIndex);
       });
 
@@ -352,7 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // normal click
       cellElement.addEventListener("click", function (e) {
-        clickCount += 1;
+        e.preventDefault();
         revealCell(board, row, col);
       });
 
@@ -368,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {
-    if (gameStatus === -1) {
+    if (gameStatus === -1 || gameStatus === 2) {
       hideGameOverScreen();
       hideGameWinScreen();
       showChooseGameLevelScreen();
