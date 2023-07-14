@@ -17,7 +17,7 @@ let random = Math.random
   , timer = undefined
   , frame = undefined
   , confetti = [];
-var particles = 10
+let particles = 10
   , spread = 40
   , sizeMin = 3
   , sizeMax = 12 - sizeMin
@@ -29,6 +29,7 @@ var particles = 10
   , dyMax = .18
   , dThetaMin = .4
   , dThetaMax = .7 - dThetaMin;
+let confettiContainer = document.createElement('div');
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
@@ -480,15 +481,13 @@ function showConfetti() {
     return spline.sort();
   }
 
-  // Create the overarching container
-  var container = document.createElement('div');
-  container.style.position = 'fixed';
-  container.style.top = '0';
-  container.style.left = '0';
-  container.style.width = '100%';
-  container.style.height = '0';
-  container.style.overflow = 'visible';
-  container.style.zIndex = '9999';
+  confettiContainer.style.position = 'fixed';
+  confettiContainer.style.top = '0';
+  confettiContainer.style.left = '0';
+  confettiContainer.style.width = '100%';
+  confettiContainer.style.height = '0';
+  confettiContainer.style.overflow = 'visible';
+  confettiContainer.style.zIndex = '9999';
 
   // Confetto constructor
   function Confetto(theme) {
@@ -553,8 +552,7 @@ function showConfetti() {
 
   function poof() {
     if (!frame) {
-      // Append the container
-      document.body.appendChild(container);
+      document.body.appendChild(confettiContainer);
 
       // Add confetti
       var theme = colorThemes[0]
@@ -562,7 +560,7 @@ function showConfetti() {
       (function addConfetto() {
         var confetto = new Confetto(theme);
         confetti.push(confetto);
-        container.appendChild(confetto.outer);
+        confettiContainer.appendChild(confetto.outer);
         timer = setTimeout(addConfetto, spread * random());
       })(0);
 
@@ -575,7 +573,7 @@ function showConfetti() {
 
         for (var i = confetti.length - 1; i >= 0; --i) {
           if (confetti[i].update(height, delta)) {
-            container.removeChild(confetti[i].outer);
+            confettiContainer.removeChild(confetti[i].outer);
             confetti.splice(i, 1);
           }
         }
@@ -584,7 +582,7 @@ function showConfetti() {
           return frame = requestAnimationFrame(loop);
 
         // Cleanup
-        document.body.removeChild(container);
+        document.body.removeChild(confettiContainer);
         frame = undefined;
       });
     }
@@ -596,8 +594,8 @@ function showConfetti() {
 function hideConfetti() {
   clearTimeout(timer);
   confetti = [];
-  if (container.parentNode) {
-    container.parentNode.removeChild(container);
+  if (confettiContainer.parentNode) {
+    confettiContainer.parentNode.removeChild(confettiContainer);
   }
 }
 
