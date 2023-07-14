@@ -80,6 +80,7 @@ function revealCell(board, row, col) {
     if (cell.isMine) {
       // Implement game over logic here
       showGameOverScreen();
+      drawBoard(board);
       isGameOver = true;
       return;
     }
@@ -121,6 +122,7 @@ function drawBoard(newBoard) {
 
       if (cell.isRevealed) {
         if (cell.isMine) {
+          square.innerHTML = "💣";
           square.classList.add("mine");
         } else if (cell.adjacentMines > 0) {
           const classNumber = {
