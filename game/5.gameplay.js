@@ -92,7 +92,6 @@ function drawBoard(newBoard) {
       square.setAttribute("class", "valid");
       square.classList.add("square");
       grid.appendChild(square);
-      // squares.push(square);
 
       const cell = newBoard[rowIndex][colIndex];
       const cellElement = document.querySelector(
@@ -124,11 +123,31 @@ function drawBoard(newBoard) {
   });
 }
 
+//add Flag with right click
+function addFlag(square) {
+  if (isGameOver) return;
+  if (!square.classList.contains("checked") && flags < bombAmount) {
+    if (!square.classList.contains("flag")) {
+      square.classList.add("flag");
+      square.innerHTML = " 🚩";
+      flags++;
+      flagsLeft.innerHTML = bombAmount - flags;
+      checkForWin();
+    } else {
+      square.classList.remove("flag");
+      square.innerHTML = "";
+      flags--;
+      flagsLeft.innerHTML = bombAmount - flags;
+    }
+  }
+}
+
 // Code
 const rows = 10;
 const columns = 10;
 const numMines = 10;
-const gameStatus = 0; // 0 = ongoing, 1 = won, 2 = lost
+let isGameOver = false;
+
 const board = generateBoard(rows, columns, numMines);
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -151,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // cntrl and left click
       cell.oncontextmenu = function (e) {
         e.preventDefault();
-        // addFlag(square);
+        addFlag(square);
       };
     }
   }
