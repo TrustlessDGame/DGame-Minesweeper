@@ -113,7 +113,6 @@ function drawBoard(newBoard) {
       square.setAttribute("class", "valid");
       square.classList.add("square");
       grid.appendChild(square);
-      // squares.push(square);
 
       const cell = newBoard[rowIndex][colIndex];
       const cellElement = document.querySelector(
@@ -145,6 +144,25 @@ function drawBoard(newBoard) {
   });
 }
 
+//add Flag with right click
+function addFlag(square) {
+  if (isGameOver) return;
+  if (!square.classList.contains("checked") && flags < bombAmount) {
+    if (!square.classList.contains("flag")) {
+      square.classList.add("flag");
+      square.innerHTML = " 🚩";
+      flags++;
+      flagsLeft.innerHTML = bombAmount - flags;
+      checkForWin();
+    } else {
+      square.classList.remove("flag");
+      square.innerHTML = "";
+      flags--;
+      flagsLeft.innerHTML = bombAmount - flags;
+    }
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   drawBoard(board);
 
@@ -162,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // cntrl and left click
       cell.oncontextmenu = function (e) {
         e.preventDefault();
-        // addFlag(square);
+        addFlag(square);
       };
     }
   }
