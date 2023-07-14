@@ -87,6 +87,7 @@ function hideGameOverScreen() {
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
   board = generateBoard(rows, columns, numMines);
+  gameStatus = 1;
   drawBoard(board);
 }
 
@@ -203,6 +204,7 @@ function drawBoard(newBoard, isGameOver = false) {
         e.stopPropagation();
         e.preventDefault();
         addFlag(cellElement, cell);
+        console.log("🚀 ~ cell:", cell);
       });
     });
   });
