@@ -227,10 +227,6 @@ function drawBoard(newBoard, isGameOver = false) {
       square.setAttribute("data-row", rowIndex);
       square.setAttribute("data-col", colIndex);
       square.classList.add("square");
-      if (board[rowIndex][colIndex].isMine) {
-        square.classList.add("bomb");
-
-      }
       grid.appendChild(square);
 
       const cell = newBoard[rowIndex][colIndex];
