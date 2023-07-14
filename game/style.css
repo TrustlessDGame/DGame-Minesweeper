@@ -49,6 +49,7 @@ div {
   font-size: 25px;
   text-align: center;
   font-family: "Roboto Mono", monospace;
+  transition: all 0.3s ease-out;
 }
 
 .square {
@@ -195,6 +196,10 @@ div {
   height: 100vh;
 }
 
+#game-result .backdrop {
+  background-color: #fff;
+}
+
 .game-result-title {
   font-size: 48px;
   margin-bottom: 24px;
@@ -203,28 +208,21 @@ div {
   text-align: center;
   background: linear-gradient(
     to right,
-    rgb(237, 34, 36),
-    rgb(243, 91, 34),
-    rgb(249, 150, 33),
-    rgb(245, 193, 30),
-    rgb(241, 235, 27) 27%,
-    rgb(241, 235, 27),
-    rgb(241, 235, 27) 33%,
-    rgb(99, 199, 32),
-    rgb(12, 155, 73),
-    rgb(33, 135, 141),
-    rgb(57, 84, 165),
-    rgb(97, 55, 155),
-    rgb(147, 40, 142)
-  );
+    #ff0018,
+    #ffa52c,
+    #ffff41,
+    #008018,
+    #0000f9,
+    #86007d
+  ); /* Adjust the gradient colors as desired */
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-#game-result-move,
-#game-result-time {
+.game-result-desc {
   font-size: 20px;
-  color: whitesmoke;
+  color: black;
   margin: 0;
 }
 
