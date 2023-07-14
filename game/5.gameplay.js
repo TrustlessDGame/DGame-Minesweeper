@@ -59,6 +59,8 @@ function revealCell(board, row, col) {
     if (cell.isMine) {
       // Implement game over logic here
       console.log("Game Over!");
+      drawBoard(board);
+
       return;
     }
 
@@ -99,6 +101,7 @@ function drawBoard(newBoard) {
 
       if (cell.isRevealed) {
         if (cell.isMine) {
+          square.innerHTML = "💣";
           square.classList.add("mine");
         } else if (cell.adjacentMines > 0) {
           const classNumber = {
@@ -125,6 +128,7 @@ function drawBoard(newBoard) {
 const rows = 10;
 const columns = 10;
 const numMines = 10;
+const gameStatus = 0; // 0 = ongoing, 1 = won, 2 = lost
 const board = generateBoard(rows, columns, numMines);
 
 document.addEventListener("DOMContentLoaded", () => {
