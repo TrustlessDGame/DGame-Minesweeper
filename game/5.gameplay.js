@@ -57,7 +57,9 @@ function generateBoard(rows, columns, numMines) {
   return board;
 }
 
-function showGameOverScreen() {
+function showGameOverScreen(board) {
+  drawBoard(board, true);
+
   const gameOverScreen = document.getElementById("game-over");
   gameOverScreen.style.display = "block";
 }
@@ -82,9 +84,10 @@ function revealCell(board, row, col) {
     // If the cell is a mine, the game is over
     if (cell.isMine) {
       // Implement game over logic here
-      showGameOverScreen();
-      drawBoard(board);
       gameStatus = -1;
+      showGameOverScreen(board);
+      //show ALL the bombs
+
       return;
     }
 
@@ -102,7 +105,7 @@ function revealCell(board, row, col) {
   drawBoard(board);
 }
 
-function drawBoard(newBoard) {
+function drawBoard(newBoard, isGameOver = false) {
   // Code to redraw the board
   const grid = document.getElementById("grid");
   while (grid.firstChild) {
@@ -121,6 +124,11 @@ function drawBoard(newBoard) {
       const cellElement = document.querySelector(
         `[data-row="${rowIndex}"][data-col="${colIndex}"]`
       );
+
+      if (isGameOver && cell.isMine) {
+        square.innerHTML = "💣";
+        square.classList.add("mine");
+      }
 
       if (cell.isRevealed) {
         if (cell.isMine) {
