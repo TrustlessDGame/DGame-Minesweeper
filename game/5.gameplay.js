@@ -2,6 +2,7 @@
 const rows = 10;
 const columns = 10;
 const numMines = 10;
+let flags = 0;
 let board = generateBoard(rows, columns, numMines);
 let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over
 let stepCount = 0;
@@ -58,12 +59,12 @@ function generateBoard(rows, columns, numMines) {
 
 function showGameOverScreen() {
   const gameOverScreen = document.getElementById("game-over");
-  gameOverScreen.style.display = 'block';
+  gameOverScreen.style.display = "block";
 }
 
 function hideGameOverScreen() {
   const gameOverScreen = document.getElementById("game-over");
-  gameOverScreen.style.display = 'none';
+  gameOverScreen.style.display = "none";
 }
 
 function restartGame() {
@@ -142,6 +143,11 @@ function drawBoard(newBoard) {
       cellElement.addEventListener("click", function (e) {
         revealCell(board, rowIndex, colIndex);
       });
+
+      cell.oncontextmenu = function (e) {
+        e.preventDefault();
+        addFlag(cellElement);
+      };
     });
   });
 }
@@ -149,23 +155,39 @@ function drawBoard(newBoard) {
 //add Flag with right click
 function addFlag(square) {
   if (gameStatus === -1) return;
-  if (!square.classList.contains("checked") && flags < bombAmount) {
+
+  const flagsLeft = document.querySelector("#flags-left");
+
+  if (!square.classList.contains("checked") && flags < numMines) {
     if (!square.classList.contains("flag")) {
       square.classList.add("flag");
       square.innerHTML = " 🚩";
       flags++;
-      flagsLeft.innerHTML = bombAmount - flags;
-      checkForWin();
+      flagsLeft.innerHTML = numMines - flags;
+      // checkForWin();
     } else {
       square.classList.remove("flag");
       square.innerHTML = "";
       flags--;
-      flagsLeft.innerHTML = bombAmount - flags;
+      flagsLeft.innerHTML = numMines - flags;
     }
+    return;
+  }
+  if (
+    !square.classList.contains("checked") &&
+    square.classList.contains("flag")
+  ) {
+    square.classList.remove("flag");
+    square.innerHTML = "";
+    flags--;
+    flagsLeft.innerHTML = numMines - flags;
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const flagsLeft = document.querySelector("#flags-left");
+  flagsLeft.innerHTML = numMines;
+
   drawBoard(board);
 
   for (let row = 0; row < rows; row++) {
@@ -182,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // cntrl and left click
       cell.oncontextmenu = function (e) {
         e.preventDefault();
-        addFlag(square);
+        addFlag(cell);
       };
     }
   }
@@ -191,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("keydown", function (event) {
   if (event.key === "x" || event.key === "X") {
     if (gameStatus === -1) {
-      restartGame()
+      restartGame();
     }
   }
 });
