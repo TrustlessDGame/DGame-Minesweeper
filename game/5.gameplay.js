@@ -323,7 +323,7 @@ function addFlag(square, cell) {
   }
 }
 
-function chooseGameLevel(level) {
+async function chooseGameLevel(level) {
   const flagsLeft = document.querySelector("#flags-left");
   gameLevel = level;
   flags = 0;
@@ -348,6 +348,16 @@ function chooseGameLevel(level) {
     numMines = 80;
   }
   flagsLeft.innerHTML = numMines;
+
+  // call contract init game
+  await contractInteraction.Send(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    0,
+    40000,
+    "InitGame(uint256)",
+    level
+  );
 
   hideChooseGameLevelScreen();
   startNewGame();
@@ -382,14 +392,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
     // Init event
-  addChooseGameLevelEvents();
+    addChooseGameLevelEvents();
 
-  // Game logic
-  drawBoard(board);
-
+    // Game logic
+    drawBoard(board);
   }
-
-  
 
   // for (let row = 0; row < rows; row++) {
   //   for (let col = 0; col < columns; col++) {
@@ -650,3 +657,5 @@ window.addEventListener("keydown", function (event) {
     }
   }
 });
+
+// Usage: Load and play a MIDI file
