@@ -1,2 +1,4 @@
 .idea
 ./contracts/node_modules
+./contracts/yarn.lock
+./contracts/.env
