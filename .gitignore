@@ -2,3 +2,5 @@
 ./contracts/node_modules
 ./contracts/yarn.lock
 ./contracts/.env
+./contracts/artifacts
+./contracts/cache
