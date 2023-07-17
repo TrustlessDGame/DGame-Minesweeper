@@ -4,7 +4,7 @@ import {Bytes32Ty} from "hardhat/internal/hardhat-network/stack-traces/logger";
 import {ethers as eth1} from "ethers";
 
 const {ethers, upgrades} = require("hardhat");
-const hardhatConfig = require("../../../hardhat.config");
+const hardhatConfig = require("../../hardhat.config");
 
 class MineSweeper {
     network: string;
@@ -26,13 +26,13 @@ class MineSweeper {
         //     return;
         // }
 
-        const contract = await ethers.getContractFactory("Mine");
-        console.log("DGameProject.deploying ...")
+        const contract = await ethers.getContractFactory("Minesweeper");
+        console.log("Minesweeper.deploying ...")
         const proxy = await upgrades.deployProxy(contract, [adminAddress, paramAdd, erc20], {
             initializer: 'initialize(address, address, address)',
         });
         await proxy.deployed();
-        console.log("DGameProject deployed at proxy:", proxy.address);
+        console.log("Minesweeper deployed at proxy:", proxy.address);
         return proxy.address;
     }
 
