@@ -90,32 +90,33 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         emit GameData.GameInit(_currentGameId);
     }
 
-    function Move(uint256 gameId, uint256 row, uint256 col, GameData.BoardStateCell[][] memory boardState) public {
+    function Move(uint256 gameId, uint256 row, uint256 col, GameData.BoardStateCell[][] memory nextBoardState) public {
         GameData.Game memory game = _games[gameId];
         require(game._player == msg.sender, "M1");
         require(game._result == GameData.GameResult.PLAYING);
 
         (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(game._level);
 
-        require(verify(gameId, boardState), "M2");
+        require(verify(gameId, nextBoardState), "M2");
 
         for (uint256 i; i < rows; i++) {
             for (uint256 j; j < cols; j++) {
-                _games[gameId]._boardState[i][j]._adjacentMines = boardState[i][j]._adjacentMines;
-                _games[gameId]._boardState[i][j]._isFlagged = boardState[i][j]._isFlagged;
-                _games[gameId]._boardState[i][j]._isMine = boardState[i][j]._isMine;
-                _games[gameId]._boardState[i][j]._isRevealed = boardState[i][j]._isRevealed;
+                _games[gameId]._boardState[i][j]._adjacentMines = nextBoardState[i][j]._adjacentMines;
+                _games[gameId]._boardState[i][j]._isFlagged = nextBoardState[i][j]._isFlagged;
+                _games[gameId]._boardState[i][j]._isMine = nextBoardState[i][j]._isMine;
+                _games[gameId]._boardState[i][j]._isRevealed = nextBoardState[i][j]._isRevealed;
             }
         }
 
         _games[gameId]._lastMove = block.number;
-        _games[gameId]._result = checkResult(gameId);
         _games[gameId]._countMove ++;
+
+        _games[gameId]._result = checkResult(gameId);
 
         emit GameData.GameMove(gameId, _games[gameId]._result);
     }
 
-    function verify(uint256 gameId, GameData.BoardStateCell[][] memory boardState) internal returns (bool) {
+    function verify(uint256 gameId, GameData.BoardStateCell[][] memory nextBoardState) internal returns (bool) {
         GameData.BoardStateCell[][] memory currentGameStates = _games[gameId]._boardState;
 
         return true;
