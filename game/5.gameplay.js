@@ -3,33 +3,33 @@ let rows = 10;
 let columns = 10;
 let numMines = 10;
 let flags = 0;
-let board = generateBoard(rows, columns, numMines);
+let board = [];
 let gameStatus = 0; // 0 = Pending, 1 = Playing, -1 = Game Over, 2 Game won
 let clickCount = 0;
 let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
 let intervalId = null;
-let random = Math.random
-  , cos = Math.cos
-  , sin = Math.sin
-  , PI = Math.PI
-  , PI2 = PI * 2
-  , timer = undefined
-  , frame = undefined
-  , confetti = [];
-let particles = 10
-  , spread = 40
-  , sizeMin = 3
-  , sizeMax = 12 - sizeMin
-  , eccentricity = 10
-  , deviation = 100
-  , dxThetaMin = -.1
-  , dxThetaMax = -dxThetaMin - dxThetaMin
-  , dyMin = .13
-  , dyMax = .18
-  , dThetaMin = .4
-  , dThetaMax = .7 - dThetaMin;
-let confettiContainer = document.createElement('div');
+let random = Math.random,
+  cos = Math.cos,
+  sin = Math.sin,
+  PI = Math.PI,
+  PI2 = PI * 2,
+  timer = undefined,
+  frame = undefined,
+  confetti = [];
+let particles = 10,
+  spread = 40,
+  sizeMin = 3,
+  sizeMax = 12 - sizeMin,
+  eccentricity = 10,
+  deviation = 100,
+  dxThetaMin = -0.1,
+  dxThetaMax = -dxThetaMin - dxThetaMin,
+  dyMin = 0.13,
+  dyMax = 0.18,
+  dThetaMin = 0.4,
+  dThetaMax = 0.7 - dThetaMin;
+let confettiContainer = document.createElement("div");
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
@@ -51,9 +51,14 @@ function generateBoard(rows, columns, numMines) {
 
   // Randomly place mines on the board
   let placedMines = 0;
+  let placeMineList = [];
   while (placedMines < numMines) {
     const row = Math.floor(Math.random() * rows);
     const col = Math.floor(Math.random() * columns);
+    placeMineList.push({
+      x: row + 1,
+      y: col + 1,
+    });
     if (!board[row][col].isMine) {
       board[row][col].isMine = true;
       mines.push([row, col]);
@@ -77,7 +82,6 @@ function generateBoard(rows, columns, numMines) {
       }
     }
   }
-
   return board;
 }
 
@@ -119,13 +123,13 @@ function showGameWinScreen() {
 function hideGameWinScreen() {
   const gameResultScreen = document.getElementById("game-result");
   gameResultScreen.style.display = "none";
-  hideConfetti()
+  hideConfetti();
 }
 
 function startPlayingTime() {
   intervalId = setInterval(function () {
     playingTime += 1;
-  }, 1000)
+  }, 1000);
 }
 
 function stopPlayingTime() {
@@ -259,7 +263,7 @@ function drawBoard(newBoard, isGameOver = false) {
             5: "five",
             6: "six",
             7: "seven",
-            8: "eight"
+            8: "eight",
           };
           square.classList.add(`${classNumber[cell.adjacentMines]}`);
           square.innerHTML = cell.adjacentMines;
@@ -275,7 +279,7 @@ function drawBoard(newBoard, isGameOver = false) {
         revealCell(board, rowIndex, colIndex);
       });
 
-      cellElement.addEventListener('contextmenu', function (e) {
+      cellElement.addEventListener("contextmenu", function (e) {
         e.preventDefault();
         e.stopPropagation();
         addFlag(cellElement, cell);
@@ -374,92 +378,126 @@ function addChooseGameLevelEvents() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Init event
+  // Check has walletData in local storage
+
+  if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
+    // Init event
   addChooseGameLevelEvents();
 
   // Game logic
   drawBoard(board);
 
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < columns; col++) {
-      const cell = board[row][col];
-
-      const cellElement = document.querySelector(
-        `[data-row="${row}"][data-col="${col}"]`
-      );
-
-      // normal click
-      cellElement.addEventListener("click", function (e) {
-        e.preventDefault();
-        revealCell(board, row, col);
-      });
-
-      // cntrl and left click
-      cellElement.addEventListener("contextmenu", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        addFlag(cellElement, cell);
-      });
-    }
   }
+
+  
+
+  // for (let row = 0; row < rows; row++) {
+  //   for (let col = 0; col < columns; col++) {
+  //     const cell = board[row][col];
+
+  //     const cellElement = document.querySelector(
+  //       `[data-row="${row}"][data-col="${col}"]`
+  //     );
+
+  //     // normal click
+  //     cellElement.addEventListener("click", function (e) {
+  //       e.preventDefault();
+  //       revealCell(board, row, col);
+  //     });
+
+  //     // cntrl and left click
+  //     cellElement.addEventListener("contextmenu", function (e) {
+  //       e.stopPropagation();
+  //       e.preventDefault();
+  //       addFlag(cellElement, cell);
+  //     });
+  //   }
+  // }
 });
 
 function showConfetti() {
   var colorThemes = [
     function () {
-      return color(200 * random() | 0, 200 * random() | 0, 200 * random() | 0);
-    }, function () {
-      var black = 200 * random() | 0; return color(200, black, black);
-    }, function () {
-      var black = 200 * random() | 0; return color(black, 200, black);
-    }, function () {
-      var black = 200 * random() | 0; return color(black, black, 200);
-    }, function () {
-      return color(200, 100, 200 * random() | 0);
-    }, function () {
-      return color(200 * random() | 0, 200, 200);
-    }, function () {
-      var black = 256 * random() | 0; return color(black, black, black);
-    }, function () {
-      return colorThemes[random() < .5 ? 1 : 2]();
-    }, function () {
-      return colorThemes[random() < .5 ? 3 : 5]();
-    }, function () {
-      return colorThemes[random() < .5 ? 2 : 4]();
-    }
+      return color(
+        (200 * random()) | 0,
+        (200 * random()) | 0,
+        (200 * random()) | 0
+      );
+    },
+    function () {
+      var black = (200 * random()) | 0;
+      return color(200, black, black);
+    },
+    function () {
+      var black = (200 * random()) | 0;
+      return color(black, 200, black);
+    },
+    function () {
+      var black = (200 * random()) | 0;
+      return color(black, black, 200);
+    },
+    function () {
+      return color(200, 100, (200 * random()) | 0);
+    },
+    function () {
+      return color((200 * random()) | 0, 200, 200);
+    },
+    function () {
+      var black = (256 * random()) | 0;
+      return color(black, black, black);
+    },
+    function () {
+      return colorThemes[random() < 0.5 ? 1 : 2]();
+    },
+    function () {
+      return colorThemes[random() < 0.5 ? 3 : 5]();
+    },
+    function () {
+      return colorThemes[random() < 0.5 ? 2 : 4]();
+    },
   ];
   function color(r, g, b) {
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
+    return "rgb(" + r + "," + g + "," + b + ")";
   }
 
   // Cosine interpolation
   function interpolation(a, b, t) {
-    return (1 - cos(PI * t)) / 2 * (b - a) + a;
+    return ((1 - cos(PI * t)) / 2) * (b - a) + a;
   }
 
   // Create a 1D Maximal Poisson Disc over [0, 1]
-  var radius = 1 / eccentricity, radius2 = radius + radius;
+  var radius = 1 / eccentricity,
+    radius2 = radius + radius;
   function createPoisson() {
     // domain is the set of points which are still available to pick from
     // D = union{ [d_i, d_i+1] | i is even }
-    var domain = [radius, 1 - radius], measure = 1 - radius2, spline = [0, 1];
+    var domain = [radius, 1 - radius],
+      measure = 1 - radius2,
+      spline = [0, 1];
     while (measure) {
-      var dart = measure * random(), i, l, interval, a, b, c, d;
+      var dart = measure * random(),
+        i,
+        l,
+        interval,
+        a,
+        b,
+        c,
+        d;
 
       // Find where dart lies
       for (i = 0, l = domain.length, measure = 0; i < l; i += 2) {
-        a = domain[i], b = domain[i + 1], interval = b - a;
+        (a = domain[i]), (b = domain[i + 1]), (interval = b - a);
         if (dart < measure + interval) {
-          spline.push(dart += a - measure);
+          spline.push((dart += a - measure));
           break;
         }
         measure += interval;
       }
-      c = dart - radius, d = dart + radius;
+      (c = dart - radius), (d = dart + radius);
 
       // Update the domain
       for (i = domain.length - 1; i > 0; i -= 2) {
-        l = i - 1, a = domain[l], b = domain[i];
+        (l = i - 1), (a = domain[l]), (b = domain[i]);
         // c---d          c---d  Do nothing
         //   c-----d  c-----d    Move interior
         //   c--------------d    Delete interval
@@ -467,7 +505,8 @@ function showConfetti() {
         //       a------b
         if (a >= c && a < d)
           if (b > d) domain[l] = d; // Move interior (Left case)
-          else domain.splice(l, 2); // Delete interval
+          else domain.splice(l, 2);
+        // Delete interval
         else if (a < c && b > c)
           if (b <= d) domain[i] = c; // Move interior (Right case)
           else domain.splice(i, 0, c, d); // Split interval
@@ -481,44 +520,44 @@ function showConfetti() {
     return spline.sort();
   }
 
-  confettiContainer.style.position = 'fixed';
-  confettiContainer.style.top = '0';
-  confettiContainer.style.left = '0';
-  confettiContainer.style.width = '100%';
-  confettiContainer.style.height = '0';
-  confettiContainer.style.overflow = 'visible';
-  confettiContainer.style.zIndex = '9999';
+  confettiContainer.style.position = "fixed";
+  confettiContainer.style.top = "0";
+  confettiContainer.style.left = "0";
+  confettiContainer.style.width = "100%";
+  confettiContainer.style.height = "0";
+  confettiContainer.style.overflow = "visible";
+  confettiContainer.style.zIndex = "9999";
 
   // Confetto constructor
   function Confetto(theme) {
     this.frame = 0;
-    this.outer = document.createElement('div');
-    this.inner = document.createElement('div');
+    this.outer = document.createElement("div");
+    this.inner = document.createElement("div");
     this.outer.appendChild(this.inner);
 
-    var outerStyle = this.outer.style, innerStyle = this.inner.style;
-    outerStyle.position = 'absolute';
-    outerStyle.width = (sizeMin + sizeMax * random()) + 'px';
-    outerStyle.height = (sizeMin + sizeMax * random()) + 'px';
-    innerStyle.width = '100%';
-    innerStyle.height = '100%';
+    var outerStyle = this.outer.style,
+      innerStyle = this.inner.style;
+    outerStyle.position = "absolute";
+    outerStyle.width = sizeMin + sizeMax * random() + "px";
+    outerStyle.height = sizeMin + sizeMax * random() + "px";
+    innerStyle.width = "100%";
+    innerStyle.height = "100%";
     innerStyle.backgroundColor = theme();
 
-    outerStyle.perspective = '50px';
-    outerStyle.transform = 'rotate(' + (360 * random()) + 'deg)';
-    this.axis = 'rotate3D(' +
-      cos(360 * random()) + ',' +
-      cos(360 * random()) + ',0,';
+    outerStyle.perspective = "50px";
+    outerStyle.transform = "rotate(" + 360 * random() + "deg)";
+    this.axis =
+      "rotate3D(" + cos(360 * random()) + "," + cos(360 * random()) + ",0,";
     this.theta = 360 * random();
     this.dTheta = dThetaMin + dThetaMax * random();
-    innerStyle.transform = this.axis + this.theta + 'deg)';
+    innerStyle.transform = this.axis + this.theta + "deg)";
 
     this.x = window.innerWidth * random();
     this.y = -deviation;
     this.dx = sin(dxThetaMin + dxThetaMax * random());
     this.dy = dyMin + dyMax * random();
-    outerStyle.left = this.x + 'px';
-    outerStyle.top = this.y + 'px';
+    outerStyle.left = this.x + "px";
+    outerStyle.top = this.y + "px";
 
     // Create the periodic spline
     this.splineX = createPoisson();
@@ -534,7 +573,9 @@ function showConfetti() {
       this.theta += this.dTheta * delta;
 
       // Compute spline and convert to polar
-      var phi = this.frame % 7777 / 7777, i = 0, j = 1;
+      var phi = (this.frame % 7777) / 7777,
+        i = 0,
+        j = 1;
       while (phi >= this.splineX[j]) i = j++;
       var rho = interpolation(
         this.splineY[i],
@@ -543,9 +584,9 @@ function showConfetti() {
       );
       phi *= PI2;
 
-      outerStyle.left = this.x + rho * cos(phi) + 'px';
-      outerStyle.top = this.y + rho * sin(phi) + 'px';
-      innerStyle.transform = this.axis + this.theta + 'deg)';
+      outerStyle.left = this.x + rho * cos(phi) + "px";
+      outerStyle.top = this.y + rho * sin(phi) + "px";
+      innerStyle.transform = this.axis + this.theta + "deg)";
       return this.y > height + deviation;
     };
   }
@@ -555,8 +596,8 @@ function showConfetti() {
       document.body.appendChild(confettiContainer);
 
       // Add confetti
-      var theme = colorThemes[0]
-        , count = 0;
+      var theme = colorThemes[0],
+        count = 0;
       (function addConfetto() {
         var confetto = new Confetto(theme);
         confetti.push(confetto);
@@ -579,7 +620,7 @@ function showConfetti() {
         }
 
         if (timer || confetti.length)
-          return frame = requestAnimationFrame(loop);
+          return (frame = requestAnimationFrame(loop));
 
         // Cleanup
         document.body.removeChild(confettiContainer);
@@ -600,7 +641,6 @@ function hideConfetti() {
 }
 
 window.addEventListener("keydown", function (event) {
-
   if (event.key === "x" || event.key === "X") {
     showConfetti();
     if (gameStatus === -1 || gameStatus === 2) {
