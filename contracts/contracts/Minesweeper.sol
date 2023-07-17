@@ -6,6 +6,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
 
 import "./libs/helpers/Errors.sol";
 import "./libs/structs/Game.sol";
+import "./libs/structs/LeaderBoard.sol";
 
 contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgradeable {
 
@@ -16,11 +17,17 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
     mapping(uint256 => GameData.Game) public _games;
     uint256 public _currentGameId;
 
+    // lists top 10 users
+    uint256 private _leaderboardLength;
+    // create an array of Users
+    mapping(uint => LeaderBoardData.Player) public _leaderboard;
+
     function initialize(
         address admin,
         address paramAddress,
         address erc20Token
     ) initializer public {
+        _leaderboardLength = 10;
         _admin = admin;
         _paramsAddress = paramAddress;
         _erc20Token = erc20Token;
@@ -112,6 +119,10 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         _games[gameId]._countMove ++;
 
         _games[gameId]._result = checkResult(gameId);
+        if (_games[gameId]._result == GameData.GameResult.WIN) {
+            uint256 score = calculateScore();
+            addScore(game._player, score);
+        }
 
         emit GameData.GameMove(gameId, _games[gameId]._result);
     }
@@ -144,5 +155,41 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         }
 
         return GameData.GameResult.PLAYING;
+    }
+
+    function calculateScore() internal returns (uint256 score) {
+        score = 0;
+    }
+
+    function addScore(address user, uint score) internal returns (bool) {
+        // if the score is too low, don't update
+        if (_leaderboard[_leaderboardLength - 1].score >= score) return false;
+
+        // loop through the leaderboard
+        for (uint i = 0; i < _leaderboardLength; i++) {
+            // find where to insert the new score
+            if (_leaderboard[i].score < score) {
+
+                // shift leaderboard
+                LeaderBoardData.Player memory currentUser = _leaderboard[i];
+                for (uint j = i + 1; j < _leaderboardLength + 1; j++) {
+                    LeaderBoardData.Player memory nextUser = _leaderboard[j];
+                    _leaderboard[j] = currentUser;
+                    currentUser = nextUser;
+                }
+
+                // insert
+                _leaderboard[i] = LeaderBoardData.Player({
+                player : user,
+                score : score
+                });
+
+                // delete last from list
+                delete _leaderboard[_leaderboardLength];
+
+                return true;
+            }
+        }
+        return false;
     }
 }
