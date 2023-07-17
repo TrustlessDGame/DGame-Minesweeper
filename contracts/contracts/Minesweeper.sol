@@ -77,10 +77,11 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         }
     }
 
-    function InitGame(uint256 level, uint256 numberMines) public {
+    function InitGame(uint256 level) public {
         _currentGameId++;
 
         _games[_currentGameId]._level = level;
+        (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(level);
         _games[_currentGameId]._numberMines = numberMines;
         _games[_currentGameId]._player = msg.sender;
         _games[_currentGameId]._start = block.number;
