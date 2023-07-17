@@ -110,6 +110,8 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
 
         _games[gameId]._lastMove = block.number;
         _games[gameId]._result = checkResult(gameId);
+
+        emit GameData.GameMove(gameId, _games[gameId]._result);
     }
 
     function verify(uint256 gameId) internal returns (bool) {
