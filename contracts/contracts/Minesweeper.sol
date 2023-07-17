@@ -97,7 +97,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
 
         (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(game._level);
 
-        require(verify(gameId));
+        require(verify(gameId, boardState), "M2");
 
         for (uint256 i; i < rows; i++) {
             for (uint256 j; j < cols; j++) {
@@ -110,15 +110,38 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
 
         _games[gameId]._lastMove = block.number;
         _games[gameId]._result = checkResult(gameId);
+        _games[gameId]._countMove ++;
 
         emit GameData.GameMove(gameId, _games[gameId]._result);
     }
 
-    function verify(uint256 gameId) internal returns (bool) {
+    function verify(uint256 gameId, GameData.BoardStateCell[][] memory boardState) internal returns (bool) {
+        GameData.BoardStateCell[][] memory currentGameStates = _games[gameId]._boardState;
+
         return true;
     }
 
     function checkResult(uint256 gameId) internal returns (GameData.GameResult) {
+        GameData.Game memory game = _games[gameId];
+        GameData.BoardStateCell[][] memory currentGameStates = game._boardState;
+
+        (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(game._level);
+        uint256 count;
+        for (uint256 i; i < rows; i++) {
+            for (uint256 j; j < cols; j++) {
+                if (_games[gameId]._boardState[i][j]._isRevealed && _games[gameId]._boardState[i][j]._isMine) {
+                    return GameData.GameResult.LOSE;
+                } else {
+                    if (!_games[gameId]._boardState[i][j]._isRevealed) {
+                        count++;
+                    }
+                }
+            }
+        }
+        if (count == numberMines) {
+            return GameData.GameResult.WIN;
+        }
+
         return GameData.GameResult.PLAYING;
     }
 }
