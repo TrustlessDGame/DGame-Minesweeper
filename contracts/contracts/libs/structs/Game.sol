@@ -2,6 +2,11 @@ pragma solidity ^0.8.0;
 
 library GameData {
     event GameInit(uint256 gameId);
+    event GameOver(uint256 gameId, GameResult result);
+
+    enum GameResult {
+        PLAYING, WIN, LOSE
+    }
 
     struct Game {
         address _player;
@@ -10,6 +15,7 @@ library GameData {
         uint256 _start;
         uint256 _lastMove;
         BoardStateCell[][] _boardState;
+        GameResult _result;
     }
 
     struct BoardStateCell {

@@ -84,6 +84,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         _games[_currentGameId]._numberMines = numberMines;
         _games[_currentGameId]._player = msg.sender;
         _games[_currentGameId]._start = block.number;
+        _games[_currentGameId]._result = GameData.GameResult.PLAYING;
 
         emit GameData.GameInit(_currentGameId);
     }
@@ -91,6 +92,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
     function Move(uint256 gameId, uint256 row, uint256 col, GameData.BoardStateCell[][] memory boardState) public {
         GameData.Game memory game = _games[gameId];
         require(game._player == msg.sender, "M1");
+        require(game._result == GameData.GameResult.PLAYING);
 
         (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(game._level);
 
@@ -106,9 +108,14 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         }
 
         _games[gameId]._lastMove = block.number;
+        _games[gameId]._result = checkResult(gameId);
     }
 
     function verify(uint256 gameId) internal returns (bool) {
         return true;
+    }
+
+    function checkResult(uint256 gameId) internal returns (GameData.GameResult) {
+        return GameData.GameResult.PLAYING;
     }
 }
