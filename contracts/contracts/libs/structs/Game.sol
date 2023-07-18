@@ -15,7 +15,7 @@ library GameData {
         uint256 _start;
         uint256 _lastMove;
         uint256 _countMove;
-        BoardStateCell[][] _boardState;
+        BoardStateCell[16][16] _boardState;
         GameResult _result;
     }
 

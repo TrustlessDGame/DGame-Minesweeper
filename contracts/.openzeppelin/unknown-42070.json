@@ -19,6 +19,11 @@
       "address": "0xc32C4e7c9DEf58a69983f3721E4101fdD3968612",
       "txHash": "0xf43e9064591be3bbd1449db776322e1da35057c700e466e83270f3b359424cf1",
       "kind": "transparent"
+    },
+    {
+      "address": "0xed9D344f8b1402AD2EbEa6393563e3fEa9b1C6FB",
+      "txHash": "0xee115f86690f5814bd9af7833ef380abffa2d1a280bc160ed7cc06ae69ad03b7",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -819,6 +824,4406 @@
             "numberOfBytes": "256"
           },
           "t_struct(Player)1700_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "ec58be736431048240abcf9cfebd5f7d4ffcc45370244f3f85020f187bb528ea": {
+      "address": "0xd21886bCd59745262610882DeB831DfD3f4FB6bF",
+      "txHash": "0x959e54a5d06a8f47a9cc755713fdfafa965819837e262fae428bfe9445847388",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1665_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1682_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1674_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1674_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1644": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1665_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1682_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1674_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1665_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1674_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1644",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1682_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "0d1dbee1d8b3d1b17c6f23e7e668cc09a4cea4db5d7076c9a8224cce8f840b52": {
+      "address": "0xd335Ca7301889618cbF89d4E22CB44533c446F76",
+      "txHash": "0xada31ee6a94517b1cf0f983be6702c6f0f696af55af0619327d994b0e8d5b6e7",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1512_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1529_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1521_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1521_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1491": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1512_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1529_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1521_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1512_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1521_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1491",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1529_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "f97ad692c751e5ad9ac657e478a9ee3e698d97faab71089aea4cdefd1649374f": {
+      "address": "0x9898ecfEACEC9F45A1F35cE3C73BEA87f23Dc8F3",
+      "txHash": "0x6f5005b809e77d0276f745ed2878b12fd59d5e9aa119c57f2d3cde0de9997d49",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1549_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1566_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1558_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1558_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1528": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1549_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1566_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1558_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1549_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1558_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1528",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1566_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "25607535c07b6098694597bac9282681ec6ebee5f271444e0511003d27b171e1": {
+      "address": "0x9c650193a01721eF3e50058c2DC6312Ae002f68C",
+      "txHash": "0xa126922ee471724db07eb13b2adac7e845601c32b2a98214c82187a79cd7c7e3",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1639_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1656_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1648_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1648_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1618": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1639_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1656_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1648_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1639_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1648_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1618",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1656_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "cb20e6c48bbbe925c481f581cd0014dc5abbc693be141f5ba066ed5031f8337d": {
+      "address": "0x8CF5947832134724724b02480a1AB05762B2d222",
+      "txHash": "0xf8f3f1d9fd11fe840abc545365f6067c043a7223f38e33f18cddac8cc3d54d60",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1639_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1656_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1648_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1648_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1618": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1639_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1656_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1648_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1639_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1648_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1618",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1656_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "681ccc970c73a9df05ed30197d87fa665f49c7f46d82f529017b8199e7e81f65": {
+      "address": "0xc5eB14e6FB3068717E025065920a4782b5C0a227",
+      "txHash": "0x7a89477ba3cb3fde39f54b31bcd78ad966f7b7f7cb2c8cf748ff86e1c09f2315",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1571_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1588_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1580_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1580_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1550": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1571_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1588_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1580_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1571_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1580_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1550",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1588_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "6db18896cf631fca5f084e1990837bca10347abded7586e219877040fabdbed8": {
+      "address": "0xae0C96BBD7733a1C7843af27e0683c74E182A3a7",
+      "txHash": "0x83d4999193024071f06faa77ff675b1ab50759a322a2d6c795570868afdbf584",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1588_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1605_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1597_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1597_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1567": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1588_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1605_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1597_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1588_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1597_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1567",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1605_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "95d7bfd2ec8872f36db8ac92ec42093ec13e8417e89cebc77693bd8d6e48a88d": {
+      "address": "0xb4CBBD43419A9fEB013851DB943D664140205a6D",
+      "txHash": "0xa0312864a53fc84ca171f4953f32b75d01860360e3b1a249903b6808dce4edf4",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1699_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1716_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1708_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1708_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1678": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1699_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1716_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1708_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1699_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1708_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1678",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1716_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "79ea03bc8ad27885371c350c820cf2e98a97a33811361a21f2a599001d248638": {
+      "address": "0x295FeBAb931A02877f838678de5927eA09AC215C",
+      "txHash": "0x789acb6c9075927c1386150e446184544492fcf498b19cd00a0ea8952110a1c1",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1751_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1768_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1760_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1760_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1730": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1751_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1768_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1760_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1751_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1760_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1730",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1768_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "e1f48afd76e7f3ca47bd084464df3bcbbb3ea1e5fd224505caba6cd65cdd8f24": {
+      "address": "0x237d84B6Cb6d5a1De78Fc9d81C8d54cBDcb21fDe",
+      "txHash": "0xf577adcd430bc558b98262cdc542846f22111bffec6b79d60355b981cc059e1a",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1750_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1767_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1759_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1759_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1729": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1750_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1767_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1759_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1750_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1759_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1729",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1767_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "a7c709cee43c1205e335ccf409af31c508e94baa83a1715097a4f18ce5a26fdc": {
+      "address": "0x1ffc27b48a83C1DC776c6FB2B4b4Bb26b4aa205a",
+      "txHash": "0xe5b38f6f42d445fe724b9c6603f0762757d3102781358f9c348f97c51fc5fd4a",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1759_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1776_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1768_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1768_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1738": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1759_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1776_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1768_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1759_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1768_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1738",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1776_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "6d550c93d69f043e6dea3d1f4d00e33376a65489c0826410a0cc2ccfe945f427": {
+      "address": "0xABB3286ccc10281c268c3b36B9dfCCf54F9d4042",
+      "txHash": "0x5acdba64faf86e3e87f10a06081aaeb8408e8fb6c0ac527f347f521b4ba279fb",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1714_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1731_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1723_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1723_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1693": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1714_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1731_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1723_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1714_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1723_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1693",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1731_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "a0137f44e190bc499061a274194603555f8f8091ce9288dfa9358556be14a320": {
+      "address": "0x1998Bd503FD8492AD091F570d96d11EBCb87a2E2",
+      "txHash": "0x7b7866b1f1b54c6e84b5863a9b09e0f36faa72d08024f808cad1ecf2fd7200fc",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1738_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1755_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1747_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1747_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1717": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1738_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1755_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1747_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1738_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1747_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1717",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1755_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "508d211dbf9b7453561cfc201699328b89f53f8a6f039bdf0f5416077d1b4387": {
+      "address": "0xc082A80CD1e505573852d3FB87eA7b5389FC9e97",
+      "txHash": "0x2f9639eb49e9d6c8622d62c860f2bb52c594ac156b97836d9969c6559a22e858",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1737_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1754_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1746_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1746_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1716": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1737_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1754_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1746_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1737_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1746_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1716",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1754_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "d3cec19815daefc9cf6fe3203fd6ee0e1c6712209ce7e245ade3723ccf506f59": {
+      "address": "0xb708B85cA6e1BA0607B276B9127Bbc1991981E0e",
+      "txHash": "0x9cf407752d095a6c746d7d365d3c3134c629061e4afcd2603155a6b8f8bba1f8",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1766_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1783_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1775_storage)dyn_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[][]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_struct(BoardStateCell)1775_storage)dyn_storage": {
+            "label": "struct GameData.BoardStateCell[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1745": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1766_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1783_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1775_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1766_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1775_storage)dyn_storage)dyn_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1745",
+                "offset": 0,
+                "slot": "7"
+              }
+            ],
+            "numberOfBytes": "256"
+          },
+          "t_struct(Player)1783_storage": {
+            "label": "struct LeaderBoardData.Player",
+            "members": [
+              {
+                "label": "player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "score",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "e0cdb2ee4f0138fb48e02c7e990ea24e7d818d2caef57676e9b841171ef197c0": {
+      "address": "0x0FeF37F2da8c7C1C429239616256B15AFe3f7bcB",
+      "txHash": "0x7fd600d844c43cb1c6c70b7766654a7a8873388f5397a7b6898c53dbe8b883cc",
+      "layout": {
+        "solcVersion": "0.8.12",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_owner",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_address",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "102",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "OwnableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "label": "_admin",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:13"
+          },
+          {
+            "label": "_paramsAddress",
+            "offset": 0,
+            "slot": "152",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:14"
+          },
+          {
+            "label": "_erc20Token",
+            "offset": 0,
+            "slot": "153",
+            "type": "t_address",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:15"
+          },
+          {
+            "label": "_games",
+            "offset": 0,
+            "slot": "154",
+            "type": "t_mapping(t_uint256,t_struct(Game)1707_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:17"
+          },
+          {
+            "label": "_currentGameId",
+            "offset": 0,
+            "slot": "155",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:18"
+          },
+          {
+            "label": "_leaderboardLength",
+            "offset": 0,
+            "slot": "156",
+            "type": "t_uint256",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:21"
+          },
+          {
+            "label": "_leaderboard",
+            "offset": 0,
+            "slot": "157",
+            "type": "t_mapping(t_uint256,t_struct(Player)1724_storage)",
+            "contract": "Minesweeper",
+            "src": "contracts/Minesweeper.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_array(t_struct(BoardStateCell)1716_storage)16_storage)16_storage": {
+            "label": "struct GameData.BoardStateCell[16][16]",
+            "numberOfBytes": "8192"
+          },
+          "t_array(t_struct(BoardStateCell)1716_storage)16_storage": {
+            "label": "struct GameData.BoardStateCell[16]",
+            "numberOfBytes": "512"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_enum(GameResult)1684": {
+            "label": "enum GameData.GameResult",
+            "members": [
+              "PLAYING",
+              "WIN",
+              "LOSE"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_uint256,t_struct(Game)1707_storage)": {
+            "label": "mapping(uint256 => struct GameData.Game)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Player)1724_storage)": {
+            "label": "mapping(uint256 => struct LeaderBoardData.Player)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(BoardStateCell)1716_storage": {
+            "label": "struct GameData.BoardStateCell",
+            "members": [
+              {
+                "label": "_isMine",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_adjacentMines",
+                "type": "t_uint8",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "_isRevealed",
+                "type": "t_bool",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "_isFlagged",
+                "type": "t_bool",
+                "offset": 3,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(Game)1707_storage": {
+            "label": "struct GameData.Game",
+            "members": [
+              {
+                "label": "_player",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_level",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_numberMines",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_start",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "_lastMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "4"
+              },
+              {
+                "label": "_countMove",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "5"
+              },
+              {
+                "label": "_boardState",
+                "type": "t_array(t_array(t_struct(BoardStateCell)1716_storage)16_storage)16_storage",
+                "offset": 0,
+                "slot": "6"
+              },
+              {
+                "label": "_result",
+                "type": "t_enum(GameResult)1684",
+                "offset": 0,
+                "slot": "262"
+              }
+            ],
+            "numberOfBytes": "8416"
+          },
+          "t_struct(Player)1724_storage": {
             "label": "struct LeaderBoardData.Player",
             "members": [
               {
