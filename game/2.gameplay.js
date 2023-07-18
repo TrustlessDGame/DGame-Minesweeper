@@ -391,35 +391,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Check has walletData in local storage
 
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
+    //Check ongoing game
+
     // Init event
     addChooseGameLevelEvents();
 
     // Game logic
     drawBoard(board);
   }
-
-  // for (let row = 0; row < rows; row++) {
-  //   for (let col = 0; col < columns; col++) {
-  //     const cell = board[row][col];
-
-  //     const cellElement = document.querySelector(
-  //       `[data-row="${row}"][data-col="${col}"]`
-  //     );
-
-  //     // normal click
-  //     cellElement.addEventListener("click", function (e) {
-  //       e.preventDefault();
-  //       revealCell(board, row, col);
-  //     });
-
-  //     // cntrl and left click
-  //     cellElement.addEventListener("contextmenu", function (e) {
-  //       e.stopPropagation();
-  //       e.preventDefault();
-  //       addFlag(cellElement, cell);
-  //     });
-  //   }
-  // }
 });
 
 function showConfetti() {
@@ -658,4 +637,15 @@ window.addEventListener("keydown", function (event) {
   }
 });
 
-// Usage: Load and play a MIDI file
+// CONTRACT FUNCTIONS
+
+async function Move(row, col, boardState) {
+  return await contractInteraction.Send(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    0,
+    null,
+    "Move(uint256, uint256, uint256, tupple[][])",
+    level
+  );
+}
