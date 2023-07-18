@@ -97,7 +97,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         emit GameData.GameInit(_currentGameId);
     }
 
-    function Move(uint256 gameId, uint256 row, uint256 col, GameData.BoardStateCell[][] memory nextBoardState) public {
+    function Move(uint256 gameId, uint8 row, uint8 col, GameData.BoardStateCell[][] memory nextBoardState) public {
         GameData.Game memory game = _games[gameId];
         require(game._player == msg.sender, "M1");
         require(game._result == GameData.GameResult.PLAYING);

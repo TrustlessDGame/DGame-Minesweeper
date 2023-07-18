@@ -21,7 +21,7 @@ library GameData {
 
     struct BoardStateCell {
         bool _isMine;
-        uint256 _adjacentMines;
+        uint8 _adjacentMines;
         bool _isRevealed;
         bool _isFlagged;
     }

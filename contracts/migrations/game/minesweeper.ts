@@ -36,7 +36,7 @@ class MineSweeper {
         return proxy.address;
     }
 
-    getContract(contractAddress: any, contractName: any = "./artifacts/contracts/nfts/DGameProject.sol/DGameProject.json") {
+    getContract(contractAddress: any, contractName: any = "./artifacts/contracts/Minesweeper.sol/v.json") {
         console.log("Network run", this.network, hardhatConfig.networks[this.network].url);
         // if (this.network == "local") {
         //     console.log("not run local");
@@ -53,10 +53,10 @@ class MineSweeper {
     }
 
     async upgradeContract(proxyAddress: any) {
-        const contractUpdated = await ethers.getContractFactory("DGameProject");
-        console.log('Upgrading DGameProject... by proxy ' + proxyAddress);
+        const contractUpdated = await ethers.getContractFactory("Minesweeper");
+        console.log('Upgrading Minesweeper... by proxy ' + proxyAddress);
         const tx = await upgrades.upgradeProxy(proxyAddress, contractUpdated);
-        console.log('DGameProject upgraded on tx address ' + tx.address);
+        console.log('Minesweeper upgraded on tx address ' + tx.address);
         return tx;
     }
 
