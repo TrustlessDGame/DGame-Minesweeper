@@ -24,6 +24,20 @@ async function InitGame(level) {
   );
 }
 
+//// Call Contract
+
+async function InitGame(level) {
+  return await contractInteraction.Send(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    null,
+    0,
+    null,
+    "InitGame(uint256)",
+    level
+  );
+}
+
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
   const board = [];
