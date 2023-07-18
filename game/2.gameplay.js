@@ -10,6 +10,20 @@ let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
 let intervalId = null;
 
+//// Call Contract
+
+async function InitGame(level) {
+  return await contractInteraction.Send(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    null,
+    0,
+    null,
+    "InitGame(uint256)",
+    level
+  );
+}
+
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
   const board = [];
@@ -327,16 +341,7 @@ async function chooseGameLevel(level) {
   }
   flagsLeft.innerHTML = numMines;
 
-  // call contract init game
-  // await contractInteraction.Send(
-  //   GAME_CONTRACT_ABI_INTERFACE_JSON,
-  //   GAME_CONTRACT_ADDRESS,
-  //   0,
-  //   40000,
-  //   "InitGame(uint256)",
-  //   level
-  // );
-
+  await InitGame(level);
   hideChooseGameLevelScreen();
   startNewGame();
   flagsLeft.innerHTML = numMines;
@@ -366,8 +371,8 @@ function addChooseGameLevelEvents() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  MIDIjs.play('./assets/game-music.mid');
-  
+  MIDIjs.play("./assets/game-music.mid");
+
   // Check has walletData in local storage
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
     //Check ongoing game
@@ -390,6 +395,11 @@ window.addEventListener("keydown", function (event) {
     }
   }
 });
+
+window.onbeforeunload = function () {
+  console.log("user reload");
+  return "Are you sure you want to refresh the page?";
+};
 
 // CONTRACT FUNCTIONS
 
