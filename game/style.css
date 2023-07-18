@@ -1,13 +1,10 @@
-
 /* =================== */
 
 /* WALLET STYLES */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+:root {
+  --square-size: 50px;
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -196,6 +193,7 @@ body {
   flex-direction: column;
   z-index: 0;
   position: relative;
+  background-color: #ffe5c0;
 }
 
 #grid {
@@ -203,29 +201,30 @@ body {
   height: 400px;
   width: 400px;
   flex-wrap: wrap;
-  background-color: #dcd6bc;
-  border: 10px solid #dcd6bc;
   margin-bottom: 10px;
+  box-sizing: content-box;
+  align-items: center;
+  justify-content: center;
 }
 
 #grid.beginner {
-  height: 340px;
-  width: 340px;
+  height: calc(var(--square-size) * 8);
+  width: calc(var(--square-size) * 8);
 }
 
 #grid.immediate {
-  height: 400px;
-  width: 400px;
+  height: calc(var(--square-size) * 10);
+  width: calc(var(--square-size) * 10);
 }
 
 #grid.expert {
-  height: 480px;
-  width: 480px;
+  height: calc(var(--square-size) * 12);
+  width: calc(var(--square-size) * 12);
 }
 
 #grid.pro {
-  height: 640px;
-  width: 640px;
+  height: calc(var(--square-size) * 16);
+  width: calc(var(--square-size) * 16);
 }
 
 #flag-info {
@@ -240,57 +239,65 @@ div {
 }
 
 .square {
-  height: 40px;
-  width: 40px;
-  border: 5px solid;
-  border-color: #f5f3eb #bab7a9 #bab7a9 #fff9db;
+  height: 50px;
+  width: 50px;
+  border-radius: 6px;
+  background: #fec200;
+  box-shadow: -6px 0px 0px 0px #ff7505 inset, 0px 6px 0px 0px #fedc01 inset,
+    0px -6px 0px 0px #ff7a00 inset, 6px 0px 0px 0px rgba(254, 220, 1, 0.6) inset;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .square:hover {
-  background-color: #f7f7f7;
+  background-color: #fec200;
 }
 
 .checked {
-  height: 40px;
-  width: 40px;
-  border: 2px solid;
-  background-color: #cecab7;
-  border-color: #9c998d;
+  height: 50px;
+  width: 50px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: -6px 0px 0px 0px #d1d2d7 inset, 0px 6px 0px 0px #f2f2f2 inset,
+    0px -6px 0px 0px #d2d3ce inset,
+    6px 0px 0px 0px rgba(242, 242, 242, 0.6) inset;
   box-sizing: border-box;
   pointer-events: none;
 }
 
 .one {
-  color: #00cc00;
+  color: #ff00af;
 }
 
 .two {
-  color: #0000ff;
+  color: #47f01c;
 }
 
 .three {
-  color: #4199d3;
+  color: #990303;
 }
 
 .four {
-  color: #ff7f00;
+  color: #7847c4;
 }
 
 .five {
-  color: #ff3300;
+  color: #2a4adb;
 }
 
 .six {
-  color: #ff0000;
+  color: #ff4900;
 }
 
 .seven {
-  color: #8a2be2;
+  color: #7196ff;
 }
 
 .eight {
-  color: #4b0082;
+  color: #9a4810;
 }
 
 #result {
@@ -412,6 +419,5 @@ div {
   color: black;
   margin: 0;
 }
-
 
 /*  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Write all your style here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
