@@ -365,31 +365,44 @@ function addChooseGameLevelEvents() {
     });
 }
 
+function restartGame() {
+  if (gameStatus === -1 || gameStatus === 2) {
+    hideGameOverScreen();
+    hideGameWinScreen();
+    showChooseGameLevelScreen();
+  }
+}
+
+function addNewGameEvents() {
+  document
+    .getElementById("play-again-button-over")
+    .addEventListener("click", function () {
+      restartGame();
+    });
+
+  document
+    .getElementById("play-again-button-win")
+    .addEventListener("click", function () {
+      restartGame();
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  MIDIjs.play('./assets/game-music.mid');
-  
+  // MIDIjs.play('./assets/game-music.mid');
+
   // Check has walletData in local storage
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
     //Check ongoing game
 
     // Init event
     addChooseGameLevelEvents();
+    addNewGameEvents();
 
     // Game logic
     drawBoard(board);
   }
 });
 
-window.addEventListener("keydown", function (event) {
-  if (event.key === "x" || event.key === "X") {
-    showConfetti();
-    if (gameStatus === -1 || gameStatus === 2) {
-      hideGameOverScreen();
-      hideGameWinScreen();
-      showChooseGameLevelScreen();
-    }
-  }
-});
 
 // CONTRACT FUNCTIONS
 

@@ -69,6 +69,7 @@
   <div class="container">
     <div id="game-level">
       <div class="backdrop">
+        <p class="choose-level-title">Choose your level</p>
         <ul class="game-level-list">
           <li id="game-level-beginner" class="game-level-item beginner">
             Beginner
@@ -82,12 +83,12 @@
           <li id="game-level-pro" class="game-level-item pro">
             Mission Impossible
           </li>
-          <li id="game-level-music" class="game-level-item music">
+          <!-- <li id="game-level-music" class="game-level-item music">
             <a href="#" id="pause-music" onClick="MIDIjs.pause();">
               Pause music</a>
             <a href="#" id="play-music" onClick="MIDIjs.play('./assets/game-music.mid');">
               Play music</a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -97,7 +98,7 @@
       <div class="backdrop">
         <div class="content">
           <p class="game-over-title">Game Over</p>
-          <p class="game-over-desc">Press X to play again</p>
+          <button id="play-again-button-over" class="play-again-button">Play again</>
         </div>
       </div>
     </div>
@@ -107,7 +108,7 @@
           <p class="game-result-title">Congratulation!</p>
           <p id="game-result-move" class="game-result-desc"></p>
           <p id="game-result-time" class="game-result-desc"></p>
-          <p class="game-result-desc">Press X to play again</p>
+          <button id="play-again-button-win" class="play-again-button">Play again</>
         </div>
       </div>
     </div>
