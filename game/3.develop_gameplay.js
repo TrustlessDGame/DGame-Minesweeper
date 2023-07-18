@@ -9,6 +9,7 @@ let clickCount = 0;
 let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
 let intervalId = null;
+let placeMineList = [];
 
 //// Call Contract
 
@@ -24,16 +25,13 @@ async function InitGame(level) {
   );
 }
 
-//// Call Contract
-
-async function InitGame(level) {
+async function Move(row, col, boardState) {
   return await contractInteraction.Send(
     GAME_CONTRACT_ABI_INTERFACE_JSON,
     GAME_CONTRACT_ADDRESS,
-    null,
     0,
     null,
-    "InitGame(uint256)",
+    "Move(uint256, uint256, uint256, tupple[][])",
     level
   );
 }
@@ -58,13 +56,12 @@ function generateBoard(rows, columns, numMines) {
 
   // Randomly place mines on the board
   let placedMines = 0;
-  let placeMineList = [];
   while (placedMines < numMines) {
     const row = Math.floor(Math.random() * rows);
     const col = Math.floor(Math.random() * columns);
     placeMineList.push({
-      x: row + 1,
-      y: col + 1,
+      x: row,
+      y: col,
     });
     if (!board[row][col].isMine) {
       board[row][col].isMine = true;
@@ -163,6 +160,16 @@ function startNewGame() {
   clickCount = 0;
   startPlayingTime();
   drawBoard(board);
+}
+
+function triggerGameOver() {
+  console.log("🚀 ~ triggerGameOver ~ placeMineList:", placeMineList);
+  const firstMine = placeMineList[0];
+  const mineCellElement = document.querySelector(
+    `[data-row="${firstMine.x}"][data-col="${firstMine.y}"]`
+  );
+  mineCellElement.click();
+  console.log("🚀 ~ triggerGameOver ~ mineCellElement:", mineCellElement);
 }
 
 // Function to reveal a cell
@@ -355,7 +362,7 @@ async function chooseGameLevel(level) {
   }
   flagsLeft.innerHTML = numMines;
 
-  await InitGame(level);
+  // await InitGame(level);
   hideChooseGameLevelScreen();
   startNewGame();
   flagsLeft.innerHTML = numMines;
@@ -423,20 +430,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-window.onbeforeunload = function () {
-  console.log("user reload");
-  return "Are you sure you want to refresh the page?";
+window.onbeforeunload = function (event) {
+  // var confirmationMessage = "Are you sure you want to leave this page?";
+  // event.returnValue = confirmationMessage;
+  triggerGameOver();
 };
 
-// CONTRACT FUNCTIONS
-
-async function Move(row, col, boardState) {
-  return await contractInteraction.Send(
-    GAME_CONTRACT_ABI_INTERFACE_JSON,
-    GAME_CONTRACT_ADDRESS,
-    0,
-    null,
-    "Move(uint256, uint256, uint256, tupple[][])",
-    level
-  );
-}
+// window.onunload = function (event) {
+//   console.log("new game");
+// };
