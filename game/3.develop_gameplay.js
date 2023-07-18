@@ -10,6 +10,7 @@ let playingTime = 0; // Seconds
 let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission Impossible
 let intervalId = null;
 let placeMineList = [];
+let gameId = 0;
 
 //// Call Contract
 
@@ -26,13 +27,22 @@ async function InitGame(level) {
 }
 
 async function Move(row, col, boardState) {
+  console.log(
+    "🚀 ~ Move ~ JSON.parse(JSON.stringify(boardState)):",
+    JSON.parse(JSON.stringify(boardState))
+  );
+
   return await contractInteraction.Send(
     GAME_CONTRACT_ABI_INTERFACE_JSON,
     GAME_CONTRACT_ADDRESS,
+    null,
     0,
     null,
-    "Move(uint256, uint256, uint256, tupple[][])",
-    level
+    "Move(uint256, uint8, uint8, (bool,uint8,bool,bool)[][])",
+    gameId,
+    row,
+    col,
+    JSON.parse(JSON.stringify(boardState))
   );
 }
 
@@ -46,10 +56,10 @@ function generateBoard(rows, columns, numMines) {
     board[i] = [];
     for (let j = 0; j < columns; j++) {
       board[i][j] = {
-        isMine: false,
-        adjacentMines: 0,
-        isRevealed: false,
-        isFlagged: false,
+        _isMine: false,
+        _adjacentMines: 0,
+        _isRevealed: false,
+        _isFlagged: false,
       };
     }
   }
@@ -63,8 +73,8 @@ function generateBoard(rows, columns, numMines) {
       x: row,
       y: col,
     });
-    if (!board[row][col].isMine) {
-      board[row][col].isMine = true;
+    if (!board[row][col]._isMine) {
+      board[row][col]._isMine = true;
       mines.push([row, col]);
       placedMines++;
     }
@@ -81,7 +91,7 @@ function generateBoard(rows, columns, numMines) {
           j < columns &&
           !(i === row && j === col)
         ) {
-          board[i][j].adjacentMines++;
+          board[i][j]._adjacentMines++;
         }
       }
     }
@@ -144,7 +154,7 @@ function checkForWin() {
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < columns; col++) {
       const cell = board[row][col];
-      if (!cell.isMine && !cell.isRevealed) {
+      if (!cell._isMine && !cell._isRevealed) {
         return false; // Not all non-mine cells are revealed
       }
     }
@@ -169,7 +179,6 @@ function triggerGameOver() {
     `[data-row="${firstMine.x}"][data-col="${firstMine.y}"]`
   );
   mineCellElement.click();
-  console.log("🚀 ~ triggerGameOver ~ mineCellElement:", mineCellElement);
 }
 
 // Function to reveal a cell
@@ -178,18 +187,18 @@ function revealCell(board, row, col) {
   // debugger;
   const flagsLeft = document.querySelector("#flags-left");
 
-  if (!cell.isRevealed) {
-    cell.isRevealed = true;
+  if (!cell._isRevealed) {
+    cell._isRevealed = true;
 
     // If the cell is flagged
-    if (cell.isFlagged) {
-      cell.isFlagged = false;
+    if (cell._isFlagged) {
+      cell._isFlagged = false;
       flags--;
       flagsLeft.innerHTML = numMines - flags;
     }
 
     // If the cell is a mine, the game is over
-    if (cell.isMine) {
+    if (cell._isMine) {
       // Implement game over logic here
       gameStatus = -1;
       showGameOverScreen(board);
@@ -198,7 +207,7 @@ function revealCell(board, row, col) {
     }
 
     // If the cell has no adjacent mines, recursively reveal neighboring cells
-    if (cell.adjacentMines === 0) {
+    if (cell._adjacentMines === 0) {
       for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col - 1; j <= col + 1; j++) {
           if (i >= 0 && i < board.length && j >= 0 && j < board[0].length) {
@@ -252,21 +261,21 @@ function drawBoard(newBoard, isGameOver = false) {
       );
       const flagsLeft = document.querySelector("#flags-left");
 
-      if (cell.isFlagged) {
+      if (cell._isFlagged) {
         square.classList.add("flag");
         square.innerHTML = " 🚩";
       }
 
-      if (isGameOver && cell.isMine) {
+      if (isGameOver && cell._isMine) {
         square.innerHTML = "💣";
         square.classList.add("mine");
       }
 
-      if (cell.isRevealed) {
-        if (cell.isMine) {
+      if (cell._isRevealed) {
+        if (cell._isMine) {
           square.innerHTML = "💣";
           square.classList.add("mine");
-        } else if (cell.adjacentMines > 0) {
+        } else if (cell._adjacentMines > 0) {
           const classNumber = {
             1: "one",
             2: "two",
@@ -277,26 +286,28 @@ function drawBoard(newBoard, isGameOver = false) {
             7: "seven",
             8: "eight",
           };
-          square.classList.add(`${classNumber[cell.adjacentMines]}`);
+          square.classList.add(`${classNumber[cell._adjacentMines]}`);
           square.classList.add("checked");
-          square.innerHTML = cell.adjacentMines;
+          square.innerHTML = cell._adjacentMines;
           flagsLeft.innerHTML = numMines - flags;
         } else {
           square.classList.add("checked");
         }
       }
 
-      cellElement.addEventListener("click", function (e) {
+      cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
         clickCount += 1;
         revealCell(board, rowIndex, colIndex);
+        const res = await Move(rowIndex, colIndex, newBoard);
+        console.log("🚀 ~ click:", res);
       });
 
-      cellElement.addEventListener("contextmenu", function (e) {
+      cellElement.addEventListener("contextmenu", async function (e) {
         e.preventDefault();
         e.stopPropagation();
         addFlag(cellElement, cell);
-        console.log("🚀 ~ cell:", cell);
+        const res = await Move(rowIndex, colIndex, newBoard);
       });
     });
   });
@@ -312,7 +323,7 @@ function addFlag(square, cell) {
       square.classList.add("flag");
       square.innerHTML = " 🚩";
       flags++;
-      cell.isFlagged = true;
+      cell._isFlagged = true;
       flagsLeft.innerHTML = numMines - flags;
 
       // checkForWin();
@@ -320,7 +331,7 @@ function addFlag(square, cell) {
       square.classList.remove("flag");
       square.innerHTML = "";
       flags--;
-      cell.isFlagged = false;
+      cell._isFlagged = false;
       flagsLeft.innerHTML = numMines - flags;
     }
     return;
@@ -362,7 +373,13 @@ async function chooseGameLevel(level) {
   }
   flagsLeft.innerHTML = numMines;
 
-  // await InitGame(level);
+  const { receipt } = await InitGame(level);
+  console.log("🚀 ~ chooseGameLevel ~ receipt:", receipt);
+
+  const gameData = receipt.logs[0].data.substring(2);
+
+  gameId = parseInt(gameData, 16);
+
   hideChooseGameLevelScreen();
   startNewGame();
   flagsLeft.innerHTML = numMines;
@@ -429,10 +446,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
 window.onbeforeunload = function (event) {
-  // var confirmationMessage = "Are you sure you want to leave this page?";
-  // event.returnValue = confirmationMessage;
+  var confirmationMessage = "Are you sure you want to leave this page?";
+  event.returnValue = confirmationMessage;
   triggerGameOver();
 };
 

@@ -57,14 +57,14 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
         type: "uint256",
       },
       {
-        internalType: "uint256",
+        internalType: "uint8",
         name: "row",
-        type: "uint256",
+        type: "uint8",
       },
       {
-        internalType: "uint256",
+        internalType: "uint8",
         name: "col",
-        type: "uint256",
+        type: "uint8",
       },
       {
         components: [
@@ -74,9 +74,9 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
             type: "bool",
           },
           {
-            internalType: "uint256",
+            internalType: "uint8",
             name: "_adjacentMines",
-            type: "uint256",
+            type: "uint8",
           },
           {
             internalType: "bool",
