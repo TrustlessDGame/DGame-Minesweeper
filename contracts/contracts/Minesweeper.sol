@@ -60,40 +60,52 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         }
     }
 
-    function getGameBoardState(uint256 gameId) public returns (GameData.BoardStateCell[16][16] memory) {
+    /*function getGameBoardState(uint256 gameId) public returns (GameData.BoardStateCell[16][16] memory) {
         return _games[gameId]._boardState;
-    }
+    }*/
 
-    function getGameLevel(uint256 level) internal returns (uint256 rows, uint256 columns, uint256 numMines) {
+    function getGameLevel(uint256 level) internal returns (GameData.GameLevel memory gameLevel) {
         require(level == 0 || level == 1 || level == 2 || level == 3);
         if (level == 0) {
-            rows = 8;
-            columns = 8;
-            numMines = 10;
+            gameLevel.rows = 8;
+            gameLevel.cols = 8;
+            gameLevel.numMine = 10;
+            gameLevel.totalMove = 54;
+            gameLevel.maxTime = 500;
+            gameLevel.baseScore = 5;
         }
         else if (level == 1) {
-            rows = 10;
-            columns = 10;
-            numMines = 15;
+            gameLevel.rows = 10;
+            gameLevel.cols = 10;
+            gameLevel.numMine = 15;
+            gameLevel.totalMove = 85;
+            gameLevel.maxTime = 780;
+            gameLevel.baseScore = 10;
         }
         else if (level == 2) {
-            rows = 12;
-            columns = 12;
-            numMines = 30;
+            gameLevel.rows = 12;
+            gameLevel.cols = 12;
+            gameLevel.numMine = 30;
+            gameLevel.totalMove = 114;
+            gameLevel.maxTime = 1125;
+            gameLevel.baseScore = 15;
         }
         else {
-            rows = 16;
-            columns = 16;
-            numMines = 80;
+            gameLevel.rows = 16;
+            gameLevel.cols = 16;
+            gameLevel.numMine = 80;
+            gameLevel.totalMove = 176;
+            gameLevel.maxTime = 1700;
+            gameLevel.baseScore = 20;
         }
     }
 
     function InitGame(uint256 level) public {
         _currentGameId++;
 
-        _games[_currentGameId]._level = level;
-        (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(level);
-        _games[_currentGameId]._numberMines = numberMines;
+        GameData.GameLevel memory gameLevel = getGameLevel(level);
+        _games[_currentGameId]._level = gameLevel;
+        _games[_currentGameId]._numberMines = gameLevel.numMine;
         _games[_currentGameId]._player = msg.sender;
         _games[_currentGameId]._start = block.number;
         _games[_currentGameId]._result = GameData.GameResult.PLAYING;
@@ -103,17 +115,17 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
 
     function Move(uint256 gameId, uint8 row, uint8 col, GameData.BoardStateCell[][] memory nextBoardState) public {
         GameData.Game memory game = _games[gameId];
-        
+
         require(game._player == msg.sender, "M1");
         require(game._result == GameData.GameResult.PLAYING, "M1_1");
         require(game._start > 0, "M1_2");
 
-        (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(game._level);
+        GameData.GameLevel memory gameLevel = game._level;
 
         require(verify(gameId, nextBoardState), "M2");
 
-        for (uint256 i; i < rows; i++) {
-            for (uint256 j; j < cols; j++) {
+        for (uint256 i; i < gameLevel.rows; i++) {
+            for (uint256 j; j < gameLevel.cols; j++) {
                 _games[gameId]._boardState[i][j]._adjacentMines = nextBoardState[i][j]._adjacentMines;
                 _games[gameId]._boardState[i][j]._isFlagged = nextBoardState[i][j]._isFlagged;
                 _games[gameId]._boardState[i][j]._isMine = nextBoardState[i][j]._isMine;
@@ -124,9 +136,11 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         _games[gameId]._lastMove = block.number;
         _games[gameId]._countMove ++;
 
+
         _games[gameId]._result = checkResult(gameId);
         if (_games[gameId]._result == GameData.GameResult.WIN) {
-            uint256 score = calculateScore();
+            uint256 elapsed_time = _games[gameId]._lastMove - _games[gameId]._start;
+            uint256 score = calculateScore(_games[gameId]._level, _games[gameId]._countMove, elapsed_time);
             addScore(game._player, score);
         }
 
@@ -143,10 +157,10 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         GameData.Game memory game = _games[gameId];
         GameData.BoardStateCell[16][16] memory currentGameStates = game._boardState;
 
-        (uint256 rows, uint256 cols, uint256 numberMines) = getGameLevel(game._level);
+        GameData.GameLevel memory gameLevel = game._level;
         uint256 count;
-        for (uint256 i; i < rows; i++) {
-            for (uint256 j; j < cols; j++) {
+        for (uint256 i; i < gameLevel.rows; i++) {
+            for (uint256 j; j < gameLevel.cols; j++) {
                 if (_games[gameId]._boardState[i][j]._isRevealed && _games[gameId]._boardState[i][j]._isMine) {
                     return GameData.GameResult.LOSE;
                 } else {
@@ -156,15 +170,23 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
                 }
             }
         }
-        if (count == numberMines) {
+        if (count == gameLevel.numMine) {
             return GameData.GameResult.WIN;
         }
 
         return GameData.GameResult.PLAYING;
     }
 
-    function calculateScore() internal returns (uint256 score) {
-        score = 0;
+    function calculateScore(GameData.GameLevel memory gameLevel, uint256 num_moves, uint256 elapsed_time) public returns (uint256 score) {
+        uint256 move_score = 0;
+        if (num_moves < gameLevel.totalMove) {
+            move_score = 40 * (1 - (num_moves / gameLevel.totalMove));
+        }
+        uint256 time_score = 0;
+        if (elapsed_time < gameLevel.maxTime) {
+            time_score = 60 * (1 - (elapsed_time / gameLevel.maxTime));
+        }
+        score = gameLevel.baseScore + move_score + time_score;
     }
 
     function addScore(address user, uint score) internal returns (bool) {
