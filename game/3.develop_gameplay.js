@@ -41,6 +41,21 @@ async function Move(row, col, boardState) {
   );
 }
 
+async function Flag(row, col, isFlag) {
+  return await contractInteraction.Send(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    null,
+    0,
+    null,
+    "Flag(uint256, uint8, uint8, bool)",
+    gameId,
+    row,
+    col,
+    isFlag
+  );
+}
+
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
   const board = [];
@@ -181,7 +196,6 @@ function triggerGameOver() {
 // Function to reveal a cell
 function revealCell(board, row, col) {
   const cell = board[row][col];
-  // debugger;
   const flagsLeft = document.querySelector("#flags-left");
 
   if (!cell._isRevealed) {
@@ -208,13 +222,17 @@ function revealCell(board, row, col) {
       for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col - 1; j <= col + 1; j++) {
           if (i >= 0 && i < board.length && j >= 0 && j < board[0].length) {
+            console.log("row: ", i);
+            console.log("col: ", j);
+            console.log("🚀 ~ revealCell ~ board 2:", board[i][j]);
+
             revealCell(board, i, j);
           }
         }
       }
     }
 
-    drawBoard(board);
+    // drawBoard(board);
 
     // Check for win condition
     if (checkForWin()) {
@@ -223,6 +241,74 @@ function revealCell(board, row, col) {
       showGameWinScreen();
     }
   }
+}
+
+function getNextBoardState(currentBoard, row, col) {
+  let nextBoardState = currentBoard;
+  const cell = nextBoardState[row][col];
+
+  if (!cell._isRevealed) {
+    cell._isRevealed = true;
+
+    // If the cell is flagged
+    if (cell._isFlagged) {
+      cell._isFlagged = false;
+    }
+
+    if (cell._adjacentMines === 0) {
+      for (let i = row - 1; i <= row + 1; i++) {
+        for (let j = col - 1; j <= col + 1; j++) {
+          if (
+            i >= 0 &&
+            i < nextBoardState.length &&
+            j >= 0 &&
+            j < nextBoardState[0].length
+          ) {
+            getNextBoardState(nextBoardState, i, j);
+          }
+        }
+      }
+    }
+  }
+  console.log("🚀 ~ getNextBoardState ~ nextBoardState:", nextBoardState);
+
+  return nextBoardState;
+}
+
+function _getNextBoardState(currentBoard, row, col) {
+  const nextBoardState = [...currentBoard];
+  const queue = [{ row, col }];
+
+  while (queue.length > 0) {
+    const { row, col } = queue.shift();
+    const cell = nextBoardState[row][col];
+
+    if (!cell._isRevealed) {
+      cell._isRevealed = true;
+
+      if (cell._isFlagged) {
+        cell._isFlagged = false;
+      }
+
+      if (cell._adjacentMines === 0) {
+        for (let i = row - 1; i <= row + 1; i++) {
+          for (let j = col - 1; j <= col + 1; j++) {
+            if (
+              i >= 0 &&
+              i < nextBoardState.length &&
+              j >= 0 &&
+              j < nextBoardState[0].length
+            ) {
+              if (!nextBoardState[i][j]._isRevealed) {
+                queue.push({ row: i, col: j });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return nextBoardState;
 }
 
 function drawBoard(newBoard, isGameOver = false) {
@@ -265,7 +351,7 @@ function drawBoard(newBoard, isGameOver = false) {
         square.innerHTML = " 🚩";
       }
 
-      if (isGameOver && cell._isMine) {
+      if (cell._isMine) {
         square.innerHTML = "💣";
         square.classList.add("mine");
       }
@@ -297,13 +383,23 @@ function drawBoard(newBoard, isGameOver = false) {
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
         processingElement.style.display = "flex";
+        const currentBoard = newBoard;
+
+        revealCell(board, rowIndex, colIndex);
 
         clickCount += 1;
-        revealCell(board, rowIndex, colIndex);
+        // getNextBoardState(board, rowIndex, colIndex);
+        // _getNextBoardState(board, rowIndex, colIndex);
+
         try {
-          await Move(rowIndex, colIndex, newBoard);
+          const res = await Move(rowIndex, colIndex, newBoard);
+          if (res && res.receipt.logs[0].data) {
+            drawBoard(newBoard);
+          }
         } catch (err) {
           console.log("🚀 ~ err", err);
+          console.log("Something wrong, please try again.");
+          // drawBoard(currentBoard);
         } finally {
           processingElement.style.display = "none";
         }
@@ -315,9 +411,14 @@ function drawBoard(newBoard, isGameOver = false) {
         processingElement.style.display = "flex";
         addFlag(cellElement, cell);
         try {
-          await Move(rowIndex, colIndex, newBoard);
+          const res = await Flag(rowIndex, colIndex, cell._isFlagged);
+          if (res && res.receipt.logs[0].data) {
+            drawBoard(newBoard);
+          }
         } catch (err) {
+          drawBoard(board);
           console.log("🚀 ~ err", err);
+          console.log("Something wrong, please try again.");
         } finally {
           processingElement.style.display = "none";
         }
@@ -400,6 +501,9 @@ async function chooseGameLevel(level) {
     baseScore = 20;
   }
   flagsLeft.innerHTML = numMines;
+  // hideChooseGameLevelScreen();
+  // startNewGame();
+  // flagsLeft.innerHTML = numMines;
 
   try {
     const { receipt } = await InitGame(level);
@@ -465,8 +569,30 @@ function addNewGameEvents() {
     });
 }
 
+function injectFonts() {
+  // Create a new style element
+  const style = document.createElement('style');
+
+  // Define the @font-face rule as a CSS string
+  const fontFaceRule = `
+    @font-face {
+      font-family: "LilitaOne";
+      src: url(${GAME_ASSETS.font});
+      font-weight: normal;
+      font-style: normal;
+    }
+`;
+
+  // Set the innerHTML of the style element to the @font-face rule
+  style.innerHTML = fontFaceRule;
+
+  // Append the style element to the document head
+  document.head.appendChild(style);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  MIDIjs.play("./assets/game-music.mid");
+  injectFonts();
+  MIDIjs.play(GAME_ASSETS["asset_music"]);
 
   // Check has walletData in local storage
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {

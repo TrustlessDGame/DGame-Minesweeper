@@ -1,6 +1,7 @@
 // YOUR_ASSETS
 const GAME_ASSETS = {
-  asset_music: "./assets/game-music.mid"
+  asset_music: "./assets/game-music.mid",
+  font: "./assets/LilitaOne-Regular.ttf"
 };
 // YOUR GAME CONTRACT ABI JSON INTERFACE
 const GAME_CONTRACT_ABI_INTERFACE_JSON = [
@@ -40,6 +41,74 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
     inputs: [
       {
         internalType: "uint256",
+        name: "gameId",
+        type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "bool",
+            name: "_isMine",
+            type: "bool",
+          },
+          {
+            internalType: "uint8",
+            name: "_adjacentMines",
+            type: "uint8",
+          },
+          {
+            internalType: "bool",
+            name: "_isRevealed",
+            type: "bool",
+          },
+          {
+            internalType: "bool",
+            name: "_isFlagged",
+            type: "bool",
+          },
+        ],
+        internalType: "struct GameData.BoardStateCell[][]",
+        name: "finalBoardState",
+        type: "tuple[][]",
+      },
+    ],
+    name: "CheckFinish",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "gameId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint8",
+        name: "row",
+        type: "uint8",
+      },
+      {
+        internalType: "uint8",
+        name: "col",
+        type: "uint8",
+      },
+      {
+        internalType: "bool",
+        name: "flag",
+        type: "bool",
+      },
+    ],
+    name: "Flag",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
         name: "level",
         type: "uint256",
       },
@@ -65,6 +134,11 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
         internalType: "uint8",
         name: "col",
         type: "uint8",
+      },
+      {
+        internalType: "bool",
+        name: "isMined",
+        type: "bool",
       },
       {
         components: [
@@ -210,6 +284,11 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
             name: "maxTime",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "minMoves",
+            type: "uint256",
+          },
         ],
         internalType: "struct GameData.GameLevel",
         name: "_level",
@@ -290,6 +369,11 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
             name: "maxTime",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "minMoves",
+            type: "uint256",
+          },
         ],
         internalType: "struct GameData.GameLevel",
         name: "gameLevel",
@@ -354,6 +438,57 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
     name: "changeParam",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "gameId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "i",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "j",
+        type: "uint256",
+      },
+    ],
+    name: "getGameState",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "bool",
+            name: "_isMine",
+            type: "bool",
+          },
+          {
+            internalType: "uint8",
+            name: "_adjacentMines",
+            type: "uint8",
+          },
+          {
+            internalType: "bool",
+            name: "_isRevealed",
+            type: "bool",
+          },
+          {
+            internalType: "bool",
+            name: "_isFlagged",
+            type: "bool",
+          },
+        ],
+        internalType: "struct GameData.BoardStateCell",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
