@@ -27,11 +27,6 @@ async function InitGame(level) {
 }
 
 async function Move(row, col, boardState) {
-  console.log(
-    "🚀 ~ Move ~ JSON.parse(JSON.stringify(boardState)):",
-    JSON.parse(JSON.stringify(boardState))
-  );
-
   return await contractInteraction.Send(
     GAME_CONTRACT_ABI_INTERFACE_JSON,
     GAME_CONTRACT_ADDRESS,
@@ -115,6 +110,8 @@ function hideChooseGameLevelScreen() {
 
 function showGameOverScreen() {
   drawBoard(board, true);
+  console.log("🚀 ~ playingTime:", playingTime);
+
   const gameOverScreen = document.getElementById("game-over");
   gameOverScreen.style.display = "block";
 }
@@ -230,6 +227,8 @@ function revealCell(board, row, col) {
 
 function drawBoard(newBoard, isGameOver = false) {
   // Code to redraw the board
+  const processingElement = document.getElementById("processing");
+
   const grid = document.getElementById("grid");
   grid.classList = "";
   if (gameLevel === 0) {
@@ -297,17 +296,31 @@ function drawBoard(newBoard, isGameOver = false) {
 
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
+        processingElement.style.display = "flex";
+
         clickCount += 1;
         revealCell(board, rowIndex, colIndex);
-        const res = await Move(rowIndex, colIndex, newBoard);
-        console.log("🚀 ~ click:", res);
+        try {
+          await Move(rowIndex, colIndex, newBoard);
+        } catch (err) {
+          console.log("🚀 ~ err", err);
+        } finally {
+          processingElement.style.display = "none";
+        }
       });
 
       cellElement.addEventListener("contextmenu", async function (e) {
         e.preventDefault();
         e.stopPropagation();
+        processingElement.style.display = "flex";
         addFlag(cellElement, cell);
-        const res = await Move(rowIndex, colIndex, newBoard);
+        try {
+          await Move(rowIndex, colIndex, newBoard);
+        } catch (err) {
+          console.log("🚀 ~ err", err);
+        } finally {
+          processingElement.style.display = "none";
+        }
       });
     });
   });
@@ -349,40 +362,62 @@ function addFlag(square, cell) {
 
 async function chooseGameLevel(level) {
   const flagsLeft = document.querySelector("#flags-left");
+  const processingElement = document.getElementById("processing");
+  processingElement.style.display = "flex";
+
   gameLevel = level;
   flags = 0;
   if (level == 0) {
     rows = 8;
     columns = 8;
     numMines = 10;
+    maxTime = 500;
+    totalMove = 54;
+    baseScore = 5;
   }
   if (level == 1) {
     rows = 10;
     columns = 10;
     numMines = 15;
+    maxTime = 780;
+    totalMove = 85;
+    baseScore = 10;
   }
   if (level == 2) {
     rows = 12;
     columns = 12;
     numMines = 30;
+    maxTime = 1125;
+    totalMove = 114;
+    baseScore = 15;
   }
   if (level == 3) {
     rows = 16;
     columns = 16;
     numMines = 80;
+    maxTime = 1700;
+    totalMove = 176;
+    baseScore = 20;
   }
   flagsLeft.innerHTML = numMines;
 
-  const { receipt } = await InitGame(level);
-  console.log("🚀 ~ chooseGameLevel ~ receipt:", receipt);
+  try {
+    const { receipt } = await InitGame(level);
 
-  const gameData = receipt.logs[0].data.substring(2);
+    if (receipt && receipt.logs[0].data) {
+      const gameData = receipt.logs[0].data.substring(2);
 
-  gameId = parseInt(gameData, 16);
+      gameId = parseInt(gameData, 16);
 
-  hideChooseGameLevelScreen();
-  startNewGame();
-  flagsLeft.innerHTML = numMines;
+      hideChooseGameLevelScreen();
+      startNewGame();
+      flagsLeft.innerHTML = numMines;
+    }
+  } catch (err) {
+    console.log("🚀 ~ err", err);
+  } finally {
+    processingElement.style.display = "none";
+  }
 }
 
 function addChooseGameLevelEvents() {
@@ -447,8 +482,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.onbeforeunload = function (event) {
-  var confirmationMessage = "Are you sure you want to leave this page?";
-  event.returnValue = confirmationMessage;
+  // var confirmationMessage = "Are you sure you want to leave this page?";
+  // event.returnValue = confirmationMessage;
   triggerGameOver();
 };
 
