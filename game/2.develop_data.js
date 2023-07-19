@@ -1,6 +1,7 @@
 // YOUR_ASSETS
 const GAME_ASSETS = {
-  asset_music: "./assets/game-music.mid"
+  asset_music: "./assets/game-music.mid",
+  font: "./assets/LilitaOne-Regular.ttf"
 };
 // YOUR GAME CONTRACT ABI JSON INTERFACE
 const GAME_CONTRACT_ABI_INTERFACE_JSON = [

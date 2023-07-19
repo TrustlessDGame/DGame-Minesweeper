@@ -569,7 +569,29 @@ function addNewGameEvents() {
     });
 }
 
+function injectFonts() {
+  // Create a new style element
+  const style = document.createElement('style');
+
+  // Define the @font-face rule as a CSS string
+  const fontFaceRule = `
+    @font-face {
+      font-family: "LilitaOne";
+      src: url(${GAME_ASSETS.font});
+      font-weight: normal;
+      font-style: normal;
+    }
+`;
+
+  // Set the innerHTML of the style element to the @font-face rule
+  style.innerHTML = fontFaceRule;
+
+  // Append the style element to the document head
+  document.head.appendChild(style);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  injectFonts();
   MIDIjs.play(GAME_ASSETS["asset_music"]);
 
   // Check has walletData in local storage
