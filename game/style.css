@@ -1,13 +1,4 @@
 
-/* WALLET STYLES */
-
-@font-face {
-  font-family: "LilitaOne";
-  src: url("./assets/LilitaOne-Regular.ttf");
-  font-weight: normal;
-  font-style: normal;
-}
-
 :root {
   --square-size: 50px;
 }
