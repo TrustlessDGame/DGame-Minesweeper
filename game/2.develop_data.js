@@ -1,6 +1,6 @@
 // YOUR_ASSETS
 const GAME_ASSETS = {
-  asset_music: "./assets/game-music.mid",
+  asset_music: "./assets/game-music.mid"
 };
 // YOUR GAME CONTRACT ABI JSON INTERFACE
 const GAME_CONTRACT_ABI_INTERFACE_JSON = [
