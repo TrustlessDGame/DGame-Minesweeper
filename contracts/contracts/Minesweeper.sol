@@ -163,7 +163,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
     function verify(uint256 gameId, uint256 row, uint256 col, GameData.BoardStateCell[][] memory nextBoardState) internal returns (bool) {
         GameData.GameLevel memory gameLevel = _games[gameId]._level;
         GameData.BoardStateCell[16][16] memory currentGameStates = _games[gameId]._boardState;
-        GameData.BoardStateCell[16][16] memory temp = getNextBoardState(currentGameStates, row, col);
+        GameData.BoardStateCell[16][16] memory temp = getNextBoardState(currentGameStates, row, col, gameLevel);
         for (uint256 i; i < gameLevel.rows; i++) {
             for (uint256 j; j < gameLevel.cols; j++) {
                 if (nextBoardState[i][j]._isMine != temp[i][j]._isMine ||
@@ -177,7 +177,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         return true;
     }
 
-    function getNextBoardState(GameData.BoardStateCell[16][16] memory currentBoard, uint256 row, uint256 col) internal view returns (GameData.BoardStateCell[16][16] memory) {
+    function getNextBoardState(GameData.BoardStateCell[16][16] memory currentBoard, uint256 row, uint256 col, GameData.GameLevel memory level) internal view returns (GameData.BoardStateCell[16][16] memory) {
         GameData.BoardStateCell[16][16] memory nextBoardState = currentBoard;
         GameData.BoardStateCell memory cell = nextBoardState[row][col];
 
@@ -194,11 +194,11 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
                     for (uint256 j = col - 1; j <= col + 1; j++) {
                         if (
                             i >= 0 &&
-                            i < nextBoardState.length &&
+                            i < level.rows &&
                             j >= 0 &&
-                            j < nextBoardState[0].length
+                            j < level.cols
                         ) {
-                            getNextBoardState(nextBoardState, i, j);
+                            getNextBoardState(nextBoardState, i, j, level);
                         }
                     }
                 }
@@ -273,5 +273,9 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             }
         }
         return false;
+    }
+
+    function getGameState(uint256 gameId, uint256 i, uint256 j) public view returns (GameData.BoardStateCell memory) {
+        return _games[gameId]._boardState[i][j];
     }
 }
