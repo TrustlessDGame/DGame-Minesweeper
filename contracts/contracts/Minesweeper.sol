@@ -219,6 +219,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
                 }
                 if (_games[gameId]._boardState[i][j]._isRevealed && i == row && j == col && isMined) {
                     gameResult = GameData.GameResult.LOSE;
+                    return (gameResult, 0);
                 } else {
                     if (!_games[gameId]._boardState[i][j]._isRevealed) {
                         count++;
@@ -228,9 +229,9 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         }
         if (count == gameLevel.numMine) {
             gameResult = GameData.GameResult.WIN;
+        } else {
+            gameResult = GameData.GameResult.PLAYING;
         }
-
-        gameResult = GameData.GameResult.PLAYING;
     }
 
     function calculateScore(GameData.GameLevel memory gameLevel, uint256 num_moves, uint256 elapsed_time) public returns (uint256 score) {
