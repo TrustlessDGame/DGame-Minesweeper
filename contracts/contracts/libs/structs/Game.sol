@@ -6,7 +6,7 @@ library GameData {
     event GameFlag(uint256 gameId, uint256 row, uint256 col, bool flag);
 
     enum GameResult {
-        PLAYING, WIN, LOSE
+        PLAYING, WIN, LOSE, FINISH
     }
 
     struct Game {
@@ -34,5 +34,6 @@ library GameData {
         uint256 baseScore;
         uint256 totalMove;
         uint256 maxTime;
+        uint256 minMoves;
     }
 }
