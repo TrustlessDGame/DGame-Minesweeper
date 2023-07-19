@@ -113,6 +113,17 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         emit GameData.GameInit(_currentGameId);
     }
 
+    function Flag(uint256 gameId, uint8 row, uint8 col, bool flag) public {
+        GameData.Game memory game = _games[gameId];
+
+        require(game._player == msg.sender, "M1");
+        require(game._result == GameData.GameResult.PLAYING, "M1_1");
+        require(game._start > 0, "M1_2");
+
+        _games[gameId]._boardState[row][col]._isFlagged = flag;
+        emit GameData.GameFlag(gameId, row, col, flag);
+    }
+
     function Move(uint256 gameId, uint8 row, uint8 col, GameData.BoardStateCell[][] memory nextBoardState) public {
         GameData.Game memory game = _games[gameId];
 
@@ -122,7 +133,9 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
 
         GameData.GameLevel memory gameLevel = game._level;
 
-        require(verify(gameId, nextBoardState), "M2");
+        if (game._countMove > 0) {
+            require(verify(gameId, row, col, nextBoardState), "M2");
+        }
 
         for (uint256 i; i < gameLevel.rows; i++) {
             for (uint256 j; j < gameLevel.cols; j++) {
@@ -147,10 +160,51 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         emit GameData.GameMove(gameId, _games[gameId]._result);
     }
 
-    function verify(uint256 gameId, GameData.BoardStateCell[][] memory nextBoardState) internal returns (bool) {
+    function verify(uint256 gameId, uint256 row, uint256 col, GameData.BoardStateCell[][] memory nextBoardState) internal returns (bool) {
+        GameData.GameLevel memory gameLevel = _games[gameId]._level;
         GameData.BoardStateCell[16][16] memory currentGameStates = _games[gameId]._boardState;
-
+        GameData.BoardStateCell[16][16] memory temp = getNextBoardState(currentGameStates, row, col);
+        for (uint256 i; i < gameLevel.rows; i++) {
+            for (uint256 j; j < gameLevel.cols; j++) {
+                if (nextBoardState[i][j]._isMine != temp[i][j]._isMine ||
+                nextBoardState[i][j]._isRevealed != temp[i][j]._isRevealed ||
+                nextBoardState[i][j]._isFlagged != temp[i][j]._isFlagged ||
+                    nextBoardState[i][j]._adjacentMines != temp[i][j]._adjacentMines) {
+                    return false;
+                }
+            }
+        }
         return true;
+    }
+
+    function getNextBoardState(GameData.BoardStateCell[16][16] memory currentBoard, uint256 row, uint256 col) internal view returns (GameData.BoardStateCell[16][16] memory) {
+        GameData.BoardStateCell[16][16] memory nextBoardState = currentBoard;
+        GameData.BoardStateCell memory cell = nextBoardState[row][col];
+
+        if (!cell._isRevealed) {
+            cell._isRevealed = true;
+
+            // If the cell is flagged
+            if (cell._isFlagged) {
+                cell._isFlagged = false;
+            }
+
+            if (cell._adjacentMines == 0) {
+                for (uint256 i = row - 1; i <= row + 1; i++) {
+                    for (uint256 j = col - 1; j <= col + 1; j++) {
+                        if (
+                            i >= 0 &&
+                            i < nextBoardState.length &&
+                            j >= 0 &&
+                            j < nextBoardState[0].length
+                        ) {
+                            getNextBoardState(nextBoardState, i, j);
+                        }
+                    }
+                }
+            }
+        }
+        return nextBoardState;
     }
 
     function checkResult(uint256 gameId) internal returns (GameData.GameResult) {

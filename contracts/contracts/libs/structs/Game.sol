@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 library GameData {
     event GameInit(uint256 gameId);
     event GameMove(uint256 gameId, GameResult result);
+    event GameFlag(uint256 gameId, uint256 row, uint256 col, bool flag);
 
     enum GameResult {
         PLAYING, WIN, LOSE
