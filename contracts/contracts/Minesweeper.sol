@@ -72,7 +72,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 10;
             gameLevel.totalMove = 54;
             gameLevel.maxTime = 500;
-            gameLevel.factor = 1;
+            gameLevel.baseScore = 1;
         }
         else if (level == 1) {
             gameLevel.rows = 10;
@@ -80,7 +80,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 15;
             gameLevel.totalMove = 85;
             gameLevel.maxTime = 780;
-            gameLevel.factor = 2;
+            gameLevel.baseScore = 2;
         }
         else if (level == 2) {
             gameLevel.rows = 12;
@@ -88,7 +88,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 30;
             gameLevel.totalMove = 114;
             gameLevel.maxTime = 1125;
-            gameLevel.factor = 3;
+            gameLevel.baseScore = 3;
         }
         else {
             gameLevel.rows = 16;
@@ -96,7 +96,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 80;
             gameLevel.totalMove = 176;
             gameLevel.maxTime = 1700;
-            gameLevel.factor = 4;
+            gameLevel.baseScore = 4;
         }
     }
 
@@ -243,7 +243,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         if (elapsed_time < gameLevel.maxTime) {
             time_score = 500 * gameLevel.maxTime / elapsed_time;
         }
-        score = gameLevel.factor * (move_score + time_score);
+        score = gameLevel.baseScore * (move_score + time_score);
     }
 
     function addScore(address user, uint score) internal returns (bool) {
