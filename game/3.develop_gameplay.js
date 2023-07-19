@@ -27,17 +27,29 @@ async function InitGame(level) {
 }
 
 async function Move(row, col, boardState) {
+  const hideMineBoardState = boardState.map((rows) => {
+    return rows.map((square) => {
+      return {
+        ...square,
+        _isMine: false,
+      };
+    });
+  });
+
+  const cell = boardState[row][col];
+
   return await contractInteraction.Send(
     GAME_CONTRACT_ABI_INTERFACE_JSON,
     GAME_CONTRACT_ADDRESS,
     null,
     0,
     null,
-    "Move(uint256, uint8, uint8, (bool,uint8,bool,bool)[][])",
+    "Move(uint256, uint8, uint8, bool, (bool,uint8,bool,bool)[][])",
     gameId,
     row,
     col,
-    JSON.parse(JSON.stringify(boardState))
+    cell._isMine,
+    JSON.parse(JSON.stringify(hideMineBoardState))
   );
 }
 
@@ -53,6 +65,19 @@ async function Flag(row, col, isFlag) {
     row,
     col,
     isFlag
+  );
+}
+
+async function CheckFinish(finalBoardState) {
+  return await contractInteraction.Send(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    null,
+    0,
+    null,
+    "CheckFinish(uint256, (bool,uint8,bool,bool)[][])",
+    gameId,
+    finalBoardState
   );
 }
 
@@ -79,6 +104,7 @@ function generateBoard(rows, columns, numMines) {
   while (placedMines < numMines) {
     const row = Math.floor(Math.random() * rows);
     const col = Math.floor(Math.random() * columns);
+
     placeMineList.push({
       x: row,
       y: col,
@@ -125,7 +151,6 @@ function hideChooseGameLevelScreen() {
 
 function showGameOverScreen() {
   drawBoard(board, true);
-  console.log("🚀 ~ playingTime:", playingTime);
 
   const gameOverScreen = document.getElementById("game-over");
   gameOverScreen.style.display = "block";
@@ -136,7 +161,19 @@ function hideGameOverScreen() {
   gameOverScreen.style.display = "none";
 }
 
+async function validatingGameWinScreen() {
+  console.log(board);
+
+  const res = await CheckFinish(board);
+  if (res) {
+    console.log("🚀 ~ validatingGameWinScreen ~ res:", res);
+    return true;
+  }
+  return false;
+}
+
 function showGameWinScreen() {
+  document.querySelector("#game-validate").style.display = "none";
   const gameResultScreen = document.getElementById("game-result");
   gameResultScreen.style.display = "block";
   const gameResultMove = document.getElementById("game-result-move");
@@ -185,7 +222,6 @@ function startNewGame() {
 }
 
 function triggerGameOver() {
-  console.log("🚀 ~ triggerGameOver ~ placeMineList:", placeMineList);
   const firstMine = placeMineList[0];
   const mineCellElement = document.querySelector(
     `[data-row="${firstMine.x}"][data-col="${firstMine.y}"]`
@@ -194,7 +230,7 @@ function triggerGameOver() {
 }
 
 // Function to reveal a cell
-function revealCell(board, row, col) {
+async function revealCell(board, row, col) {
   const cell = board[row][col];
   const flagsLeft = document.querySelector("#flags-left");
 
@@ -222,10 +258,6 @@ function revealCell(board, row, col) {
       for (let i = row - 1; i <= row + 1; i++) {
         for (let j = col - 1; j <= col + 1; j++) {
           if (i >= 0 && i < board.length && j >= 0 && j < board[0].length) {
-            console.log("row: ", i);
-            console.log("col: ", j);
-            console.log("🚀 ~ revealCell ~ board 2:", board[i][j]);
-
             revealCell(board, i, j);
           }
         }
@@ -235,11 +267,6 @@ function revealCell(board, row, col) {
     // drawBoard(board);
 
     // Check for win condition
-    if (checkForWin()) {
-      gameStatus = 2; // Game won
-      stopPlayingTime();
-      showGameWinScreen();
-    }
   }
 }
 
@@ -270,7 +297,6 @@ function getNextBoardState(currentBoard, row, col) {
       }
     }
   }
-  console.log("🚀 ~ getNextBoardState ~ nextBoardState:", nextBoardState);
 
   return nextBoardState;
 }
@@ -313,6 +339,7 @@ function _getNextBoardState(currentBoard, row, col) {
 
 function drawBoard(newBoard, isGameOver = false) {
   // Code to redraw the board
+
   const processingElement = document.getElementById("processing");
 
   const grid = document.getElementById("grid");
@@ -351,15 +378,16 @@ function drawBoard(newBoard, isGameOver = false) {
         square.innerHTML = " 🚩";
       }
 
-      if (cell._isMine) {
-        square.innerHTML = "💣";
-        square.classList.add("mine");
-      }
+      // if (cell._isMine) {
+      //   square.innerHTML = "💣";
+      //   square.classList.add("mine");
+      // }
 
       if (cell._isRevealed) {
         if (cell._isMine) {
           square.innerHTML = "💣";
           square.classList.add("mine");
+
         } else if (cell._adjacentMines > 0) {
           const classNumber = {
             1: "one",
@@ -395,6 +423,13 @@ function drawBoard(newBoard, isGameOver = false) {
           const res = await Move(rowIndex, colIndex, newBoard);
           if (res && res.receipt.logs[0].data) {
             drawBoard(newBoard);
+            if (checkForWin()) {
+              document.querySelector("#game-validate").style.display = "block";
+              const gameValid = await validatingGameWinScreen();
+              if (gameValid) {
+                showGameWinScreen();
+              }
+            }
           }
         } catch (err) {
           console.log("🚀 ~ err", err);
@@ -503,7 +538,6 @@ async function chooseGameLevel(level) {
   flagsLeft.innerHTML = numMines;
   // hideChooseGameLevelScreen();
   // startNewGame();
-  // flagsLeft.innerHTML = numMines;
 
   try {
     const { receipt } = await InitGame(level);
@@ -522,6 +556,8 @@ async function chooseGameLevel(level) {
   } finally {
     processingElement.style.display = "none";
   }
+
+  processingElement.style.display = "none";
 }
 
 function addChooseGameLevelEvents() {
@@ -604,6 +640,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Game logic
     drawBoard(board);
+
+    // TODO: remove if code below
+    // if (placeMineList && placeMineList.length > 0) {
+    //   placeMineList.map((coord) => {
+    //     const mineCellElement = document.querySelector(
+    //       `[data-row="${coord.x}"][data-col="${coord.y}"]`
+    //     );
+    //     mineCellElement.classList.add = "hightlight";
+    //   });
+    // }
   }
 });
 
