@@ -11,6 +11,7 @@ let gameLevel = -1; // 0 = Beginner, 1 = Intermediate, 2 = Export, 3 = Mission I
 let intervalId = null;
 let placeMineList = [];
 let gameId = 0;
+let factor = 1;
 
 //// Call Contract
 
@@ -509,7 +510,7 @@ async function chooseGameLevel(level) {
     numMines = 10;
     maxTime = 500;
     totalMove = 54;
-    baseScore = 5;
+    factor = 5;
   }
   if (level == 1) {
     rows = 10;
@@ -517,7 +518,7 @@ async function chooseGameLevel(level) {
     numMines = 15;
     maxTime = 780;
     totalMove = 85;
-    baseScore = 10;
+    factor = 10;
   }
   if (level == 2) {
     rows = 12;
@@ -525,7 +526,7 @@ async function chooseGameLevel(level) {
     numMines = 30;
     maxTime = 1125;
     totalMove = 114;
-    baseScore = 15;
+    factor = 15;
   }
   if (level == 3) {
     rows = 16;
@@ -533,7 +534,7 @@ async function chooseGameLevel(level) {
     numMines = 80;
     maxTime = 1700;
     totalMove = 176;
-    baseScore = 20;
+    factor = 20;
   }
   flagsLeft.innerHTML = numMines;
   // hideChooseGameLevelScreen();

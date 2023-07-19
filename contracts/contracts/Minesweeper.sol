@@ -72,7 +72,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 10;
             gameLevel.totalMove = 54;
             gameLevel.maxTime = 500;
-            gameLevel.baseScore = 5;
+            gameLevel.factor = 1;
         }
         else if (level == 1) {
             gameLevel.rows = 10;
@@ -80,7 +80,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 15;
             gameLevel.totalMove = 85;
             gameLevel.maxTime = 780;
-            gameLevel.baseScore = 10;
+            gameLevel.factor = 2;
         }
         else if (level == 2) {
             gameLevel.rows = 12;
@@ -88,7 +88,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 30;
             gameLevel.totalMove = 114;
             gameLevel.maxTime = 1125;
-            gameLevel.baseScore = 15;
+            gameLevel.factor = 3;
         }
         else {
             gameLevel.rows = 16;
@@ -96,7 +96,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.numMine = 80;
             gameLevel.totalMove = 176;
             gameLevel.maxTime = 1700;
-            gameLevel.baseScore = 20;
+            gameLevel.factor = 4;
         }
     }
 
@@ -237,13 +237,13 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
     function calculateScore(GameData.GameLevel memory gameLevel, uint256 num_moves, uint256 elapsed_time) public returns (uint256 score) {
         uint256 move_score = 0;
         if (num_moves < gameLevel.totalMove) {
-            move_score = 40 * (1 - (num_moves / gameLevel.totalMove));
+            move_score = 500 * gameLevel.totalMove / num_moves;
         }
         uint256 time_score = 0;
         if (elapsed_time < gameLevel.maxTime) {
-            time_score = 60 * (1 - (elapsed_time / gameLevel.maxTime));
+            time_score = 500 * gameLevel.maxTime / elapsed_time;
         }
-        score = gameLevel.baseScore + move_score + time_score;
+        score = gameLevel.factor * (move_score + time_score);
     }
 
     function addScore(address user, uint score) internal returns (bool) {
