@@ -155,11 +155,6 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
       },
       {
         internalType: "uint256",
-        name: "_level",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
         name: "_numberMines",
         type: "uint256",
       },
@@ -182,6 +177,43 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
         internalType: "enum GameData.GameResult",
         name: "_result",
         type: "uint8",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "rows",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "cols",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "numMine",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "baseScore",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "totalMove",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct GameData.GameLevel",
+        name: "_level",
+        type: "tuple",
       },
     ],
     stateMutability: "view",
@@ -222,6 +254,67 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "rows",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "cols",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "numMine",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "baseScore",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "totalMove",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "maxTime",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct GameData.GameLevel",
+        name: "gameLevel",
+        type: "tuple",
+      },
+      {
+        internalType: "uint256",
+        name: "num_moves",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "elapsed_time",
+        type: "uint256",
+      },
+    ],
+    name: "calculateScore",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "score",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
