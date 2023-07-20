@@ -1,7 +1,6 @@
 window.callBackLoadResourcesComplete = () => {
   console.log("Complete load resources", GAME_ASSETS);
   injectFonts();
-  injectGameMusic(GAME_ASSETS["asset_music"]);
   // injectGame();
 };
 
@@ -159,6 +158,12 @@ function showChooseGameLevelScreen() {
 
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "block";
+
+  const speakerOn = document.querySelector("#speaker-on");
+  const speakerOff = document.querySelector("#speaker-off");
+  speakerOn.style.display = "none";
+  speakerOff.style.display = "none";
+  MIDIjs.stop();
 }
 
 function hideChooseGameLevelScreen() {
@@ -326,10 +331,10 @@ function drawBoard(newBoard, isGameOver = false) {
       }
 
       // Open to reveal all bomb at start
-      // if (cell._isMine) {
-      //   square.innerHTML = "💣";
-      //   square.classList.add("mine");
-      // }
+      if (cell._isMine && isGameOver) {
+        square.innerHTML = "💣";
+        square.classList.add("mine");
+      }
 
       if (cell._isRevealed) {
         if (cell._isMine) {
@@ -358,10 +363,25 @@ function drawBoard(newBoard, isGameOver = false) {
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
         processingElement.style.display = "flex";
+        clickCount += 1;
+
+        if (cell._isFlagged) {
+          addFlag(cellElement, cell);
+          try {
+            const res = await Flag(rowIndex, colIndex, cell._isFlagged);
+            if (res && res.receipt.logs[0].data) {
+              drawBoard(newBoard);
+            }
+          } catch (err) {
+            // console.log("🚀 ~ err", err);
+            console.log("Something wrong, please try again.");
+          } finally {
+            processingElement.style.display = "none";
+          }
+          return;
+        }
 
         revealCell(board, rowIndex, colIndex);
-
-        clickCount += 1;
 
         try {
           const res = await Move(rowIndex, colIndex, newBoard);
@@ -388,7 +408,6 @@ function drawBoard(newBoard, isGameOver = false) {
             }
           }
         } catch (err) {
-          // console.log("🚀 ~ err", err);
           console.log("Something wrong, please try again.");
         } finally {
           processingElement.style.display = "none";
@@ -406,8 +425,6 @@ function drawBoard(newBoard, isGameOver = false) {
             drawBoard(newBoard);
           }
         } catch (err) {
-          drawBoard(board);
-          // console.log("🚀 ~ err", err);
           console.log("Something wrong, please try again.");
         } finally {
           processingElement.style.display = "none";
@@ -502,6 +519,7 @@ async function chooseGameLevel(level) {
 
       hideChooseGameLevelScreen();
       startNewGame();
+      injectGameMusic(GAME_ASSETS["asset_music"]);
       flagsLeft.innerHTML = numMines;
     }
   } catch (err) {
@@ -531,7 +549,7 @@ function renderTableItem(item, index) {
     index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
 
   const leaderboardDataRowEl = document.createElement("div");
-  leaderboardDataRowEl.className = "leaderboard_table_data_row"
+  leaderboardDataRowEl.className = "leaderboard_table_data_row";
   leaderboardDataRowEl.innerHTML = `
     <div class="leaderboard_table_data_rank ${medalClass}">${rank}</div>
     <div class="leaderboard_table_data_name">${formatAddress(item.player)}</div>
@@ -638,6 +656,7 @@ function injectGameMusic(file) {
   // Create a new anchor element
   const playMusic = document.querySelector("#play-music");
   const speakerOn = document.querySelector("#speaker-on");
+  speakerOn.style.display = "block";
   const speakerOff = document.querySelector("#speaker-off");
 
   playMusic.addEventListener("click", function (e) {
@@ -766,10 +785,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Check has walletData in local storage
 
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
-    //Check ongoing game
-    // importGame();
-
-    // Game logic
     drawBoard(board);
   }
 });
