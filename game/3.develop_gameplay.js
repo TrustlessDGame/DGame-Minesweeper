@@ -516,30 +516,29 @@ async function chooseGameLevel(level) {
 async function getLeaderBoardData() {
   [...Array(10)].map(async (_, index) => {
     const data = await GetLeaderboard(index);
-    if(data.score.toString() !== '0'){
-    renderTableItem(data, index);}
+    if (data.score.toString() !== "0") {
+      renderTableItem(data, index);
+    }
   });
 }
 
 function renderTableItem(item, index) {
-  
   const leaderboardTableEl = document.querySelector(".leaderboard_table_data");
 
-    const medalClass = index < 3 ? "--medal" : "";
+  const medalClass = index < 3 ? "--medal" : "";
 
-    const rank = index ===  0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
+  const rank =
+    index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
 
-    const leaderboardDataRowEl = document.createElement("div");
-    leaderboardDataRowEl.innerHTML = `
-    <div class="leaderboard_table_data_row">
+  const leaderboardDataRowEl = document.createElement("div");
+  leaderboardDataRowEl.className = "leaderboard_table_data_row"
+  leaderboardDataRowEl.innerHTML = `
     <div class="leaderboard_table_data_rank ${medalClass}">${rank}</div>
     <div class="leaderboard_table_data_name">${formatAddress(item.player)}</div>
     <div class="leaderboard_table_data_time">${item.score.toString()}</div>
-    </div>
     `;
 
-
-    leaderboardTableEl.appendChild(leaderboardDataRowEl);
+  leaderboardTableEl.appendChild(leaderboardDataRowEl);
 }
 
 function addChooseGameLevelEvents() {
@@ -570,6 +569,12 @@ function addChooseGameLevelEvents() {
 
   viewLeaderboardEl.addEventListener("click", function (e) {
     document.querySelector(".leaderboard").style.display = "block";
+    const leaderboardDataRows = document.querySelectorAll(
+      ".leaderboard_table_data_row"
+    );
+    leaderboardDataRows.forEach((row) => {
+      row.remove();
+    });
     getLeaderBoardData();
   });
 
