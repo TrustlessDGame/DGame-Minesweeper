@@ -68,49 +68,58 @@
     <!--- DO NOT EDIT THIS SECTION -->
     <style>
       *,
-      *::before,
-      *::after {
+      ::after,
+      ::before {
         box-sizing: border-box;
       }
-
+      html {
+        font-size: 62.5%;
+      }
       body {
         margin: 0;
         padding: 0;
+        font-size: 1.6rem;
       }
-
+      button {
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+      }
+      .block {
+        display: block;
+      }
+      .form-inner .qrcode img,
       .w-full {
         width: 100%;
       }
-
       .mt-small {
         margin-top: 10px;
       }
-
       .mt-medium {
         margin-top: 20px;
       }
-
       .mt-large {
         margin-top: 30px;
       }
-
-      .text-bold {
-        font-weight: bold;
+      .btn-default svg,
+      .mr-small {
+        margin-right: 5px;
       }
-
+      .form-inner label,
+      .text-bold {
+        font-weight: 700;
+      }
       .text-gray {
         color: gray;
       }
-
       .wrap-modal {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100vh;
-        z-index: 10;
+        z-index: 999;
       }
-
       .wrap-modal:after {
         content: "";
         position: fixed;
@@ -118,10 +127,10 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: #000000a6;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(5px);
         z-index: -1;
       }
-
       .wrap-modal .bg-modal {
         position: absolute;
         top: 0;
@@ -130,156 +139,361 @@
         height: 100%;
         z-index: 0;
       }
-
       .modal {
         position: fixed;
-        top: 50%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 15px;
+        width: 350px;
         max-width: 95%;
-        background: white;
         border-radius: 10px;
       }
-
-      /* Header */
+      .modal .close-modal {
+        border: 0;
+        background: 0 0;
+        position: absolute;
+        top: -10px;
+        right: -40px;
+        padding: 10px;
+        cursor: pointer;
+      }
+      .form-inner .password-input,
+      .item-input,
       header {
+        position: relative;
+      }
+      .modal .close-modal svg {
+        width: 25px;
+        height: 25px;
+      }
+      .form-inner .note {
+        color: #ffec46;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .form-inner .qrcode {
+        border: 1px solid #fff;
+        border-radius: 10px;
+        padding: 15px;
+        width: 55%;
+        margin: auto auto 15px;
+      }
+      .form-inner .title-form {
+        text-align: center;
+        color: #fff;
+        margin-bottom: 40px;
+        font-size: 2.5rem;
+        font-weight: 700;
+      }
+      .btn-default,
+      .form-inner .submit,
+      .form-inner input {
+        height: 48px;
+        font-size: 1.6rem;
+      }
+      .form-inner input,
+      .form-inner label {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        color: #fff;
+      }
+      .form-inner input {
+        padding: 13px 20px 13px 10px;
+        outline: 0;
+        border-radius: 12px;
+        border: 2px solid #fff;
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.25) inset;
+      }
+      .btn-default:hover,
+      .form-inner .submit:hover,
+      .form-inner input:focus {
+        box-shadow: 0 3px 15px #858585;
+      }
+      .form-inner .toggle-icon,
+      .item-input .child {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .loading-content,
+      .wrap-noti {
+        position: fixed;
+        display: flex;
+      }
+      .form-inner .toggle-icon {
+        right: 5px;
+      }
+      .form-inner .item {
+        margin-bottom: 20px;
+      }
+      .form-inner .submit {
+        width: 100%;
+        padding: 10px;
+        border-radius: 12px;
+        border: 2px solid #fff;
+        background: #000;
+        color: #fff;
+        font-weight: 700;
+        outline: 0;
+        box-shadow: 0;
+        cursor: pointer;
+      }
+      .form-inner .error {
+        width: 100%;
+        margin-top: 10px;
+        text-align: center;
+        color: red;
+        font-size: 14px;
+        text-shadow: 1px 1px 6px #874848;
+      }
+      header {
+        width: 100%;
+        height: 60px;
+        background: #000;
         padding: 15px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        z-index: 1;
-        position: relative;
+        z-index: 99;
       }
-
+      header .menu-list {
+        width: 100%;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 99;
+      }
+      header .navbar-icon {
+        display: none;
+      }
       .btn-default {
-        padding: 10px 15px 10px 15px;
-        border-radius: 7px;
-        border: 0;
-        box-shadow: 1px 2px 10px #b0b0b0;
+        padding: 10px 15px;
+        border-radius: 12px;
+        border: 2px solid #fff;
+        background: #000;
         cursor: pointer;
+        font-weight: 700;
+        color: #fff;
       }
-
+      .btn-default.flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .btn-default.btn-create,
+      .btn-default.btn-import {
+        width: 308px;
+        font-size: 1.8rem;
+      }
+      .btn-default.btn-create {
+        margin-bottom: 32px;
+      }
+      .btn-default.btn-import {
+        background: #fff;
+        color: #000;
+      }
+      .btn-default.gray {
+        background: rgba(0, 0, 0, 0.5);
+      }
       .btn-default.primary {
-        background: black;
-        color: white;
+        background: #000;
+        color: #fff;
       }
-
-      .header-actions .btn-export {
-        background: #31ece3;
+      .header-actions.end {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
       }
-
-      .header-actions .btn-topup {
-        background: #03fa9a;
+      .balance-ui,
+      .header-actions .inner {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
-
-      .header-actions .wallet-display {
-        background: yellow;
-      }
-
-      /* Loading Content */
       .loading-content {
-        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        display: flex;
         justify-content: center;
         align-items: center;
-        color: white;
+        color: #fff;
         font-size: 25px;
       }
-
-      /* Balance  */
-      .balance-ui {
-        padding: 7px 10px 7px 10px;
-        border: 1px solid black;
-        border-radius: 5px;
+      .loading-content svg {
+        background: 0 0 !important;
+        width: 60px !important;
+        height: auto !important;
+        margin-bottom: 15px !important;
       }
-
-      .balance-ui .display {
-        color: green;
-        font-weight: bold;
-        font-size: 16px;
-      }
-
-      .balance-ui .inner {
-      }
-
-      /* Modal Topup */
-      .modal-topup {
-        width: 320px;
-      }
-
-      /* Modal Actions */
       .modal-actions .row {
         display: flex;
         gap: 10px;
       }
-
-      /* Modal Create Account */
       h4.modal-title {
         font-size: 23px;
       }
-
-      .modal-account {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        width: 320px;
-      }
-
-      .form-inner .title-form {
-        text-align: center;
-        color: #4a4646;
-        margin-bottom: 30px;
-        font-size: 20px;
-        font-weight: bold;
-      }
-
-      .form-inner label,
-      .form-inner input {
-        display: block;
-        width: 100%;
-        margin-bottom: 10px;
-      }
-
-      .form-inner input {
-        padding: 8px 20px 8px 5px;
-        outline: 0;
-        border: 1px solid #d0d0d0;
-        border-radius: 5px;
-      }
-
-      .form-inner .password-input {
-        position: relative;
-      }
-
-      .form-inner .toggle-icon {
-        position: absolute;
-        top: 50%;
-        right: 5px;
-        transform: translateY(-50%);
-      }
-
-      .form-inner .item {
-        margin-bottom: 20px;
-      }
-
-      .form-inner .submit {
-        width: 100%;
-        padding: 10px;
-        background: black;
-        color: white;
-        font-weight: bold;
-        outline: 0;
-        border: 0;
-        border-radius: 5px;
-        box-shadow: 0;
+      .item-input .child {
+        right: 10px;
+        height: 32px;
+        width: 64px;
+        border-radius: 8px;
+        background: #fff;
+        font-weight: 700;
+        color: #000;
         cursor: pointer;
+      }
+      .item-input input {
+        padding-right: 75px;
+      }
+      .wrap-noti {
+        top: 20px;
+        right: 20px;
+        width: 300px;
+        height: 70px;
+        z-index: 9999;
+        border-radius: 10px;
+        align-items: center;
+        animation: 0.5s forwards openNoti;
+      }
+      .wrap-noti.success {
+        background: #33a365ed;
+      }
+      .wrap-noti.error {
+        background: #ff3860d4;
+      }
+      .wrap-noti.warning {
+        background: #ea1313f2;
+      }
+      .wrap-noti.close {
+        animation: 0.5s forwards closeNoti;
+      }
+      @keyframes closeNoti {
+        from {
+          right: 20px;
+          opacity: 1;
+        }
+        to {
+          right: -100%;
+          opacity: 0;
+        }
+      }
+      @keyframes openNoti {
+        from {
+          right: -100%;
+          opacity: 0;
+        }
+        to {
+          right: 20px;
+          opacity: 1;
+        }
+      }
+      .wrap-noti .inner {
+        width: 100%;
+        padding: 15px;
+        color: #fff;
+        font-weight: 700;
+      }
+      @media only screen and (max-width: 800px) {
+        .wrap-modal:after {
+          background: #000;
+        }
+        .btn-default {
+          height: 45px;
+        }
+        .header-actions.end,
+        header .header-actions .btn-default.flex {
+          justify-content: start;
+        }
+        .header .btn-login {
+          width: 100%;
+        }
+        header .navbar-icon {
+          display: block;
+          padding: 5px;
+          background: 0 0;
+          order: 1;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          right: 15px;
+        }
+        header .navbar-icon svg {
+          width: 30px;
+          height: 30px;
+        }
+        header .navbar-icon svg path {
+          fill: #fff;
+        }
+        header .menu-list {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: #000;
+          flex-direction: column;
+          justify-content: flex-start;
+          padding-top: 70px;
+          right: -100%;
+          transition: right 0.3s ease-in-out;
+        }
+        header .navbar-icon.close {
+          width: 40px;
+          height: 40px;
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          transform: unset;
+        }
+        header .menu-list.open {
+          animation: 0.5s forwards openMenu;
+        }
+        header .menu-list.close {
+          animation: 0.5s forwards closeMenu;
+        }
+        @keyframes openMenu {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+        @keyframes closeMenu {
+          form {
+            transform: translateX(0);
+            opacity: 1;
+          }
+          to {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+        }
+        header .header-actions .inner {
+          flex-direction: column;
+          align-items: unset;
+        }
+      }
+      @media only screen and (max-width: 500px) {
+        html {
+          font-size: 55%;
+        }
+        .btn-default svg {
+          width: 15px;
+          height: 15px;
+        }
+        .modal .close-modal {
+          right: 0;
+        }
+        .btn-default {
+          height: 40px;
+        }
       }
     </style>
     <link rel="stylesheet" href="./style.css" />
@@ -290,12 +504,16 @@
     <!--- DO NOT EDIT THIS SECTION -->
     <script src="1.develop_contract.js"></script>
     <script src="2.develop_data.js"></script>
+    <script src="3.develop_gameplay.js"></script>
     <script>
       (async () => {
         await preload();
         await importUIDefault();
         await wallet._checkLogin();
         await preloadASSETS();
+        if (typeof window.callBackLoadResourcesComplete == "function") {
+          window.callBackLoadResourcesComplete();
+        }
       })();
     </script>
 
@@ -338,6 +556,10 @@
         <div class="backdrop">
           <div class="content">
             <p class="game-validate-title">Validate game result</p>
+            <p id="game-result-validte-1" class="game-result-desc"></p>
+            <button id="play-again-button-validate" class="play-again-button">
+              Play again
+            </button>
             <div class="lds-dual-ring"></div>
           </div>
         </div>
@@ -354,8 +576,13 @@
           </div>
         </div>
       </div>
+      <div id="game-music"></div>
       <div id="processing" class="lds-dual-ring"></div>
+      <a href="#" id="play-music" data-playing="0">
+        <p><span id="speaker-on" class="speaker -on"></span></p>
+        <p><span id="speaker-off" class="speaker -off"></span></p>
+      </a>
     </div>
-    <script src="3.develop_gameplay.js"></script>
+    <!-- <script src="3.develop_gameplay.js"></script> -->
   </body>
 </html>

@@ -316,8 +316,63 @@ div {
   }
 }
 
-/* .hightlight {
-  background-color: red;
-} */
+#play-music{
+  z-index: 999;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 80%;
+}
+
+.speaker {
+  vertical-align: middle;
+  box-sizing: border-box;
+  display: inline-block;
+  background: #FF7505;
+  background-clip: content-box;
+  width: 1em;
+  height: 1em;
+  border: .333em solid transparent;
+  border-right-color: #FF7505;
+  position: relative;
+  left: -.337em;
+}
+
+#speaker-off{
+  display: none;
+}
+
+.speaker.-on:before, .speaker.-on:after {
+  content: '';
+  background: #FF7505;
+  width: .1em;
+  position: absolute;
+}
+.speaker.-on:before {
+  height: .333em;
+  right: -.533em;
+}
+.speaker.-on:after {
+  height: .667em;
+  right: -.733em;
+  top: -50%;
+}
+.speaker.-off:before, .speaker.-off:after {
+  content: '';
+  background: #FF7505;
+  width: .1em;
+  position: absolute;
+  height: 1.2em;
+  margin-top: -.333em;
+  top: -.1em;
+  left: .1em;
+  transform: translateX(.333em) rotate(-45deg);
+}
+.speaker.-off:before {
+  background: transparent;
+  left: .2em;
+}
+
+
 
 /*  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Write all your style here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */

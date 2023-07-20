@@ -1,3 +1,9 @@
+window.callBackLoadResourcesComplete = () => {
+  console.log("Complete load resources", GAME_ASSETS);
+  injectFonts();
+  injectGameMusic(GAME_ASSETS["asset_music"]);
+};
+
 // Game play
 let rows = 10;
 let columns = 10;
@@ -167,7 +173,7 @@ async function validatingGameWinScreen() {
 
   const res = await CheckFinish(board);
   if (res) {
-    console.log("🚀 ~ validatingGameWinScreen ~ res:", res);
+    // console.log("🚀 ~ validatingGameWinScreen ~ res:", res);
     return true;
   }
   return false;
@@ -264,78 +270,7 @@ async function revealCell(board, row, col) {
         }
       }
     }
-
-    // drawBoard(board);
-
-    // Check for win condition
   }
-}
-
-function getNextBoardState(currentBoard, row, col) {
-  let nextBoardState = currentBoard;
-  const cell = nextBoardState[row][col];
-
-  if (!cell._isRevealed) {
-    cell._isRevealed = true;
-
-    // If the cell is flagged
-    if (cell._isFlagged) {
-      cell._isFlagged = false;
-    }
-
-    if (cell._adjacentMines === 0) {
-      for (let i = row - 1; i <= row + 1; i++) {
-        for (let j = col - 1; j <= col + 1; j++) {
-          if (
-            i >= 0 &&
-            i < nextBoardState.length &&
-            j >= 0 &&
-            j < nextBoardState[0].length
-          ) {
-            getNextBoardState(nextBoardState, i, j);
-          }
-        }
-      }
-    }
-  }
-
-  return nextBoardState;
-}
-
-function _getNextBoardState(currentBoard, row, col) {
-  const nextBoardState = [...currentBoard];
-  const queue = [{ row, col }];
-
-  while (queue.length > 0) {
-    const { row, col } = queue.shift();
-    const cell = nextBoardState[row][col];
-
-    if (!cell._isRevealed) {
-      cell._isRevealed = true;
-
-      if (cell._isFlagged) {
-        cell._isFlagged = false;
-      }
-
-      if (cell._adjacentMines === 0) {
-        for (let i = row - 1; i <= row + 1; i++) {
-          for (let j = col - 1; j <= col + 1; j++) {
-            if (
-              i >= 0 &&
-              i < nextBoardState.length &&
-              j >= 0 &&
-              j < nextBoardState[0].length
-            ) {
-              if (!nextBoardState[i][j]._isRevealed) {
-                queue.push({ row: i, col: j });
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  return nextBoardState;
 }
 
 function drawBoard(newBoard, isGameOver = false) {
@@ -379,6 +314,7 @@ function drawBoard(newBoard, isGameOver = false) {
         square.innerHTML = " 🚩";
       }
 
+      // Open to reveal all bomb at start
       // if (cell._isMine) {
       //   square.innerHTML = "💣";
       //   square.classList.add("mine");
@@ -388,7 +324,6 @@ function drawBoard(newBoard, isGameOver = false) {
         if (cell._isMine) {
           square.innerHTML = "💣";
           square.classList.add("mine");
-
         } else if (cell._adjacentMines > 0) {
           const classNumber = {
             1: "one",
@@ -412,13 +347,10 @@ function drawBoard(newBoard, isGameOver = false) {
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
         processingElement.style.display = "flex";
-        const currentBoard = newBoard;
 
         revealCell(board, rowIndex, colIndex);
 
         clickCount += 1;
-        // getNextBoardState(board, rowIndex, colIndex);
-        // _getNextBoardState(board, rowIndex, colIndex);
 
         try {
           const res = await Move(rowIndex, colIndex, newBoard);
@@ -426,16 +358,27 @@ function drawBoard(newBoard, isGameOver = false) {
             drawBoard(newBoard);
             if (checkForWin()) {
               document.querySelector("#game-validate").style.display = "block";
+              document.querySelector("#processing").style.display = "none";
               const gameValid = await validatingGameWinScreen();
               if (gameValid) {
+                document.querySelector("#game-validate").style.display = "none";
                 showGameWinScreen();
+              } else {
+                const validateDesc =
+                  document.querySelector("#game-result-move");
+                validateDesc.innerHTML =
+                  "Something went wrong when validating game result.";
+                validateDesc.style.display = "block";
+                const validateBtn = document.querySelector(
+                  "#play-again-button-validate"
+                );
+                validateBtn.style.display = "block";
               }
             }
           }
         } catch (err) {
-          console.log("🚀 ~ err", err);
+          // console.log("🚀 ~ err", err);
           console.log("Something wrong, please try again.");
-          // drawBoard(currentBoard);
         } finally {
           processingElement.style.display = "none";
         }
@@ -453,7 +396,7 @@ function drawBoard(newBoard, isGameOver = false) {
           }
         } catch (err) {
           drawBoard(board);
-          console.log("🚀 ~ err", err);
+          // console.log("🚀 ~ err", err);
           console.log("Something wrong, please try again.");
         } finally {
           processingElement.style.display = "none";
@@ -553,7 +496,7 @@ async function chooseGameLevel(level) {
       flagsLeft.innerHTML = numMines;
     }
   } catch (err) {
-    console.log("🚀 ~ err", err);
+    // console.log("🚀 ~ err", err);
   } finally {
     processingElement.style.display = "none";
   }
@@ -604,11 +547,17 @@ function addNewGameEvents() {
     .addEventListener("click", function () {
       restartGame();
     });
+
+  document
+    .getElementById("play-again-button-validate")
+    .addEventListener("click", function () {
+      restartGame();
+    });
 }
 
 function injectFonts() {
   // Create a new style element
-  const style = document.createElement('style');
+  const style = document.createElement("style");
 
   // Define the @font-face rule as a CSS string
   const fontFaceRule = `
@@ -627,10 +576,29 @@ function injectFonts() {
   document.head.appendChild(style);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  injectFonts();
-  MIDIjs.play(GAME_ASSETS["asset_music"]);
+function injectGameMusic(file) {
+  // Create a new anchor element
+  const playMusic = document.querySelector("#play-music");
+  const speakerOn = document.querySelector("#speaker-on");
+  const speakerOff = document.querySelector("#speaker-off");
 
+  playMusic.addEventListener("click", function (e) {
+    if (playMusic.getAttribute("data-playing") === "0") {
+      MIDIjs.pause();
+      playMusic.setAttribute("data-playing", "1");
+      speakerOn.style.display = "none";
+      speakerOff.style.display = "block";
+    } else {
+      playMusic.setAttribute("data-playing", "0");
+      MIDIjs.play(file);
+      speakerOff.style.display = "none";
+      speakerOn.style.display = "block";
+    }
+  });
+  MIDIjs.play(file);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
   // Check has walletData in local storage
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
     //Check ongoing game
@@ -641,25 +609,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Game logic
     drawBoard(board);
-
-    // TODO: remove if code below
-    // if (placeMineList && placeMineList.length > 0) {
-    //   placeMineList.map((coord) => {
-    //     const mineCellElement = document.querySelector(
-    //       `[data-row="${coord.x}"][data-col="${coord.y}"]`
-    //     );
-    //     mineCellElement.classList.add = "hightlight";
-    //   });
-    // }
   }
 });
 
 window.onbeforeunload = function (event) {
-  // var confirmationMessage = "Are you sure you want to leave this page?";
-  // event.returnValue = confirmationMessage;
   triggerGameOver();
 };
-
-// window.onunload = function (event) {
-//   console.log("new game");
-// };
