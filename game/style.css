@@ -1,4 +1,3 @@
-
 :root {
   --square-size: 50px;
 }
@@ -15,7 +14,6 @@ body {
   height: 100vh;
   overflow: hidden;
 }
-
 
 .container {
   width: 100vw;
@@ -268,7 +266,7 @@ div {
   margin: 0;
 }
 
-#game-validate{
+#game-validate {
   display: none;
   position: fixed;
   z-index: 1;
@@ -278,7 +276,7 @@ div {
   height: 100vh;
 }
 
-#processing{
+#processing {
   position: absolute;
   top: 0;
   left: 0;
@@ -316,7 +314,7 @@ div {
   }
 }
 
-#play-music{
+#play-music {
   z-index: 999;
   position: absolute;
   right: 20px;
@@ -328,51 +326,187 @@ div {
   vertical-align: middle;
   box-sizing: border-box;
   display: inline-block;
-  background: #FF7505;
+  background: #ff7505;
   background-clip: content-box;
   width: 1em;
   height: 1em;
-  border: .333em solid transparent;
-  border-right-color: #FF7505;
+  border: 0.333em solid transparent;
+  border-right-color: #ff7505;
   position: relative;
-  left: -.337em;
+  left: -0.337em;
 }
 
-#speaker-off{
+#speaker-off {
   display: none;
 }
 
-.speaker.-on:before, .speaker.-on:after {
-  content: '';
-  background: #FF7505;
-  width: .1em;
+.speaker.-on:before,
+.speaker.-on:after {
+  content: "";
+  background: #ff7505;
+  width: 0.1em;
   position: absolute;
 }
 .speaker.-on:before {
-  height: .333em;
-  right: -.533em;
+  height: 0.333em;
+  right: -0.533em;
 }
 .speaker.-on:after {
-  height: .667em;
-  right: -.733em;
+  height: 0.667em;
+  right: -0.733em;
   top: -50%;
 }
-.speaker.-off:before, .speaker.-off:after {
-  content: '';
-  background: #FF7505;
-  width: .1em;
+.speaker.-off:before,
+.speaker.-off:after {
+  content: "";
+  background: #ff7505;
+  width: 0.1em;
   position: absolute;
   height: 1.2em;
-  margin-top: -.333em;
-  top: -.1em;
-  left: .1em;
-  transform: translateX(.333em) rotate(-45deg);
+  margin-top: -0.333em;
+  top: -0.1em;
+  left: 0.1em;
+  transform: translateX(0.333em) rotate(-45deg);
 }
 .speaker.-off:before {
   background: transparent;
-  left: .2em;
+  left: 0.2em;
 }
 
+.leaderboard {
+  position: fixed;
+  z-index: 99;
+  top: 60px;
+  left: 0;
+  width: 100vw;
+  height: calc(100vh - 60px);
+  background-color: #ffe5c0;
+  display: none;
+}
 
+.leaderboard_heading {
+  margin-top: 64px;
+  margin-bottom: 20px;
+}
+
+.cup-icon {
+  font-size: 145%;
+  margin-bottom: 8px;
+}
+
+.leaderboard_title {
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 44.8px */
+  letter-spacing: -0.96px;
+}
+
+.leaderboard_table_wrapper {
+  --column-ratio: 1fr 136px 165px;
+
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 473px;
+  padding: 28px;
+  border-radius: 6px;
+  background: #fec200;
+  box-shadow: -6px 0px 0px 0px #ff7505 inset, 0px 6px 0px 0px #fedc01 inset,
+    0px -6px 0px 0px #ff7a00 inset, 6px 0px 0px 0px rgba(254, 220, 1, 0.6) inset;
+}
+
+.leaderboard_table_heading {
+  display: grid;
+  grid-template-columns: var(--column-ratio);
+  column-gap: 24px;
+  margin-bottom: 12px;
+}
+
+.leaderboard_table_heading > div {
+  font-size: 12px;
+  line-height: 150%;
+  text-align: left;
+}
+
+.leaderboard_table_heading > div:last-of-type {
+  text-align: right;
+}
+
+.leaderboard_table_data {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leaderboard_table_data_row {
+  padding: 12px 16px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: -6px 0px 0px 0px #d1d2d7 inset, 0px 6px 0px 0px #f2f2f2 inset,
+    0px -6px 0px 0px #d2d3ce inset,
+    6px 0px 0px 0px rgba(242, 242, 242, 0.6) inset;
+  display: grid;
+  grid-template-columns: var(--column-ratio);
+  column-gap: 24px;
+}
+
+.leaderboard_table_data_row > div {
+  text-transform: uppercase;
+  line-height: 28px; /* 155.556% */
+}
+
+.leaderboard_table_data_name {
+  font-size: 14px;
+}
+
+.leaderboard_table_data_row > div:last-of-type {
+  text-align: right;
+  color: #ff7505;
+  font-size: 18px;
+  letter-spacing: -0.54px;
+}
+
+.leaderboard_table_data_rank.--medal {
+  font-size: 115%;
+}
+
+#go-to-leaderboard {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  gap: 12px;
+  border-radius: 12px 0px 0px 12px;
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
+  border-left: 3px solid #000;
+  background: #fff;
+  padding: 23px 26px 25px 26px;
+  cursor: pointer;
+}
+
+#go-to-leaderboard .cup-icon {
+  margin-bottom: 0;
+  font-size: 115%;
+}
+
+#go-to-leaderboard .leaderboard_title {
+  line-height: normal;
+}
+
+#back-btn {
+  border-radius: 12px;
+  border: 2px solid #000;
+  background: #fff;
+  margin-top: 20px;
+  width: fit-content;
+  display: flex;
+  padding: 8px 24px;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
 
 /*  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Write all your style here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */

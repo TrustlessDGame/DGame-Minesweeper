@@ -2,6 +2,7 @@ window.callBackLoadResourcesComplete = () => {
   console.log("Complete load resources", GAME_ASSETS);
   injectFonts();
   injectGameMusic(GAME_ASSETS["asset_music"]);
+  // injectGame();
 };
 
 // Game play
@@ -18,9 +19,9 @@ let intervalId = null;
 let placeMineList = [];
 let gameId = 0;
 let factor = 1;
+let leaderboardData = [];
 
 //// Call Contract
-
 async function InitGame(level) {
   return await contractInteraction.Send(
     GAME_CONTRACT_ABI_INTERFACE_JSON,
@@ -86,6 +87,16 @@ async function CheckFinish(finalBoardState) {
     gameId,
     finalBoardState
   );
+}
+
+async function GetLeaderboard(index) {
+  const data = await contractInteraction.Call(
+    GAME_CONTRACT_ABI_INTERFACE_JSON,
+    GAME_CONTRACT_ADDRESS,
+    "_leaderboard(uint256)",
+    index
+  );
+  return data;
 }
 
 // Function to generate the game board
@@ -480,8 +491,6 @@ async function chooseGameLevel(level) {
     factor = 20;
   }
   flagsLeft.innerHTML = numMines;
-  // hideChooseGameLevelScreen();
-  // startNewGame();
 
   try {
     const { receipt } = await InitGame(level);
@@ -504,12 +513,42 @@ async function chooseGameLevel(level) {
   processingElement.style.display = "none";
 }
 
+async function getLeaderBoardData() {
+  [...Array(10)].map(async (_, index) => {
+    const data = await GetLeaderboard(index);
+    if(data.score.toString() !== '0'){
+    renderTableItem(data, index);}
+  });
+}
+
+function renderTableItem(item, index) {
+  
+  const leaderboardTableEl = document.querySelector(".leaderboard_table_data");
+
+    const medalClass = index < 3 ? "--medal" : "";
+
+    const rank = index ===  0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
+
+    const leaderboardDataRowEl = document.createElement("div");
+    leaderboardDataRowEl.innerHTML = `
+    <div class="leaderboard_table_data_row">
+    <div class="leaderboard_table_data_rank ${medalClass}">${rank}</div>
+    <div class="leaderboard_table_data_name">${formatAddress(item.player)}</div>
+    <div class="leaderboard_table_data_time">${item.score.toString()}</div>
+    </div>
+    `;
+
+
+    leaderboardTableEl.appendChild(leaderboardDataRowEl);
+}
+
 function addChooseGameLevelEvents() {
   document
     .getElementById("game-level-beginner")
-    .addEventListener("click", function () {
+    .addEventListener("click", function (e) {
       chooseGameLevel(0);
     });
+
   document
     .getElementById("game-level-intermediate")
     .addEventListener("click", function () {
@@ -525,6 +564,20 @@ function addChooseGameLevelEvents() {
     .addEventListener("click", function () {
       chooseGameLevel(3);
     });
+
+  //Show leaderboard
+  const viewLeaderboardEl = document.getElementById("go-to-leaderboard");
+
+  viewLeaderboardEl.addEventListener("click", function (e) {
+    document.querySelector(".leaderboard").style.display = "block";
+    getLeaderBoardData();
+  });
+
+  // Back to choose level screen
+
+  document.querySelector("#back-btn").addEventListener("click", function (e) {
+    document.querySelector(".leaderboard").style.display = "none";
+  });
 }
 
 function restartGame() {
@@ -598,14 +651,118 @@ function injectGameMusic(file) {
   MIDIjs.play(file);
 }
 
+function importGame() {
+  const container = document.createElement("div");
+  container.className.add = "game-wrapper";
+
+  container.innerHTML = `
+  <div class="container">
+      <div id="game-level">
+        <div class="backdrop">
+          <p class="choose-level-title">Choose your level</p>
+          <ul class="game-level-list">
+            <li id="game-level-beginner" class="game-level-item beginner">
+              Beginner
+            </li>
+            <li
+              id="game-level-intermediate"
+              class="game-level-item intermediate"
+            >
+              Intermediate
+            </li>
+            <li id="game-level-expert" class="game-level-item expert">
+              Expert
+            </li>
+            <li id="game-level-pro" class="game-level-item pro">
+              Mission Impossible
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="grid"></div>
+      <div id="flag-info">Flags left: <span id="flags-left"></span></div>
+      <div id="game-over">
+        <div class="backdrop">
+          <div class="content">
+            <p class="game-over-title">Game Over</p>
+            <button id="play-again-button-over" class="play-again-button">
+              Play again
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="game-validate">
+        <div class="backdrop">
+          <div class="content">
+            <p class="game-validate-title">Validate game result</p>
+            <p id="game-result-validte-1" class="game-result-desc"></p>
+            <button id="play-again-button-validate" class="play-again-button">
+              Play again
+            </button>
+            <div class="lds-dual-ring"></div>
+          </div>
+        </div>
+      </div>
+      <div id="game-result">
+        <div class="backdrop">
+          <div class="content">
+            <p class="game-result-title">Congratulation!</p>
+            <p id="game-result-move" class="game-result-desc"></p>
+            <p id="game-result-time" class="game-result-desc"></p>
+            <button id="play-again-button-win" class="play-again-button">
+              Play again
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="game-music"></div>
+      <div id="processing" class="lds-dual-ring"></div>
+      <a href="#" id="play-music" data-playing="0">
+        <p><span id="speaker-on" class="speaker -on"></span></p>
+        <p><span id="speaker-off" class="speaker -off"></span></p>
+      </a>
+      <div id="go-to-leaderboard">
+      <div class="cup-icon">🏆</div>
+      <div class="leaderboard_title">Leaderboard</div>
+      </div>
+      <div class="leaderboard"> 
+        <div class="leaderboard_heading">
+          <div class="cup-icon">🏆</div>
+          <div class="leaderboard_title">Leaderboard</div>
+        </div>
+        <div class="leaderboard_table_wrapper">
+          <div class="leaderboard_table">
+            <div class="leaderboard_table_heading">
+              <div class="leaderboard_table_heading_rank">Rank</div>
+              <div class="leaderboard_table_heading_name">Address</div>
+              <div class="leaderboard_table_heading_time">Points</div>
+            </div>
+            <div class="leaderboard_table_data">
+     
+             </div>
+          </div>
+        </div>
+        <div id='back-btn'>Back</div>
+      </div>
+      
+    </div>
+  `;
+
+  document.body.appendChild(container);
+
+  // Init event
+  addChooseGameLevelEvents();
+  addNewGameEvents();
+}
+
+importGame();
+
 document.addEventListener("DOMContentLoaded", () => {
   // Check has walletData in local storage
+
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
     //Check ongoing game
-
-    // Init event
-    addChooseGameLevelEvents();
-    addNewGameEvents();
+    // importGame();
 
     // Game logic
     drawBoard(board);

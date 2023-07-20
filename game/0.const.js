@@ -1100,6 +1100,7 @@ class ContractInteraction {
       params
     );
     const contract = this.loadContract(abiJson, contractAddress);
+
     return await contract.functions[methodWithParams.replace(/\s/g, "")](
       ...params
     );
