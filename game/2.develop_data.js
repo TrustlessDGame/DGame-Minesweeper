@@ -1,7 +1,7 @@
 // YOUR_ASSETS
 let GAME_ASSETS = {
-  asset_music: "bfs://42070/0x0C7d44Ac4959eeB42e8D5f8792738D779a545F7E/0x125EA11232286baAD5476fc7aF1477212c688370/asset_music",
-  font: "bfs://42070/0x0C7d44Ac4959eeB42e8D5f8792738D779a545F7E/0x125EA11232286baAD5476fc7aF1477212c688370/font"
+  asset_music: "./assets/game-music.mid",
+  font: "./assets/LilitaOne-Regular.ttf"
 };
 // YOUR GAME CONTRACT ABI JSON INTERFACE
 const GAME_CONTRACT_ABI_INTERFACE_JSON = [

@@ -633,17 +633,6 @@ function addNewGameEvents() {
 
 function injectFonts() {
 
-  // const fontUrl = URL.createObjectURL(fontBlob);
-
-  // const fontFace = new FontFace("LilitaOne", `url(${fontUrl}) format("ttf")`);
-
-  // fontFace.load().then(() => {
-  //   // Font is loaded, apply it to the desired elements
-  //   const customFontElements = document.querySelectorAll('.custom-font');
-  //   customFontElements.forEach(element => {
-  //     element.style.fontFamily = "LilitaOne, sans-serif";
-  //   });
-  // });
 
   // Create a new style element
   const style = document.createElement("style");
