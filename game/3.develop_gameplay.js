@@ -1,6 +1,6 @@
 window.callBackLoadResourcesComplete = () => {
   console.log("Complete load resources", GAME_ASSETS);
-  injectFonts(GAME_ASSETS["font"]);
+  injectFonts();
   // injectGame();
 };
 
@@ -641,7 +641,7 @@ function injectFonts() {
   const fontFaceRule = `
     @font-face {
       font-family: "LilitaOne";
-      src: url('"${GAME_ASSETS.font}");
+      src: url(${GAME_ASSETS.font});
       font-weight: normal;
       font-style: normal;ƒ
     }
