@@ -101,9 +101,6 @@ async function GetLeaderboard(index) {
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
 
-
-  console.log(rows, columns, numMines);
-
   const board = [];
   const mines = [];
 
@@ -525,7 +522,7 @@ async function chooseGameLevel(level) {
 
       hideChooseGameLevelScreen();
       startNewGame();
-      injectGameMusic(GAME_ASSETS["asset_music"]);
+      injectGameMusic(GAME_ASSETS["minesweeper_music"]);
       flagsLeft.innerHTML = numMines;
     }
   } catch (err) {
@@ -663,24 +660,26 @@ function injectFonts() {
 function injectGameMusic(file) {
   // Create a new anchor element
   const playMusic = document.querySelector("#play-music");
+  const gameAudio = document.querySelector("#game-audio");
+  gameAudio.src = file;
+  gameAudio.play();
   const speakerOn = document.querySelector("#speaker-on");
   speakerOn.style.display = "block";
   const speakerOff = document.querySelector("#speaker-off");
 
   playMusic.addEventListener("click", function (e) {
     if (playMusic.getAttribute("data-playing") === "0") {
-      MIDIjs.pause();
+      gameAudio.pause();
       playMusic.setAttribute("data-playing", "1");
       speakerOn.style.display = "none";
       speakerOff.style.display = "block";
     } else {
       playMusic.setAttribute("data-playing", "0");
-      MIDIjs.play(file);
+      gameAudio.play();
       speakerOff.style.display = "none";
       speakerOn.style.display = "block";
     }
   });
-  MIDIjs.play(file);
 }
 
 function importGame() {
@@ -776,7 +775,7 @@ function importGame() {
         </div>
         <div id='back-btn'>Back</div>
       </div>
-      
+      <audio id='game-audio' src='#' loop></audio>
     </div>
   `;
 
