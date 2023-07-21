@@ -8,11 +8,18 @@
   box-sizing: border-box;
 }
 
+header{
+  background: transparent;
+  z-index: 99;
+}
+
 body {
   margin: 0;
   padding: 0;
   height: 100vh;
   overflow: hidden;
+  background-color: #ffe5c0;
+
 }
 
 .container {
@@ -24,7 +31,6 @@ body {
   flex-direction: column;
   z-index: 0;
   position: relative;
-  background-color: #ffe5c0;
   font-family: "LilitaOne", "Roboto Mono", monospace;
 }
 
