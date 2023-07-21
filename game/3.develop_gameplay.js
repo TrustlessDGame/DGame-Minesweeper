@@ -171,7 +171,7 @@ function showChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "block";
 
-  document.querySelector('.leaderboard').style.display = 'block';
+  document.querySelector('#go-to-leaderboard').style.display = 'block';
 
   const speakerOn = document.querySelector("#speaker-on");
   const speakerOff = document.querySelector("#speaker-off");
@@ -184,7 +184,7 @@ function hideChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "none";
   document.getElementById("flag-info").style.display = "block";
-  document.querySelector('.leaderboard').style.display = 'none';
+  document.querySelector('#go-to-leaderboard').style.display = 'none';
 
 }
 
@@ -201,11 +201,8 @@ function hideGameOverScreen() {
 }
 
 async function validatingGameWinScreen() {
-  console.log(board);
-
   const res = await CheckFinish(board);
   if (res) {
-    // console.log("🚀 ~ validatingGameWinScreen ~ res:", res);
     return true;
   }
   return false;
@@ -224,6 +221,10 @@ function showGameWinScreen() {
 function hideGameWinScreen() {
   const gameResultScreen = document.getElementById("game-result");
   gameResultScreen.style.display = "none";
+}
+
+function hideGameValidateScreen() {
+  document.querySelector("#game-validate").style.display = "none";
 }
 
 function startPlayingTime() {
@@ -390,7 +391,6 @@ function drawBoard(newBoard, isGameOver = false) {
               drawBoard(newBoard);
             }
           } catch (err) {
-            // console.log("🚀 ~ err", err);
             console.log("Something wrong, please try again.");
           } finally {
             processingElement.style.display = "none";
@@ -399,6 +399,9 @@ function drawBoard(newBoard, isGameOver = false) {
         }
 
         revealCell(board, rowIndex, colIndex);
+
+
+    
 
         try {
           const res = await Move(rowIndex, colIndex, newBoard);
@@ -410,10 +413,12 @@ function drawBoard(newBoard, isGameOver = false) {
               const gameValid = await validatingGameWinScreen();
               if (gameValid) {
                 document.querySelector("#game-validate").style.display = "none";
+                gameStatus = 2; // 0 = Pending, 1 = Playing, -1 = Game Over, 2 Game won
                 showGameWinScreen();
               } else {
+                gameStatus = -1;
                 const validateDesc =
-                  document.querySelector("#game-result-move");
+                  document.querySelector("#game-result-validate-1");
                 validateDesc.innerHTML =
                   "Something went wrong when validating game result.";
                 validateDesc.style.display = "block";
@@ -421,6 +426,7 @@ function drawBoard(newBoard, isGameOver = false) {
                   "#play-again-button-validate"
                 );
                 validateBtn.style.display = "block";
+    
               }
             }
           }
@@ -436,6 +442,9 @@ function drawBoard(newBoard, isGameOver = false) {
         e.stopPropagation();
         processingElement.style.display = "grid";
         addFlag(cellElement, cell);
+        // drawBoard(newBoard);
+        // processingElement.style.display = "none";
+
         try {
           const res = await Flag(rowIndex, colIndex, cell._isFlagged);
           if (res && res.receipt.logs[0].data) {
@@ -464,7 +473,6 @@ function addFlag(square, cell) {
       cell._isFlagged = true;
       flagsLeft.innerHTML = numMines - flags;
 
-      // checkForWin();
     } else {
       square.classList.remove("flag");
       square.innerHTML = "";
@@ -527,7 +535,7 @@ async function chooseGameLevel(level) {
   flagsLeft.innerHTML = numMines;
   // hideChooseGameLevelScreen();
   // startNewGame();
-  //     injectGameMusic(GAME_ASSETS["minesweeper_music"]);
+  // injectGameMusic(GAME_ASSETS["minesweeper_music"]);
 
 
   try {
@@ -628,6 +636,7 @@ function restartGame() {
   if (gameStatus === -1 || gameStatus === 2) {
     hideGameOverScreen();
     hideGameWinScreen();
+    hideGameValidateScreen();
     showChooseGameLevelScreen();
   }
 }
@@ -648,7 +657,7 @@ function addNewGameEvents() {
   document
     .getElementById("play-again-button-validate")
     .addEventListener("click", function () {
-      restartGame();
+        restartGame();
     });
 }
 
@@ -677,7 +686,6 @@ function injectFonts() {
 
 function injectGameMusic(file) {
   // Create a new anchor element
-  // debugger;
   const playMusic = document.querySelector("#play-music");
   const gameAudio = document.querySelector("#game-audio");
   gameAudio.src = file;
@@ -748,7 +756,7 @@ function importGame() {
         <div class="backdrop">
           <div class="content">
             <p class="game-validate-title">Validate game result</p>
-            <p id="game-result-validte-1" class="game-result-desc"></p>
+            <p id="game-result-validate-1" class="game-result-desc"></p>
             <button id="play-again-button-validate" class="play-again-button">
               Play again
             </button>

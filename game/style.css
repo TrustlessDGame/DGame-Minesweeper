@@ -276,6 +276,11 @@ div {
   left: 0;
   width: 100vw;
   height: 100vh;
+  color: white;
+}
+
+#game-result-validate-1{
+  color: white;
 }
 
 #processing {
@@ -320,7 +325,7 @@ div {
   z-index: 999;
   position: absolute;
   left: 20px;
-  top: 20px;
+  top: 60px;
   font-size: 80%;
 }
 
@@ -506,6 +511,13 @@ div {
 
 #go-to-leaderboard .leaderboard_title {
   line-height: normal;
+}
+
+#play-again-button-validate{
+  display: none;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #back-btn {
