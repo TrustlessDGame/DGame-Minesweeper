@@ -1,6 +1,6 @@
 window.callBackLoadResourcesComplete = () => {
   console.log("Complete load resources", GAME_ASSETS);
-  injectFonts();
+  injectFonts(GAME_ASSETS["font"]);
   // injectGame();
 };
 
@@ -359,7 +359,7 @@ function drawBoard(newBoard, isGameOver = false) {
           square.classList.add("checked");
         }
       }
-
+ƒ
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
         processingElement.style.display = "flex";
@@ -631,25 +631,41 @@ function addNewGameEvents() {
     });
 }
 
-function injectFonts() {
+function injectFonts(fontBlob) {
+
+  console.log("log: ", fontBlob)
+
+  const fontUrl = window.URL.createObjectURL(fontBlob);
+
+  const fontFace = new FontFace("LilitaOne", `url(${fontUrl}) format("ttf")`);
+
+  fontFace.load().then(() => {
+    // Font is loaded, apply it to the desired elements
+    const customFontElements = document.querySelectorAll('.custom-font');
+    customFontElements.forEach(element => {
+      element.style.fontFamily = "LilitaOne, sans-serif";
+    });
+  });
+
   // Create a new style element
-  const style = document.createElement("style");
+  // const style = document.createElement("style");
 
   // Define the @font-face rule as a CSS string
-  const fontFaceRule = `
-    @font-face {
-      font-family: "LilitaOne";
-      src: url(${GAME_ASSETS.font});
-      font-weight: normal;
-      font-style: normal;
-    }
-`;
+//   const fontFaceRule = `
+//     @font-face {
+//       font-family: "LilitaOne";
+//       src: url('"${GAME_ASSETS.font}");
+//       font-weight: normal;
+//       font-style: normal;ƒ
+//     }
+// `
+;
 
   // Set the innerHTML of the style element to the @font-face rule
-  style.innerHTML = fontFaceRule;
+  // style.innerHTML = fontFaceRule;
 
   // Append the style element to the document head
-  document.head.appendChild(style);
+  // document.head.appendChild(style);
 }
 
 function injectGameMusic(file) {
@@ -683,7 +699,7 @@ function importGame() {
   <div class="container">
       <div id="game-level">
         <div class="backdrop">
-          <p class="choose-level-title">Choose your level</p>
+          <p class="choose-level-title custom-font">Choose your level</p>
           <ul class="game-level-list">
             <li id="game-level-beginner" class="game-level-item beginner">
               Beginner

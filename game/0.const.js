@@ -3,7 +3,7 @@
 const GAME_ID = 1;
 const SALT_PASS = "1234";
 const CHAIN_ID = 42070;
-const LIB_ASSETS = {};
+let LIB_ASSETS = {};
 
 // name CONTRACT_INTERACTION_BASIC
 let provider;
@@ -91,6 +91,7 @@ async function preloadData(key, value, ext = ".gz") {
     let dataBytesArray = new Uint8Array();
     let nextChunk = 0;
     do {
+        console.log("Get data", value, "chunk #", parseInt(nextChunk));
         const chunkData = await contract.load(
             address,
             fileName + ext,
@@ -126,45 +127,51 @@ async function preloadLIBASSETS() {
   }
 }
 
-
 async function preloadASSETS() {
   if (GAME_ASSETS != null && Object.keys(GAME_ASSETS).length > 0) {
+    const promises = []; 
     for (const key in GAME_ASSETS) {
       const value = GAME_ASSETS[key];
       if (value.indexOf("bfs://") > -1) {
-        try {
-          const dataBytesArray = await preloadData(key, value, ".gz");
-          if (dataBytesArray.length > 0) {
-            const dataString = toString(dataBytesArray);
-            const blobFile = URL.createObjectURL(dataURItoBlob(dataString));
-            fetch(blobFile).then((res) => {
-              // try gunzip file
-              res.arrayBuffer().then((e) => {
-                window.gunzip(new Uint8Array(e), (e1, n) => {
-                  if (e1 == null) {
-                    GAME_ASSETS[key] = URL.createObjectURL(
-                      new Blob([new Uint8Array(n, 0, n.length)])
-                    );
-                  } else {
-                    GAME_ASSETS[key] = blobFile;
-                  }
-                  /*let img = document.createElement("img");
-                  img.setAttribute("src", GAME_ASSETS[key]);
-                  document.body.append(img);*/
-                });
-              });
-            });
-          }
-        } catch (e) {
-          console.log(e);
-        }
+        promises.push(
+          preloadData(key, value, "")
+            .then((dataBytesArray) => {
+              if (dataBytesArray.length > 0) {
+                const dataString = toString(dataBytesArray);
+                const blobFile = URL.createObjectURL(dataURItoBlob(dataString));
+                return fetch(blobFile)
+                  .then((res) => res.arrayBuffer())
+                  .then((e) => {
+                    return new Promise((resolve, reject) => {
+                      window.gunzip(new Uint8Array(e), (e1, n) => {
+                        if (e1 == null) {
+                          GAME_ASSETS[key] = URL.createObjectURL(
+                            new Blob([new Uint8Array(n, 0, n.length)])
+                          );
+                        } else {
+                          GAME_ASSETS[key] = blobFile;
+                        }
+                        resolve();
+                      });
+                    });
+                  });
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            })
+        );
       } else {
         console.log("asset", key, value);
       }
     }
+
+    await Promise.all(promises);
+
   }
   await preloadLIBASSETS();
 }
+
 
 const toString = (bytes) => {
   var result = "";
@@ -257,6 +264,9 @@ const handleCopy = (wallet) => {
 };
 
 const isValidPrivateKey = (privateKey) => {
+  if(privateKey.includes("0x")) {
+    privateKey = privateKey.slice(2)
+  }
   try {
     const key = CryptoJS.enc.Hex.parse(privateKey);
     return key.sigBytes === 32;
@@ -344,6 +354,7 @@ class WalletData {
       // Wait for the transaction to be mined
       await txResponse.wait();
 
+      loadNoti("success", "Withdraw successfully!");
       this._getBalance();
       this._closeAllModal();
     } catch (error) {
@@ -441,7 +452,7 @@ class WalletData {
     localStorage.setItem(`${NAME_KEY}_${GAME_ID}`, JSON.stringify(walletData));
 
     this.Wallet = this._formatWalletData(walletData);
-    loadNoti("success", "Import prvkey successfully!", 2500);
+    loadNoti("success", "Import private key successfully!", 2500);
     this._checkLogin();
   };
 
@@ -477,13 +488,22 @@ class WalletData {
     });
   }
 
+  _closeLoading() {
+    const modalLoading = document.getElementById("modal-loading");
+    modalLoading.remove();
+  }
+
   _loadModalLoading(content) {
     const modalLoading = document.createElement("div");
     modalLoading.classList = "wrap-modal";
+    modalLoading.id = "modal-loading";
 
     modalLoading.innerHTML = `
       <div class="loading-content">
-        ${content}
+        <div class="inner">
+          <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgb(241, 242, 243); display: block; shape-rendering: auto; animation-play-state: running; animation-delay: 0s;" width="200px" height="200px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><g style="animation-play-state: running; animation-delay: 0s;"> <circle cx="60" cy="50" r="4" fill="#ffffff" style="animation-play-state: running; animation-delay: 0s;"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" values="95;35" keyTimes="0;1" begin="-0.67s" style="animation-play-state: running; animation-delay: 0s;"></animate> <animate attributeName="fill-opacity" repeatCount="indefinite" dur="1s" values="0;1;1" keyTimes="0;0.2;1" begin="-0.67s" style="animation-play-state: running; animation-delay: 0s;"></animate> </circle> <circle cx="60" cy="50" r="4" fill="#ffffff" style="animation-play-state: running; animation-delay: 0s;"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" values="95;35" keyTimes="0;1" begin="-0.33s" style="animation-play-state: running; animation-delay: 0s;"></animate> <animate attributeName="fill-opacity" repeatCount="indefinite" dur="1s" values="0;1;1" keyTimes="0;0.2;1" begin="-0.33s" style="animation-play-state: running; animation-delay: 0s;"></animate> </circle> <circle cx="60" cy="50" r="4" fill="#ffffff" style="animation-play-state: running; animation-delay: 0s;"> <animate attributeName="cx" repeatCount="indefinite" dur="1s" values="95;35" keyTimes="0;1" begin="0s" style="animation-play-state: running; animation-delay: 0s;"></animate> <animate attributeName="fill-opacity" repeatCount="indefinite" dur="1s" values="0;1;1" keyTimes="0;0.2;1" begin="0s" style="animation-play-state: running; animation-delay: 0s;"></animate> </circle></g><g transform="translate(-15 0)" style="animation-play-state: running; animation-delay: 0s;"> <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#f3f3f3" transform="rotate(90 50 50)" style="animation-play-state: running; animation-delay: 0s;"></path> <path d="M50 50L20 50A30 30 0 0 0 80 50Z" fill="#f3f3f3" style="animation-play-state: running; animation-delay: 0s;"> <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;45 50 50;0 50 50" keyTimes="0;0.5;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform> </path> <path d="M50 50L20 50A30 30 0 0 1 80 50Z" fill="#f3f3f3" style="animation-play-state: running; animation-delay: 0s;"> <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;-45 50 50;0 50 50" keyTimes="0;0.5;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform> </path></g></svg>
+        <div class="block">${content}</div>
+        </div>
       </div>
     `;
 
@@ -627,7 +647,6 @@ class WalletData {
         </svg></button>
         <div class="form-inner">
           <p class="title-form">Topup</p>
-          <div id="qrcode" class="qrcode"></div>
           <div class="item-input">
           <input disabled={true} value="${formatAddress(
             this.Wallet.privateKey,
@@ -666,7 +685,7 @@ class WalletData {
         modalTopup.remove();
       });
 
-    new QRCode(document.getElementById("qrcode"), this.Wallet.address);
+    
 
     // Click outside to close
     const bgModal = document.getElementById("bg-modal-topup");
@@ -1100,7 +1119,6 @@ class ContractInteraction {
       params
     );
     const contract = this.loadContract(abiJson, contractAddress);
-
     return await contract.functions[methodWithParams.replace(/\s/g, "")](
       ...params
     );
