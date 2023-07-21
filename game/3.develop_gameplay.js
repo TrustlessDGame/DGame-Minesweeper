@@ -153,6 +153,17 @@ function generateBoard(rows, columns, numMines) {
   return board;
 }
 
+
+function setImageAsset(parentEl, src){
+  const imgElement = document.createElement("img");
+
+  imgElement.src = src;
+  imgElement.alt = "game asset image"; 
+  parentEl.appendChild(imgElement);
+  
+}
+
+
 function showChooseGameLevelScreen() {
   document.getElementById("grid").style = "block";
   document.getElementById("flag-info").style.display = "none";
@@ -160,17 +171,21 @@ function showChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "block";
 
+  document.querySelector('.leaderboard').style.display = 'block';
+
   const speakerOn = document.querySelector("#speaker-on");
   const speakerOff = document.querySelector("#speaker-off");
   speakerOn.style.display = "none";
   speakerOff.style.display = "none";
-  MIDIjs.stop();
+  document.querySelector("#game-audio").pause();
 }
 
 function hideChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "none";
   document.getElementById("flag-info").style.display = "block";
+  document.querySelector('.leaderboard').style.display = 'none';
+
 }
 
 function showGameOverScreen() {
@@ -237,6 +252,7 @@ function checkForWin() {
 
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
+  
   board = generateBoard(rows, columns, numMines);
   gameStatus = 1;
   playingTime = 0;
@@ -363,7 +379,7 @@ function drawBoard(newBoard, isGameOver = false) {
 
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
-        processingElement.style.display = "flex";
+        processingElement.style.display = "grid";
         clickCount += 1;
 
         if (cell._isFlagged) {
@@ -418,7 +434,7 @@ function drawBoard(newBoard, isGameOver = false) {
       cellElement.addEventListener("contextmenu", async function (e) {
         e.preventDefault();
         e.stopPropagation();
-        processingElement.style.display = "flex";
+        processingElement.style.display = "grid";
         addFlag(cellElement, cell);
         try {
           const res = await Flag(rowIndex, colIndex, cell._isFlagged);
@@ -472,7 +488,7 @@ function addFlag(square, cell) {
 async function chooseGameLevel(level) {
   const flagsLeft = document.querySelector("#flags-left");
   const processingElement = document.getElementById("processing");
-  processingElement.style.display = "flex";
+  processingElement.style.display = "grid";
 
   gameLevel = level;
   flags = 0;
@@ -511,6 +527,8 @@ async function chooseGameLevel(level) {
   flagsLeft.innerHTML = numMines;
   // hideChooseGameLevelScreen();
   // startNewGame();
+  //     injectGameMusic(GAME_ASSETS["minesweeper_music"]);
+
 
   try {
     const { receipt } = await InitGame(level);
@@ -659,6 +677,7 @@ function injectFonts() {
 
 function injectGameMusic(file) {
   // Create a new anchor element
+  // debugger;
   const playMusic = document.querySelector("#play-music");
   const gameAudio = document.querySelector("#game-audio");
   gameAudio.src = file;
@@ -666,6 +685,9 @@ function injectGameMusic(file) {
   const speakerOn = document.querySelector("#speaker-on");
   speakerOn.style.display = "block";
   const speakerOff = document.querySelector("#speaker-off");
+
+  setImageAsset(speakerOn, GAME_ASSETS["speaker_on"])
+  setImageAsset(speakerOff, GAME_ASSETS["speaker_off"])
 
   playMusic.addEventListener("click", function (e) {
     if (playMusic.getAttribute("data-playing") === "0") {
@@ -778,7 +800,6 @@ function importGame() {
       <audio id='game-audio' src='#' loop></audio>
     </div>
   `;
-
   document.body.appendChild(container);
 
   // Init event

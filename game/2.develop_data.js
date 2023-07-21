@@ -1,7 +1,9 @@
 // YOUR_ASSETS
 let GAME_ASSETS = {
   font: "./assets/LilitaOne-Regular.ttf",
-  minesweeper_music: "./assets/minesweeper-music.mp3"
+  minesweeper_music: "./assets/minesweeper-music.mp3",
+  speaker_on: "./assets/ic-speaker-on.svg",
+  speaker_off: "./assets/ic-speaker-off.svg"
 };
 // YOUR GAME CONTRACT ABI JSON INTERFACE
 const GAME_CONTRACT_ABI_INTERFACE_JSON = [
