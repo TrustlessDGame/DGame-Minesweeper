@@ -512,27 +512,27 @@ async function chooseGameLevel(level) {
     factor = 20;
   }
   flagsLeft.innerHTML = numMines;
-  hideChooseGameLevelScreen();
-  startNewGame();
+  // hideChooseGameLevelScreen();
+  // startNewGame();
 
-  // try {
-  //   const { receipt } = await InitGame(level);
+  try {
+    const { receipt } = await InitGame(level);
 
-  //   if (receipt && receipt.logs[0].data) {
-  //     const gameData = receipt.logs[0].data.substring(2);
+    if (receipt && receipt.logs[0].data) {
+      const gameData = receipt.logs[0].data.substring(2);
 
-  //     gameId = parseInt(gameData, 16);
+      gameId = parseInt(gameData, 16);
 
-  //     hideChooseGameLevelScreen();
-  //     startNewGame();
-  //     injectGameMusic(GAME_ASSETS["asset_music"]);
-  //     flagsLeft.innerHTML = numMines;
-  //   }
-  // } catch (err) {
-  //   // console.log("🚀 ~ err", err);
-  // } finally {
-  //   processingElement.style.display = "none";
-  // }
+      hideChooseGameLevelScreen();
+      startNewGame();
+      injectGameMusic(GAME_ASSETS["asset_music"]);
+      flagsLeft.innerHTML = numMines;
+    }
+  } catch (err) {
+    // console.log("🚀 ~ err", err);
+  } finally {
+    processingElement.style.display = "none";
+  }
 
   processingElement.style.display = "none";
 }
