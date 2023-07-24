@@ -1,10 +1,12 @@
 // YOUR_ASSETS
 let GAME_ASSETS = {
-  font: "./assets/LilitaOne-Regular.ttf",
+  font_1:
+    "bfs://42070/0x0C7d44Ac4959eeB42e8D5f8792738D779a545F7E/0xBc785D855012105820Be6D8fFA7f644062a91bcA/font_1",
   minesweeper_music: "./assets/minesweeper-music.mp3",
-  speaker_on: "./assets/ic-speaker-on.svg",
-  speaker_off: "./assets/ic-speaker-off.svg"
+  speaker_on_1: "./assets/ic-speaker-on.svg",
+  speaker_off_1: "./assets/ic-speaker-off.svg"
 };
+
 // YOUR GAME CONTRACT ABI JSON INTERFACE
 const GAME_CONTRACT_ABI_INTERFACE_JSON = [
   {
