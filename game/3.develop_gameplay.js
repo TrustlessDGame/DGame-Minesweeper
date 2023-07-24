@@ -352,6 +352,7 @@ function drawBoard(newBoard, isGameOver = false) {
       if (cell._isMine && isGameOver) {
         square.innerHTML = "💣";
         square.classList.add("mine");
+        return;
       }
 
       if (cell._isRevealed) {
@@ -405,7 +406,7 @@ function drawBoard(newBoard, isGameOver = false) {
 
         try {
           const res = await Move(rowIndex, colIndex, newBoard);
-          if (res && res.receipt.logs[0].data) {
+          if (res && res.receipt.logs[0].data && gameStatus !== -1) {
             drawBoard(newBoard);
             if (checkForWin()) {
               document.querySelector("#game-validate").style.display = "block";
