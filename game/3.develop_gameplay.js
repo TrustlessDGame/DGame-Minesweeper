@@ -152,6 +152,12 @@ function generateBoard(rows, columns, numMines) {
 }
 
 function setImageAsset(parentEl, src) {
+  const firstChild = parentEl.firstElementChild;
+
+  if(firstChild) {
+    parentEl.removeChild(firstChild);
+  }
+
   const imgElement = document.createElement("img");
 
   imgElement.src = src;
@@ -434,6 +440,8 @@ function drawBoard(newBoard, isGameOver = false) {
         e.stopPropagation();
         processingElement.style.display = "grid";
         addFlag(cellElement, cell);
+        clickCount += 1;
+
         // drawBoard(newBoard);
         // processingElement.style.display = "none";
 
@@ -668,7 +676,7 @@ function injectFonts() {
   const fontFaceRule = `
     @font-face {
       font-family: "LilitaOne";
-      src: url(${GAME_ASSETS.font});
+      src: url(${GAME_ASSETS["font_1"]});
       font-weight: normal;
       font-style: normal;ƒ
     }
@@ -691,8 +699,8 @@ function injectGameMusic(file) {
   speakerOn.style.display = "block";
   const speakerOff = document.querySelector("#speaker-off");
 
-  setImageAsset(speakerOn, GAME_ASSETS["speaker_on"]);
-  setImageAsset(speakerOff, GAME_ASSETS["speaker_off"]);
+  setImageAsset(speakerOn, GAME_ASSETS["speaker_on_1"]);
+  setImageAsset(speakerOff, GAME_ASSETS["speaker_off_1"]);
 
   playMusic.addEventListener("click", function (e) {
     if (playMusic.getAttribute("data-playing") === "0") {
