@@ -73,6 +73,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.totalMove = 54;
             gameLevel.maxTime = 500;
             gameLevel.baseScore = 1;
+            gameLevel.minMoves = 7;
         }
         else if (level == 1) {
             gameLevel.rows = 10;
@@ -81,6 +82,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.totalMove = 85;
             gameLevel.maxTime = 780;
             gameLevel.baseScore = 2;
+            gameLevel.minMoves = 7;
         }
         else if (level == 2) {
             gameLevel.rows = 12;
@@ -89,6 +91,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.totalMove = 114;
             gameLevel.maxTime = 1125;
             gameLevel.baseScore = 3;
+            gameLevel.minMoves = 7;
         }
         else {
             gameLevel.rows = 16;
@@ -97,6 +100,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
             gameLevel.totalMove = 176;
             gameLevel.maxTime = 1700;
             gameLevel.baseScore = 4;
+            gameLevel.minMoves = 7;
         }
     }
 
@@ -121,6 +125,9 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         require(game._start > 0, "M1_2");
 
         _games[gameId]._boardState[row][col]._isFlagged = flag;
+        _games[gameId]._lastMove = block.number;
+        _games[gameId]._countMove ++;
+
         emit GameData.GameFlag(gameId, row, col, flag);
     }
 
@@ -157,9 +164,10 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
     }
 
     function CheckFinish(uint256 gameId, GameData.BoardStateCell[][] memory finalBoardState) public {
-        require(_games[gameId]._result == GameData.GameResult.WIN);
+        require(_games[gameId]._result == GameData.GameResult.WIN, "M4.1");
         GameData.Game memory game = _games[gameId];
         GameData.GameLevel memory gameLevel = game._level;
+        require(_games[gameId]._countMove >= gameLevel.minMoves, "M4.2");
 
         uint256 count;
         for (uint256 i; i < gameLevel.rows; i++) {
