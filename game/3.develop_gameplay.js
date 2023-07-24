@@ -18,7 +18,6 @@ let intervalId = null;
 let placeMineList = [];
 let gameId = 0;
 let factor = 1;
-let leaderboardData = [];
 
 //// Call Contract
 async function InitGame(level) {
@@ -100,7 +99,6 @@ async function GetLeaderboard(index) {
 
 // Function to generate the game board
 function generateBoard(rows, columns, numMines) {
-
   const board = [];
   const mines = [];
 
@@ -153,16 +151,13 @@ function generateBoard(rows, columns, numMines) {
   return board;
 }
 
-
-function setImageAsset(parentEl, src){
+function setImageAsset(parentEl, src) {
   const imgElement = document.createElement("img");
 
   imgElement.src = src;
-  imgElement.alt = "game asset image"; 
+  imgElement.alt = "game asset image";
   parentEl.appendChild(imgElement);
-  
 }
-
 
 function showChooseGameLevelScreen() {
   document.getElementById("grid").style = "block";
@@ -171,7 +166,7 @@ function showChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "block";
 
-  document.querySelector('#go-to-leaderboard').style.display = 'block';
+  document.querySelector("#go-to-leaderboard").style.display = "block";
 
   const speakerOn = document.querySelector("#speaker-on");
   const speakerOff = document.querySelector("#speaker-off");
@@ -184,8 +179,7 @@ function hideChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "none";
   document.getElementById("flag-info").style.display = "block";
-  document.querySelector('#go-to-leaderboard').style.display = 'none';
-
+  document.querySelector("#go-to-leaderboard").style.display = "none";
 }
 
 function showGameOverScreen() {
@@ -253,7 +247,7 @@ function checkForWin() {
 
 function startNewGame() {
   document.getElementById("grid").style.display = "flex";
-  
+
   board = generateBoard(rows, columns, numMines);
   gameStatus = 1;
   playingTime = 0;
@@ -401,9 +395,6 @@ function drawBoard(newBoard, isGameOver = false) {
 
         revealCell(board, rowIndex, colIndex);
 
-
-    
-
         try {
           const res = await Move(rowIndex, colIndex, newBoard);
           if (res && res.receipt.logs[0].data && gameStatus !== -1) {
@@ -418,8 +409,9 @@ function drawBoard(newBoard, isGameOver = false) {
                 showGameWinScreen();
               } else {
                 gameStatus = -1;
-                const validateDesc =
-                  document.querySelector("#game-result-validate-1");
+                const validateDesc = document.querySelector(
+                  "#game-result-validate-1"
+                );
                 validateDesc.innerHTML =
                   "Something went wrong when validating game result.";
                 validateDesc.style.display = "block";
@@ -427,7 +419,6 @@ function drawBoard(newBoard, isGameOver = false) {
                   "#play-again-button-validate"
                 );
                 validateBtn.style.display = "block";
-    
               }
             }
           }
@@ -473,7 +464,6 @@ function addFlag(square, cell) {
       flags++;
       cell._isFlagged = true;
       flagsLeft.innerHTML = numMines - flags;
-
     } else {
       square.classList.remove("flag");
       square.innerHTML = "";
@@ -538,7 +528,6 @@ async function chooseGameLevel(level) {
   // startNewGame();
   // injectGameMusic(GAME_ASSETS["minesweeper_music"]);
 
-
   try {
     const { receipt } = await InitGame(level);
 
@@ -562,12 +551,21 @@ async function chooseGameLevel(level) {
 }
 
 async function getLeaderBoardData() {
-  [...Array(10)].map(async (_, index) => {
+  const leaderboardDataPromises = [...Array(10)].map(async (_, index) => {
     const data = await GetLeaderboard(index);
     if (data.score.toString() !== "0") {
-      renderTableItem(data, index);
+      return { data, index };
     }
+    return null;
   });
+  const leaderboardData = await Promise.all(leaderboardDataPromises);
+
+  leaderboardData
+    .filter((item) => item !== null)
+    .sort((a, b) => a.index - b.index)
+    .forEach(({ data, index }) => {
+      renderTableItem(data, index);
+    });
 }
 
 function renderTableItem(item, index) {
@@ -658,13 +656,11 @@ function addNewGameEvents() {
   document
     .getElementById("play-again-button-validate")
     .addEventListener("click", function () {
-        restartGame();
+      restartGame();
     });
 }
 
 function injectFonts() {
-
-
   // Create a new style element
   const style = document.createElement("style");
 
@@ -695,8 +691,8 @@ function injectGameMusic(file) {
   speakerOn.style.display = "block";
   const speakerOff = document.querySelector("#speaker-off");
 
-  setImageAsset(speakerOn, GAME_ASSETS["speaker_on"])
-  setImageAsset(speakerOff, GAME_ASSETS["speaker_off"])
+  setImageAsset(speakerOn, GAME_ASSETS["speaker_on"]);
+  setImageAsset(speakerOff, GAME_ASSETS["speaker_off"]);
 
   playMusic.addEventListener("click", function (e) {
     if (playMusic.getAttribute("data-playing") === "0") {
