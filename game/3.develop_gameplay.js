@@ -440,6 +440,8 @@ function drawBoard(newBoard, isGameOver = false) {
         e.stopPropagation();
         processingElement.style.display = "grid";
         addFlag(cellElement, cell);
+        clickCount += 1;
+
         // drawBoard(newBoard);
         // processingElement.style.display = "none";
 
