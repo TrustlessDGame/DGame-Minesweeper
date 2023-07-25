@@ -181,6 +181,8 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         uint256 elapsed_time = _games[gameId]._lastMove - _games[gameId]._start;
         uint256 score = calculateScore(_games[gameId]._level, _games[gameId]._countMove, elapsed_time);
         addScore(game._player, score);
+        
+        emit GameData.GameFinish(_games[gameId]._player, score);
     }
 
     function getNextBoardState(GameData.BoardStateCell[16][16] memory currentBoard, uint256 row, uint256 col, GameData.GameLevel memory level) internal view returns (GameData.BoardStateCell[16][16] memory) {
