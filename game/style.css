@@ -349,43 +349,6 @@ div {
   display: none;
 }
 
-#speaker-off img,
-#speaker-on img {
-  filter: invert(58%) sepia(81%) saturate(4073%) hue-rotate(358deg) brightness(105%) contrast(100%);
-}
-/* 
-.speaker.-on:before,
-.speaker.-on:after {
-  content: "";
-  background: #ff7505;
-  width: 0.1em;
-  position: absolute;
-}
-.speaker.-on:before {
-  height: 0.333em;
-  right: -0.533em;
-}
-.speaker.-on:after {
-  height: 0.667em;
-  right: -0.733em;
-  top: -50%;
-}
-.speaker.-off:before,
-.speaker.-off:after {
-  content: "";
-  background: #ff7505;
-  width: 0.1em;
-  position: absolute;
-  height: 1.2em;
-  margin-top: -0.333em;
-  top: -0.1em;
-  left: 0.1em;
-  transform: translateX(0.333em) rotate(-45deg);
-}
-.speaker.-off:before {
-  background: transparent;
-  left: 0.2em;
-} */
 
 .leaderboard {
   position: fixed;

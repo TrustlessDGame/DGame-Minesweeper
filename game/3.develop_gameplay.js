@@ -36,8 +36,8 @@ async function Move(row, col, boardState) {
   const hideMineBoardState = boardState.map((rows) => {
     return rows.map((square) => {
       return {
-        ...square,
-        _isMine: false,
+        _adjacentMines: square._adjacentMines,
+        _isRevealed: square._isRevealed,
       };
     });
   });
@@ -50,7 +50,7 @@ async function Move(row, col, boardState) {
     null,
     0,
     null,
-    "Move(uint256, uint8, uint8, bool, (bool,uint8,bool,bool)[][])",
+    "Move(uint256, uint8, uint8, bool, (uint8,bool)[][])",
     gameId,
     row,
     col,
@@ -402,6 +402,9 @@ function drawBoard(newBoard, isGameOver = false) {
         revealCell(board, rowIndex, colIndex);
 
         try {
+
+
+
           const res = await Move(rowIndex, colIndex, newBoard);
           if (res && res.receipt.logs[0].data && gameStatus !== -1) {
             drawBoard(newBoard);
