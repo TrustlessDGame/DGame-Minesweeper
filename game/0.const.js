@@ -48,9 +48,9 @@ async function preload() {
 
 function getScreenWidth() {
   const windowWidth =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
+      window.innerWidth ||
+      document.documentElement.clientWidth ||
+      document.body.clientWidth;
   return windowWidth;
 }
 
@@ -86,8 +86,8 @@ async function checkAndSwitchNetwork() {
         ],
       });
       provider = window.ethereum
-        ? new ethers.providers.Web3Provider(window.ethereum)
-        : new ethers.providers.JsonRpcProvider(RPC);
+          ? new ethers.providers.Web3Provider(window.ethereum)
+          : new ethers.providers.JsonRpcProvider(RPC);
       return;
     } catch (error) {
       console.log(error);
@@ -107,9 +107,9 @@ async function preloadData(key, value, ext = ".gz") {
   const address = bfsPathArray[4]; // address
   const fileName = bfsPathArray[5]; // file_name
   let contract = new ethers.Contract(
-    bfsAddr,
-    BFS_CONTRACTT_ABI_INTERFACE_JSON,
-    provider
+      bfsAddr,
+      BFS_CONTRACTT_ABI_INTERFACE_JSON,
+      provider
   );
   let dataBytesArray = new Uint8Array();
   let nextChunk = 0;
@@ -153,38 +153,38 @@ async function preloadASSETS() {
       const value = GAME_ASSETS[key];
       if (value.indexOf("bfs://") > -1) {
         promises.push(
-          preloadData(key, value, "")
-            .then((dataBytesArray) => {
-              if (dataBytesArray.length > 0) {
-                const dataString = toString(dataBytesArray);
-                const blobFile = URL.createObjectURL(dataURItoBlob(dataString));
-                return fetch(blobFile)
-                  .then((res) => res.arrayBuffer())
-                  .then((e) => {
-                    return new Promise((resolve, reject) => {
-                      window.gunzip(new Uint8Array(e), (e1, n) => {
-                        if (e1 == null) {
-                            let options = {};
-                            if (dataString.includes('svg+xml')) {
-                                options = {
-                                    type: 'image/svg+xml'
+            preloadData(key, value, "")
+                .then((dataBytesArray) => {
+                  if (dataBytesArray.length > 0) {
+                    const dataString = toString(dataBytesArray);
+                    const blobFile = URL.createObjectURL(dataURItoBlob(dataString));
+                    return fetch(blobFile)
+                        .then((res) => res.arrayBuffer())
+                        .then((e) => {
+                          return new Promise((resolve, reject) => {
+                            window.gunzip(new Uint8Array(e), (e1, n) => {
+                              if (e1 == null) {
+                                let options = {};
+                                if (dataString.includes("svg+xml")) {
+                                  options = {
+                                    type: "image/svg+xml",
+                                  };
                                 }
-                            }
-                            GAME_ASSETS[key] = URL.createObjectURL(
-                                new Blob([new Uint8Array(n, 0, n.length)], options)
-                            );
-                        } else {
-                          GAME_ASSETS[key] = blobFile;
-                        }
-                        resolve();
-                      });
-                    });
-                  });
-              }
-            })
-            .catch((e) => {
-              console.log(e);
-            })
+                                GAME_ASSETS[key] = URL.createObjectURL(
+                                    new Blob([new Uint8Array(n, 0, n.length)], options)
+                                );
+                              } else {
+                                GAME_ASSETS[key] = blobFile;
+                              }
+                              resolve();
+                            });
+                          });
+                        });
+                  }
+                })
+                .catch((e) => {
+                  console.log(e);
+                })
         );
       } else {
         console.log("asset", key, value);
@@ -248,7 +248,7 @@ const formatAddress = (address, prefix, suffix) => {
   const suffixLength = suffix || 4;
 
   const truncatedAddress = `${address.slice(0, prefixLength)}...${address.slice(
-    -suffixLength
+      -suffixLength
   )}`;
 
   return truncatedAddress;
@@ -312,7 +312,7 @@ const customGas = {
 };
 const getTransactionCost = () => {
   const transactionCost = ethers.utils.formatEther(
-    customGas.gasPrice.mul(customGas.gasLimit)
+      customGas.gasPrice.mul(customGas.gasLimit)
   );
   return transactionCost;
 };
@@ -338,7 +338,7 @@ class WalletData {
 
       this.Balance = formatBalance;
       const isEsixtBalanceUI =
-        document.querySelectorAll(".balance-ui").length > 0;
+          document.querySelectorAll(".balance-ui").length > 0;
 
       if (isEsixtBalanceUI) {
         const displayBalance = document.getElementById("display-balance");
@@ -355,8 +355,8 @@ class WalletData {
   _formatWalletData(walletData) {
     return {
       privateKey: decryptAES(
-        walletData[ACCOUNT_KEY],
-        decryptAES(walletData[PASS_WORD], SALT_PASS) + SALT_PASS
+          walletData[ACCOUNT_KEY],
+          decryptAES(walletData[PASS_WORD], SALT_PASS) + SALT_PASS
       ),
       address: walletData[ADDRESS_KEY],
       password: decryptAES(walletData[PASS_WORD], SALT_PASS),
@@ -446,7 +446,7 @@ class WalletData {
 
   _onExportPrivateKey(password, isNew = false) {
     const walletData = JSON.parse(
-      localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)
+        localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)
     );
     const prvKey = decryptAES(walletData[ACCOUNT_KEY], password + SALT_PASS);
     if (!prvKey) {
@@ -459,10 +459,10 @@ class WalletData {
     <div class="form-inner">
         <p class="title-form">Your private key</p>
         ${
-          isNew
+        isNew
             ? `<div class="note">Please copy your private key and save it somewhere safe for you, we will not be responsible if you lose your private key.</div>`
             : ""
-        }
+    }
         <div class="item-input">
             <input disabled={true} value="${formatPrvKey}"/>
             <button class="child primary w-full" id="btn-copy-prvKey">Copy</button>
@@ -471,10 +471,10 @@ class WalletData {
     `;
 
     document
-      .getElementById("btn-copy-prvKey")
-      .addEventListener("click", function () {
-        handleCopy(prvKey);
-      });
+        .getElementById("btn-copy-prvKey")
+        .addEventListener("click", function () {
+          handleCopy(prvKey);
+        });
   }
 
   _onImportPrivateKey = (prvKey, password) => {
@@ -563,8 +563,8 @@ class WalletData {
         <button class="btn-default gray flex"> 
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M14.6219 13.3325H13.3121V14.6672H14.6219V13.3325Z" fill="#FFDE46"/> <path d="M14.6219 6.66602H13.3121V7.99827H14.6219V6.66602Z" fill="#FFDE46"/> <path d="M13.3121 14.667H12V15.9992H13.3121V14.667Z" fill="#FFDE46"/> <path d="M13.3121 6.66602H12V7.99827H13.3121V6.66602Z" fill="#FFDE46"/> <path d="M12 14.667H10.6902V15.9992H12V14.667Z" fill="#FFDE46"/> <path d="M12 6.66602H10.6902V7.99827H12V6.66602Z" fill="#FFDE46"/> <path d="M10.6902 6.66602H9.38049V7.99827H10.6902V6.66602Z" fill="#FFDE46"/> <path d="M9.38049 7.99854H8.06836V9.33322H9.38049V7.99854Z" fill="#FFDE46"/> <path d="M8.06841 13.3325H6.75867V14.6672H8.06841V13.3325Z" fill="#FFDE46"/> <path d="M8.06841 12H6.75867V13.3323H8.06841V12Z" fill="#FFDE46"/> <path d="M8.06841 10.6655H6.75867V12.0002H8.06841V10.6655Z" fill="#FFDE46"/> <path d="M8.06841 9.33301H6.75867V10.6653H8.06841V9.33301Z" fill="#FFDE46"/> <path d="M18.5559 8.00792V6.66596H17.2437V5.33856H15.934V3.99902H8.06123V5.33856H6.75865V6.67324H5.44652V8.00792H4.13678V16.016H5.44652V18.6854H8.07078V20.0176H15.9435V18.666H17.2533V17.3313H18.5654V15.999H19.8751V8.00792H18.5559ZM18.5559 10.6773V14.6668H17.2437V15.999H15.934V17.3313H14.6219V18.666H9.37336V17.3313H8.06123V15.999H6.75865V14.6668H5.44652V9.32804H6.75865V8.00792H8.06839V6.66596H9.38052V5.33856H14.629V6.67324H15.9412V8.00792H17.2509V9.3426H18.563L18.5559 10.6773Z" fill="#FFDE46"/> <path d="M17.2437 12.0002V9.33085H15.934V8.0083H9.38049V9.34298H8.06836V15.9994H9.38049V17.3317H14.629V15.9994H15.9411V14.6671H17.2509V11.9978L17.2437 12.0002ZM13.3121 14.6696V16.0018H10.6878V13.3325H9.38049V10.6777H10.6902V9.33328H13.3145V10.6777H14.6242V14.6671L13.3121 14.6696Z" fill="#FFDE46"/> <path d="M19.8656 14.667H18.5558V15.9992H19.8656V14.667Z" fill="#FFDE46"/> <path d="M19.8656 13.3325H18.5558V14.6672H19.8656V13.3325Z" fill="#FFDE46"/> <path d="M19.8656 12H18.5558V13.3323H19.8656V12Z" fill="#FFDE46"/> <path d="M19.8656 10.6655H18.5558V12.0002H19.8656V10.6655Z" fill="#FFDE46"/> <path d="M19.8656 9.33301H18.5558V10.6653H19.8656V9.33301Z" fill="#FFDE46"/> <path d="M19.8656 7.99854H18.5558V9.33322H19.8656V7.99854Z" fill="#FFDE46"/> <path d="M18.5558 15.999H17.2437V17.3313H18.5558V15.999Z" fill="#FFDE46"/> <path d="M18.5558 14.667H17.2437V15.9992H18.5558V14.667Z" fill="#FFDE46"/> <path d="M17.2437 17.3315H15.934V18.6662H17.2437V17.3315Z" fill="#FFDE46"/> <path d="M17.2437 15.999H15.934V17.3313H17.2437V15.999Z" fill="#FFDE46"/> <path d="M17.2437 12H15.934V13.3323H17.2437V12Z" fill="#FA8804"/> <path d="M17.2437 10.6655H15.934V12.0002H17.2437V10.6655Z" fill="#FA8804"/> <path d="M17.2437 5.33154H15.934V6.66622H17.2437V5.33154Z" fill="#FA8804"/> <path d="M15.934 18.666H14.6219V19.9983H15.934V18.666Z" fill="#FA8804"/> <path d="M15.934 17.3315H14.6219V18.6662H15.934V17.3315Z" fill="#FFDE46"/> <path d="M14.6219 13.3325H13.3121V14.6672H14.6219V13.3325Z" fill="#FFDE46"/> <path d="M14.6219 12H13.3121V13.3323H14.6219V12Z" fill="#FF9E00"/> <path d="M14.6219 10.6655H13.3121V12.0002H14.6219V10.6655Z" fill="#FF9E00"/> <path d="M14.6219 6.66602H13.3121V7.99827H14.6219V6.66602Z" fill="#FFDE46"/> <path d="M13.3121 14.667H12V15.9992H13.3121V14.667Z" fill="#FFDE46"/> <path d="M13.3121 13.3325H12V14.6672H13.3121V13.3325Z" fill="#FF9E00"/> <path d="M13.3121 12H12V13.3323H13.3121V12Z" fill="#FF9E00"/> <path d="M13.3121 10.6655H12V12.0002H13.3121V10.6655Z" fill="#FF9E00"/> <path d="M13.3121 9.33301H12V10.6653H13.3121V9.33301Z" fill="#FF9E00"/> <path d="M13.3121 6.66602H12V7.99827H13.3121V6.66602Z" fill="#FFDE46"/> <path d="M12 14.667H10.6902V15.9992H12V14.667Z" fill="#FFDE46"/> <path d="M12 13.3325H10.6902V14.6672H12V13.3325Z" fill="#FF9E00"/> <path d="M12 12H10.6902V13.3323H12V12Z" fill="#FF9E00"/> <path d="M12 10.6655H10.6902V12.0002H12V10.6655Z" fill="#FF9E00"/> <path d="M12 9.33301H10.6902V10.6653H12V9.33301Z" fill="#FF9E00"/> <path d="M12 6.66602H10.6902V7.99827H12V6.66602Z" fill="#FFDE46"/> <path d="M10.6902 12H9.38049V13.3323H10.6902V12Z" fill="#FF9E00"/> <path d="M10.6902 10.6655H9.38049V12.0002H10.6902V10.6655Z" fill="#FF9E00"/> <path d="M10.6902 6.66602H9.38049V7.99827H10.6902V6.66602Z" fill="#FFDE46"/> <path d="M9.38049 7.99854H8.06836V9.33322H9.38049V7.99854Z" fill="#FFDE46"/> <path d="M8.06841 17.3315H6.75867V18.6662H8.06841V17.3315Z" fill="#FFDE46"/> <path d="M8.06841 13.3325H6.75867V14.6672H8.06841V13.3325Z" fill="#FFDE46"/> <path d="M8.06841 12H6.75867V13.3323H8.06841V12Z" fill="#FFDE46"/> <path d="M8.06841 10.6655H6.75867V12.0002H8.06841V10.6655Z" fill="#FFDE46"/> <path d="M8.06841 9.33301H6.75867V10.6653H8.06841V9.33301Z" fill="#FFDE46"/> <path d="M9.38049 3.99902H8.06836V5.33128H9.38049V3.99902Z" fill="#FF9E00"/> <path d="M8.06841 5.33154H6.75867V6.66622H8.06841V5.33154Z" fill="#FF9E00"/> <path d="M6.75866 6.66602H5.44653V7.99827H6.75866V6.66602Z" fill="#FF9E00"/> <path d="M4.13678 9.33322V10.6655V12.0002V13.3324V14.6671H5.44652V13.3324V12.0002V10.6655V9.33322V7.99854H4.13678V9.33322Z" fill="#FF9E00"/> <path d="M18.5558 13.3325H17.2437V14.6672H18.5558V13.3325Z" fill="#FFDE46"/> <path d="M18.5558 12H17.2437V13.3323H18.5558V12Z" fill="#FFDE46"/> <path d="M18.5558 10.6655H17.2437V12.0002H18.5558V10.6655Z" fill="#FFDE46"/> <path d="M18.5558 9.33301H17.2437V10.6653H18.5558V9.33301Z" fill="#FFDE46"/> <path d="M17.2437 14.667H15.934V15.9992H17.2437V14.667Z" fill="#FFDE46"/> <path d="M17.2437 12H15.934V13.3323H17.2437V12Z" fill="#FFDE46"/> <path d="M17.2437 10.6655H15.934V12.0002H17.2437V10.6655Z" fill="#FFDE46"/> <path d="M17.2437 7.99854H15.934V9.33322H17.2437V7.99854Z" fill="#FFDE46"/> <path d="M15.934 15.999H14.6219V17.3313H15.934V15.999Z" fill="#FFDE46"/> <path d="M15.934 14.667H14.6219V15.9992H15.934V14.667Z" fill="#FFDE46"/> <path d="M15.934 9.33301H14.6219V10.6653H15.934V9.33301Z" fill="#FFDE46"/> <path d="M15.934 6.66602H14.6219V7.99827H15.934V6.66602Z" fill="#FFDE46"/> <path d="M14.6219 17.3315H13.3121V18.6662H14.6219V17.3315Z" fill="#FFDE46"/> <path d="M14.6219 12H13.3121V13.3323H14.6219V12Z" fill="#FFDE46"/> <path d="M14.6219 10.6655H13.3121V12.0002H14.6219V10.6655Z" fill="#FFDE46"/> <path d="M14.6219 5.33154H13.3121V6.66622H14.6219V5.33154Z" fill="#FFDE46"/> <path d="M13.3121 17.3315H12V18.6662H13.3121V17.3315Z" fill="#FFDE46"/> <path d="M13.3121 13.3325H12V14.6672H13.3121V13.3325Z" fill="#FFDE46"/> <path d="M13.3121 12H12V13.3323H13.3121V12Z" fill="#FFDE46"/> <path d="M13.3121 10.6655H12V12.0002H13.3121V10.6655Z" fill="#FFDE46"/> <path d="M13.3121 9.33301H12V10.6653H13.3121V9.33301Z" fill="#FFDE46"/> <path d="M13.3121 5.33154H12V6.66622H13.3121V5.33154Z" fill="#FFDE46"/> <path d="M12 17.3315H10.6902V18.6662H12V17.3315Z" fill="#FFDE46"/> <path d="M12 13.3325H10.6902V14.6672H12V13.3325Z" fill="#FFDE46"/> <path d="M12 12H10.6902V13.3323H12V12Z" fill="#FFDE46"/> <path d="M12 9.33301H10.6902V10.6653H12V9.33301Z" fill="#FFDE46"/> <path d="M12 5.33154H10.6902V6.66622H12V5.33154Z" fill="#FFDE46"/> <path d="M10.6902 17.3315H9.38049V18.6662H10.6902V17.3315Z" fill="#FFDE46"/> <path d="M10.6902 15.999H9.38049V17.3313H10.6902V15.999Z" fill="#FFDE46"/> <path d="M10.6902 12H9.38049V13.3323H10.6902V12Z" fill="#FFDE46"/> <path d="M10.6902 10.6655H9.38049V12.0002H10.6902V10.6655Z" fill="#FFDE46"/> <path d="M10.6902 5.33154H9.38049V6.66622H10.6902V5.33154Z" fill="#FFDE46"/> <path d="M9.38049 15.999H8.06836V17.3313H9.38049V15.999Z" fill="#FFDE46"/> <path d="M9.38049 6.66602H8.06836V7.99827H9.38049V6.66602Z" fill="#FFDE46"/> <path d="M8.06841 14.667H6.75867V15.9992H8.06841V14.667Z" fill="#FFDE46"/> <path d="M19.8656 13.3325H18.5558V14.6672H19.8656V13.3325Z" fill="#FFDE46"/> <path d="M19.8656 10.6655H18.5558V12.0002H19.8656V10.6655Z" fill="#FFDE46"/> <path d="M18.5558 15.999H17.2437V17.3313H18.5558V15.999Z" fill="#FFDE46"/> <path d="M17.2437 17.3315H15.934V18.6662H17.2437V17.3315Z" fill="#FFDE46"/> <path d="M14.6219 13.3325H13.3121V14.6672H14.6219V13.3325Z" fill="#FFDE46"/> <path d="M12 6.66602H10.6902H9.38049V7.99827H10.6902H12H13.3121H14.6218V6.66602H13.3121H12Z" fill="#FFDE46"/> <path d="M10.6902 14.667V15.9992H12H13.3121V14.667H12H10.6902Z" fill="#FFDE46"/> <path d="M9.38049 7.99854H8.06836V9.33322H9.38049V7.99854Z" fill="#FFDE46"/> <path d="M6.75867 10.6653V11.9999V13.3322V14.6669H8.06841V13.3322V11.9999V10.6653V9.33301H6.75867V10.6653Z" fill="#FFDE46"/> <path d="M8.06841 7.99854H6.75867V9.33322H8.06841V7.99854Z" fill="#FFDE46"/> <path d="M6.75866 13.3325H5.44653V14.6672H6.75866V13.3325Z" fill="#FFDE46"/> <path d="M6.75866 12H5.44653V13.3323H6.75866V12Z" fill="#FFDE46"/> <path d="M6.75866 10.6655H5.44653V12.0002H6.75866V10.6655Z" fill="#FFDE46"/> <path d="M6.75866 9.33301H5.44653V10.6653H6.75866V9.33301Z" fill="#FFDE46"/> <path d="M17.2437 10.6653V11.9999V13.3322V14.6669H18.5558V13.3322V11.9999V10.6653V9.33301H17.2437V10.6653Z" fill="#DE5C2B"/> <path d="M17.2437 14.667H15.934V15.9992H17.2437V14.667Z" fill="#DE5C2B"/> <path d="M17.2437 7.99854H15.934V9.33322H17.2437V7.99854Z" fill="#DE5C2B"/> <path d="M15.934 15.999H14.6219V17.3313H15.934V15.999Z" fill="#DE5C2B"/> <path d="M15.934 6.66602H14.6219V7.99827H15.934V6.66602Z" fill="#DE5C2B"/> <path d="M12 17.3315H10.6902H9.38049V18.6662H10.6902H12H13.3121H14.6218V17.3315H13.3121H12Z" fill="#DE5C2B"/> <path d="M12 6.66622H13.3121H14.6218V5.33154H13.3121H12H10.6902H9.38049V6.66622H10.6902H12Z" fill="#DE5C2B"/> <path d="M9.38049 15.999H8.06836V17.3313H9.38049V15.999Z" fill="#DE5C2B"/> <path d="M9.38049 6.66602H8.06836V7.99827H9.38049V6.66602Z" fill="#DE5C2B"/> <path d="M8.06841 14.667H6.75867V15.9992H8.06841V14.667Z" fill="#DE5C2B"/> <path d="M8.06841 7.99854H6.75867V9.33322H8.06841V7.99854Z" fill="#DE5C2B"/> <path d="M6.75866 11.9999V10.6653V9.33301H5.44653V10.6653V11.9999V13.3322V14.6669H6.75866V13.3322V11.9999Z" fill="#DE5C2B"/> <path d="M19.8656 7.99854V9.33322V10.6655V12.0002V13.3324V14.6671V15.9993H21.1777V14.6671V13.3324V12.0002V10.6655V9.33322V7.99854H19.8656Z" fill="#DE5C2B"/> <path d="M19.8656 15.999H18.5558V17.3313H19.8656V15.999Z" fill="#DE5C2B"/> <path d="M19.8656 6.66602H18.5558V7.99827H19.8656V6.66602Z" fill="#DE5C2B"/> <path d="M18.5558 17.3315H17.2437V18.6662H18.5558V17.3315Z" fill="#DE5C2B"/> <path d="M18.5558 5.33154H17.2437V6.66622H18.5558V5.33154Z" fill="#DE5C2B"/> <path d="M17.2437 18.666H15.934V19.9983H17.2437V18.666Z" fill="#DE5C2B"/> <path d="M17.2437 3.99902H15.934V5.33128H17.2437V3.99902Z" fill="#DE5C2B"/> <path d="M13.3121 19.9985H12H10.6902H9.38049H8.06836V21.3332H9.38049H10.6902H12H13.3121H14.6218H15.934V19.9985H14.6218H13.3121Z" fill="#DE5C2B"/> <path d="M10.6902 3.99925H12H13.3121H14.6218H15.934V2.66699H14.6218H13.3121H12H10.6902H9.38049H8.06836V3.99925H9.38049H10.6902Z" fill="#DE5C2B"/> <path d="M8.06841 18.666H6.75867V19.9983H8.06841V18.666Z" fill="#DE5C2B"/> <path d="M8.06841 3.99902H6.75867V5.33128H8.06841V3.99902Z" fill="#DE5C2B"/> <path d="M6.75866 17.3315H5.44653V18.6662H6.75866V17.3315Z" fill="#DE5C2B"/> <path d="M6.75866 5.33154H5.44653V6.66622H6.75866V5.33154Z" fill="#DE5C2B"/> <path d="M5.44652 15.999H4.13678V17.3313H5.44652V15.999Z" fill="#DE5C2B"/> <path d="M5.44652 6.66602H4.13678V7.99827H5.44652V6.66602Z" fill="#DE5C2B"/> <path d="M4.13677 13.3324V12.0002V10.6655V9.33322V7.99854H2.82465V9.33322V10.6655V12.0002V13.3324V14.6671V15.9993H4.13677V14.6671V13.3324Z" fill="#DE5C2B"/></svg>
         <span id="display-balance" class="mr-small">${Number(
-          this.Balance
-        ).toFixed(4)}</span> TC</butotn>
+        this.Balance
+    ).toFixed(4)}</span> TC</butotn>
         <button class="wallet-display btn-default gray flex" id="wallet-display">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.9565 16.9565V15.6522H15.6522V14.3478H14.3478V13.0435V12.1739V11.7391H15.6522V10.4348H16.9565V3.91305H15.6522V2.60871H14.7826H14.3478V1.30434H13.0435V0H6.95652V1.30434H5.65218V2.60871H4.34781V3.91305H3.04347V10.4348H4.34781V11.7391H5.65218V12.1739V13.0435V14.3478H4.34781V15.6522H3.04347V16.9565H1.73914V20H3.04347H16.9565H18.2609V16.9565H16.9565Z" fill="#60DC4D"/><path d="M5.65218 13.0435V14.3478H4.34781V15.6522H3.04347V16.9565H1.73914V20H4.34781V16.9565H5.65218V15.6522H6.95652V14.3478V13.0435H5.65218Z" fill="white"/><path d="M3.04346 9.13037V10.4347H4.34779V11.7391H5.65217V10.4347V9.13037H4.34779H3.04346Z" fill="white"/><path d="M15.6522 3.91305V2.60871H14.3478V1.30434H13.0435V0H6.9565V1.30434H5.65217V2.60871H4.34779V3.91305H3.04346V7.82609H4.34779H5.65217V3.91305H6.9565V2.60871H13.0435V3.91305H14.3478V5.21738H15.6522H16.9565V3.91305H15.6522Z" fill="white"/><path d="M4.34779 3.91309H3.04346V10.4348H4.34779V3.91309Z" fill="#233E66"/><path d="M16.9565 3.91309H15.6522V10.4348H16.9565V3.91309Z" fill="#233E66"/><path d="M13.0435 0H6.95654V1.30434H13.0435V0Z" fill="#233E66"/><path d="M5.65218 2.60889H4.34784V3.91322H5.65218V2.60889Z" fill="#233E66"/><path d="M6.9565 1.3042H5.65216V2.60854H6.9565V1.3042Z" fill="#233E66"/><path d="M14.3478 1.3042H13.0435V2.60854H14.3478V1.3042Z" fill="#233E66"/><path d="M15.6522 2.60889H14.3478V3.91322H15.6522V2.60889Z" fill="#233E66"/><path d="M5.65218 10.4346H4.34784V11.7389H5.65218V10.4346Z" fill="#233E66"/><path d="M15.6522 10.4346H14.3478V11.7389H15.6522V10.4346Z" fill="#233E66"/><path d="M13.0435 13.0436H11.7391V14.3479H13.0435H14.3478V13.0436V11.7393H13.0435V13.0436Z" fill="#233E66"/><path d="M4.34779 15.6523H3.04346V16.9567H4.34779V15.6523Z" fill="#233E66"/><path d="M16.9565 15.6523H15.6522V16.9567H16.9565V15.6523Z" fill="#233E66"/><path d="M16.9565 16.9565V18.6957H3.04347V16.9565H1.73914V18.6957V20H3.04347H16.9565H18.2609V18.6957V16.9565H16.9565Z" fill="#233E66"/><path d="M5.65218 14.3477H4.34784V15.652H5.65218V14.3477Z" fill="#233E66"/><path d="M15.6522 14.3477H14.3478V15.652H15.6522V14.3477Z" fill="#233E66"/><path d="M8.26083 14.3479V13.0436H6.9565V11.7393H5.65216V13.0436V14.3479H6.9565H8.26083Z" fill="#233E66"/></svg>
         ${formatAddress(this.Wallet.address)}</button>  
@@ -574,10 +574,10 @@ class WalletData {
     header.appendChild(balanceUI);
     const walletDisplay = document.getElementById("wallet-display");
     walletDisplay.addEventListener(
-      "click",
-      function () {
-        handleCopy(this.Wallet.address);
-      }.bind(this)
+        "click",
+        function () {
+          handleCopy(this.Wallet.address);
+        }.bind(this)
     );
   }
 
@@ -622,10 +622,10 @@ class WalletData {
     });
 
     document
-      .getElementById("close-modal")
-      .addEventListener("click", function () {
-        modalWithdraw.remove();
-      });
+        .getElementById("close-modal")
+        .addEventListener("click", function () {
+          modalWithdraw.remove();
+        });
 
     const withdrawInput = document.getElementById("withdrawInput");
     const addressInput = document.getElementById("addressInput");
@@ -651,31 +651,31 @@ class WalletData {
     };
 
     maxBtn.addEventListener(
-      "click",
-      async function () {
-        const transactionCost = getTransactionCost();
+        "click",
+        async function () {
+          const transactionCost = getTransactionCost();
 
-        const showBalance = (
-          parseFloat(this.Balance) -
-          (parseFloat(transactionCost) + parseFloat(transactionCost) / 3)
-        ).toString();
+          const showBalance = (
+              parseFloat(this.Balance) -
+              (parseFloat(transactionCost) + parseFloat(transactionCost) / 3)
+          ).toString();
 
-        if (parseFloat(showBalance) < 0) {
-          loadNoti("warning", "Your balance is not enough");
-          return;
-        }
+          if (parseFloat(showBalance) < 0) {
+            loadNoti("warning", "Your balance is not enough");
+            return;
+          }
 
-        withdrawInput.value = showBalance;
-      }.bind(this)
+          withdrawInput.value = showBalance;
+        }.bind(this)
     );
 
     submitBtn.addEventListener(
-      "click",
-      function () {
-        if (isValidation()) {
-          this._onWithdraw(addressInput.value, withdrawInput.value);
-        }
-      }.bind(this)
+        "click",
+        function () {
+          if (isValidation()) {
+            this._onWithdraw(addressInput.value, withdrawInput.value);
+          }
+        }.bind(this)
     );
   }
 
@@ -690,12 +690,13 @@ class WalletData {
         </svg></button>
         <div class="form-inner">
           <p class="title-form">Topup</p>
+          <div id="qrcode" class="qrcode"></div>
           <div class="item-input">
           <input disabled={true} value="${formatAddress(
-            this.Wallet.address,
-            8,
-            8
-          )}"/>
+        this.Wallet.address,
+        8,
+        8
+    )}"/>
           <button class="child primary w-full" id="btn-copy-prvKey">Copy</button>
       </div>
           <form autocomplete="off" class="mt-medium">
@@ -716,17 +717,25 @@ class WalletData {
     document.body.appendChild(modalTopup);
 
     document.getElementById("btn-copy-prvKey").addEventListener(
-      "click",
-      function () {
-        handleCopy(this.Wallet.address);
-      }.bind(this)
+        "click",
+        function () {
+          handleCopy(this.Wallet.address);
+        }.bind(this)
     );
 
     document
-      .getElementById("close-modal")
-      .addEventListener("click", function () {
-        modalTopup.remove();
-      });
+        .getElementById("close-modal")
+        .addEventListener("click", function () {
+          modalTopup.remove();
+        });
+
+    new QRCode(document.getElementById("qrcode"), this.Wallet.address);
+
+    document
+        .getElementById("close-modal")
+        .addEventListener("click", function () {
+          modalTopup.remove();
+        });
 
     // Click outside to close
     const bgModal = document.getElementById("bg-modal-topup");
@@ -740,22 +749,22 @@ class WalletData {
     const isConnectWallet = await this._isConnectedMetamask();
 
     submitBtn.addEventListener(
-      "click",
-      async function (event) {
-        event.preventDefault();
+        "click",
+        async function (event) {
+          event.preventDefault();
 
-        if (!isConnectWallet) {
-          (async () => {
-            submitBtn.setAttribute("disabled", "");
-            await this._oncConnectWallet();
-            await checkAndSwitchNetwork();
-            this._onTopup(topupInput.value);
-          })();
-          return;
-        }
+          if (!isConnectWallet) {
+            (async () => {
+              submitBtn.setAttribute("disabled", "");
+              await this._oncConnectWallet();
+              await checkAndSwitchNetwork();
+              this._onTopup(topupInput.value);
+            })();
+            return;
+          }
 
-        this._onTopup(topupInput.value);
-      }.bind(this)
+          this._onTopup(topupInput.value);
+        }.bind(this)
     );
   }
 
@@ -780,10 +789,10 @@ class WalletData {
       `;
       header.insertBefore(headerActions, header.firstChild);
       document.getElementById("btn-login").addEventListener(
-        "click",
-        function () {
-          this._loadModalActions();
-        }.bind(this)
+          "click",
+          function () {
+            this._loadModalActions();
+          }.bind(this)
       );
       const closeMenu = document.getElementById("close-menu");
 
@@ -825,24 +834,24 @@ class WalletData {
     });
 
     btnExport.addEventListener(
-      "click",
-      function () {
-        this._loadModalAccount("export");
-      }.bind(this)
+        "click",
+        function () {
+          this._loadModalAccount("export");
+        }.bind(this)
     );
 
     btnTopup.addEventListener(
-      "click",
-      function () {
-        this._loadModalTopup();
-      }.bind(this)
+        "click",
+        function () {
+          this._loadModalTopup();
+        }.bind(this)
     );
 
     btnWithdraw.addEventListener(
-      "click",
-      function () {
-        this._loadModalWithdraw();
-      }.bind(this)
+        "click",
+        function () {
+          this._loadModalWithdraw();
+        }.bind(this)
     );
 
     document.querySelectorAll(".btn-default").forEach((item) => {
@@ -883,8 +892,8 @@ class WalletData {
         <div class="form-inner">
         <p class="title-form">${returnTitleForm()}</p>
           ${
-            type === "import"
-              ? `
+        type === "import"
+            ? `
           <div class="item">
           <label>Your private key</label>
           <div class="password-input">
@@ -892,8 +901,8 @@ class WalletData {
           </div>
         </div>
           `
-              : ""
-          }
+            : ""
+    }
           <div class="item">
             <label>Password</label>
             <div class="password-input">
@@ -926,50 +935,50 @@ class WalletData {
       modalAccount.remove();
     });
     document
-      .getElementById("close-modal")
-      .addEventListener("click", function () {
-        modalAccount.remove();
-      });
+        .getElementById("close-modal")
+        .addEventListener("click", function () {
+          modalAccount.remove();
+        });
 
     // Handle form's action
     const keyInput = document.getElementById("keyInput");
     const passwordInput = document.getElementById("passwordInput");
     const confirmPasswordInput = document.getElementById(
-      "confirmPasswordInput"
+        "confirmPasswordInput"
     );
     const submitButton = document.getElementById("submitButton");
     const passwordToggle = document.getElementById("passwordToggle");
     const confirmPasswordToggle = document.getElementById(
-      "confirmPasswordToggle"
+        "confirmPasswordToggle"
     );
     const errorNode = document.querySelectorAll(
-      ".modal-account .form-inner .error"
+        ".modal-account .form-inner .error"
     )[0];
     submitButton.addEventListener(
-      "click",
-      function (event) {
-        event.preventDefault();
-        if (validateForm()) {
-          const password = passwordInput?.value;
+        "click",
+        function (event) {
+          event.preventDefault();
+          if (validateForm()) {
+            const password = passwordInput?.value;
 
-          switch (type) {
-            case "create-new":
-              this._generateAccount(password);
-              this._onExportPrivateKey(password, true);
-              break;
-            case "export":
-              this._onExportPrivateKey(password);
-              break;
-            case "import":
-              const privateKey = keyInput?.value.trim();
-              this._onImportPrivateKey(privateKey, password);
-              modalAccount.remove();
-              break;
-            default:
-              break;
+            switch (type) {
+              case "create-new":
+                this._generateAccount(password);
+                this._onExportPrivateKey(password, true);
+                break;
+              case "export":
+                this._onExportPrivateKey(password);
+                break;
+              case "import":
+                const privateKey = keyInput?.value.trim();
+                this._onImportPrivateKey(privateKey, password);
+                modalAccount.remove();
+                break;
+              default:
+                break;
+            }
           }
-        }
-      }.bind(this)
+        }.bind(this)
     );
 
     function validateForm() {
@@ -1046,19 +1055,19 @@ class WalletData {
 
     // Select action
     actionCreate.addEventListener(
-      "click",
-      function () {
-        this._loadModalAccount("create-new");
-        modalActions.remove();
-      }.bind(this)
+        "click",
+        function () {
+          this._loadModalAccount("create-new");
+          modalActions.remove();
+        }.bind(this)
     );
 
     actionImport.addEventListener(
-      "click",
-      function () {
-        this._loadModalAccount("import");
-        modalActions.remove();
-      }.bind(this)
+        "click",
+        function () {
+          this._loadModalAccount("import");
+          modalActions.remove();
+        }.bind(this)
     );
   }
 
@@ -1110,8 +1119,8 @@ class ContractInteraction {
     if (!this.WalletData?.Wallet?.privateKey || !this.WalletData?.Balance)
       return;
     const wallet = new ethers.Wallet(
-      this.WalletData.Wallet.privateKey,
-      provider
+        this.WalletData.Wallet.privateKey,
+        provider
     );
     const signer = wallet.connect(provider);
     let contract = new ethers.Contract(contractAddress, abiJson, signer);
@@ -1129,8 +1138,8 @@ class ContractInteraction {
 
             if (receipt && receipt.blockNumber) {
               console.log(
-                "Transaction confirmed in block:",
-                receipt.blockNumber
+                  "Transaction confirmed in block:",
+                  receipt.blockNumber
               );
               clearInterval(intervalId);
               resolve(receipt);
@@ -1153,52 +1162,65 @@ class ContractInteraction {
 
   async Call(abiJson, contractAddress, methodWithParams, ...params) {
     console.log(
-      "Call contract",
-      contractAddress,
-      "method",
-      methodWithParams,
-      "with params",
-      params
+        "Call contract",
+        contractAddress,
+        "method",
+        methodWithParams,
+        "with params",
+        params
     );
     const contract = this.loadContract(abiJson, contractAddress);
     return await contract.functions[methodWithParams.replace(/\s/g, "")](
-      ...params
+        ...params
     );
   }
 
   async Send(
-    abiJson,
-    contractAddress,
-    nonce,
-    gas,
-    topics, // For get event log
-    methodWithParams,
-    ...params
+      abiJson,
+      contractAddress,
+      nonce,
+      gas,
+      topics, // For get event log
+      methodWithParams,
+      ...params
   ) {
     console.log(
-      "Send tx to contract",
-      contractAddress,
-      "method",
-      methodWithParams,
-      "with params",
-      params
+        "Send tx to contract",
+        contractAddress,
+        "method",
+        methodWithParams,
+        "with params",
+        params
     );
 
-    if (!wallet?.Wallet?.privateKey || !wallet?.Balance) {
+    if (!wallet?.Wallet?.privateKey) {
+      wallet._loadModalAccount("create-new");
       return;
     }
     const transactionCost = getTransactionCost();
 
-    if (Number(transactionCost) > Number(wallet?.Balance)) {
+    if (!wallet?.Balance || Number(transactionCost) > Number(wallet?.Balance)) {
       loadNoti("warning", "Your balance is not enough", 3000);
+      wallet._loadModalTopup();
       return;
     }
 
     const contract = this.loadContract(abiJson, contractAddress);
     const contractInterface = new ethers.utils.Interface(abiJson);
 
+    const gasEstimate = await contract.estimateGas[
+        methodWithParams.replace(/\s/g, "")
+        ](...params);
+    const gasPrice = ethers.utils.parseUnits("20", "gwei");
+    const gasLimit = parseInt(gasEstimate * 1.1);
+
     const tx = await contract.functions[methodWithParams.replace(/\s/g, "")](
-      ...params
+        ...params,
+        {
+          gasLimit: gas || gasLimit,
+          gasPrice,
+          ...(nonce && { nonce }),
+        }
     );
     const receipt = await this.checkTransactionStatus(tx.hash);
     wallet._getBalance();
@@ -1210,13 +1232,13 @@ class ContractInteraction {
       for (let i = 0; i < topics.length; i++) {
         const topic = topics[i];
         filteredLogs = receipt?.logs.filter((log) =>
-          log.topics.includes(topic)
+            log.topics.includes(topic)
         );
         eventLogs[topic] =
-          filteredLogs?.map((log) => {
-            const parsedLog = contractInterface.parseLog(log);
-            return parsedLog;
-          }) || [];
+            filteredLogs?.map((log) => {
+              const parsedLog = contractInterface.parseLog(log);
+              return parsedLog;
+            }) || [];
       }
     }
 
