@@ -34,6 +34,8 @@ body {
   font-family: "LilitaOne", "Roboto Mono", monospace;
 }
 
+
+
 #grid {
   display: none;
   height: 400px;
@@ -44,6 +46,16 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+#grid * {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Old versions of Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently
+                                supported by Chrome, Edge, Opera and Firefox */
+} 
 
 #grid.beginner {
   height: calc(var(--square-size) * 8);
@@ -65,19 +77,40 @@ body {
   width: calc(var(--square-size) * 16);
 }
 
+@media screen and (max-width: 475px) {
+  #grid.beginner {
+    --square-size: 40px;
+  }
+  #grid.immediate {
+    --square-size: 30px;
+  }
+
+  #grid.expert {
+    --square-size: 30px;
+  }
+
+  #grid.pro {
+    --square-size: 22px;
+  }
+
+}
+
+
+
+
 #flag-info {
   display: none;
 }
 
 div {
-  font-size: 25px;
+  font-size: 2.5rem;
   text-align: center;
   transition: all 0.3s ease-out;
 }
 
 .square {
-  height: 50px;
-  width: 50px;
+  height: var(--square-size);
+  width: var(--square-size);
   border-radius: 6px;
   background: #fec200;
   box-shadow: -6px 0px 0px 0px #ff7505 inset, 0px 6px 0px 0px #fedc01 inset,
@@ -94,8 +127,8 @@ div {
 }
 
 .checked {
-  height: 50px;
-  width: 50px;
+  height: var(--square-size);
+  width: var(--square-size);
   border-radius: 6px;
   background: #fff;
   box-shadow: -6px 0px 0px 0px #d1d2d7 inset, 0px 6px 0px 0px #f2f2f2 inset,
@@ -167,8 +200,8 @@ div {
 }
 
 .game-over-title {
-  font-size: 72px;
-  margin-bottom: 24px;
+  font-size: 7.2rem;
+  margin-bottom: 2.4rem;
   margin-top: 0;
   color: #fff;
 }
@@ -459,7 +492,7 @@ div {
   border-bottom: 3px solid #000;
   border-left: 3px solid #000;
   background: #fff;
-  padding: 23px 26px 25px 26px;
+  padding: 2.3rem 2.6rem 2.5rem 2.6rem;
   cursor: pointer;
 }
 
@@ -495,6 +528,61 @@ div {
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
+}
+
+
+/* Style for mobile */
+@media screen and (max-width: 475px) {
+  body{
+    height: auto;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+
+
+  #game-level{
+    margin-top: 80px;
+    padding: 0 20px;
+  }
+
+  .choose-level-title{
+    font-size: 5rem;
+  }
+
+  .game-level-list{
+    width: 100%;
+  }
+
+  .game-level-item{
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  #go-to-leaderboard {
+    top: 70px;  
+    padding: 1.6rem 2rem 1.8rem 2rem;
+  }
+
+  #go-to-leaderboard .cup-icon{
+    font-size: 50%;
+  }
+
+  .leaderboard_title{
+    font-size: 2rem;
+    line-height: 100%;
+  }
+
+  #play-music{
+    bottom: 0;
+    top: unset;
+  }
+
+  .square{
+    font-size: 1.8rem;
+  }
+
+
 }
 
 /*  ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ Write all your style here ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ */
