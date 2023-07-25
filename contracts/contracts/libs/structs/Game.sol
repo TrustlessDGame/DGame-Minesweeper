@@ -28,6 +28,11 @@ library GameData {
         bool _isFlagged;
     }
 
+    struct BoardStateCellMove {
+        uint8 _adjacentMines;
+        bool _isRevealed;
+    }
+
     struct GameLevel {
         uint256 rows;
         uint256 cols;
