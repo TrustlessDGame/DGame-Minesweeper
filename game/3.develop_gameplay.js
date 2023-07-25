@@ -553,7 +553,6 @@ async function chooseGameLevel(level) {
       flagsLeft.innerHTML = numMines;
     }
   } catch (err) {
-    // console.log("🚀 ~ err", err);
   } finally {
     processingElement.style.display = "none";
   }
@@ -580,18 +579,24 @@ async function getLeaderBoardData() {
 }
 
 function renderTableItem(item, index) {
+
+  const isUserWallet = contractInteraction.WalletData.Wallet.address === item.player;
+
+
   const leaderboardTableEl = document.querySelector(".leaderboard_table_data");
 
   const medalClass = index < 3 ? "--medal" : "";
+
+  const yourWalletClass = isUserWallet ? "--your-wallet" : "";
 
   const rank =
     index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
 
   const leaderboardDataRowEl = document.createElement("div");
-  leaderboardDataRowEl.className = "leaderboard_table_data_row";
+  leaderboardDataRowEl.className = `leaderboard_table_data_row ${yourWalletClass}`;
   leaderboardDataRowEl.innerHTML = `
     <div class="leaderboard_table_data_rank ${medalClass}">${rank}</div>
-    <div class="leaderboard_table_data_name">${formatAddress(item.player)}</div>
+    <div class="leaderboard_table_data_name">${formatAddress(item.player)} ${isUserWallet ? '(You)' : ''}  </div>
     <div class="leaderboard_table_data_time">${item.score.toString()}</div>
     `;
 
@@ -827,7 +832,6 @@ importGame();
 
 document.addEventListener("DOMContentLoaded", () => {
   // Check has walletData in local storage
-
   if (localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)) {
     drawBoard(board);
   }

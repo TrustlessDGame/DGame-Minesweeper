@@ -466,8 +466,14 @@ div {
   line-height: 28px; /* 155.556% */
 }
 
+.leaderboard_table_data_row.--your-wallet{
+background: #BAEDBD;
+box-shadow: -6px 0px 0px 0px #9CC29F inset, 0px 6px 0px 0px #9CC29F inset, 0px -6px 0px 0px #9CC29F inset, 6px 0px 0px 0px rgba(156, 194, 159, 0.60) inset;
+}
+
 .leaderboard_table_data_name {
   font-size: 14px;
+  text-align: left;
 }
 
 .leaderboard_table_data_row > div:last-of-type {
