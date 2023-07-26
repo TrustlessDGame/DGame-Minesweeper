@@ -1,5 +1,5 @@
 window.callBackLoadResourcesComplete = () => {
-  console.log("Complete load resources", GAME_ASSETS);
+  // console.log("Complete load resources", GAME_ASSETS);
   injectFonts();
   // injectGame();
 };
@@ -172,7 +172,7 @@ function showChooseGameLevelScreen() {
   const gameOverScreen = document.getElementById("game-level");
   gameOverScreen.style.display = "block";
 
-  document.querySelector("#go-to-leaderboard").style.display = "block";
+  document.querySelector("#go-to-leaderboard").style.display = "flex";
 
   const speakerOn = document.querySelector("#speaker-on");
   const speakerOff = document.querySelector("#speaker-off");
@@ -378,6 +378,37 @@ function drawBoard(newBoard, isGameOver = false) {
           square.classList.add("checked");
         }
       }
+      let pressTimer;
+
+      function startPressTimer() {
+        pressTimer = setTimeout(async () => {
+          processingElement.style.display = "grid";
+          addFlag(cellElement, cell);
+          clickCount += 1;
+  
+          try {
+            const res = await Flag(rowIndex, colIndex, cell._isFlagged);
+            if (res && res.receipt.logs[0].data) {
+              drawBoard(newBoard);
+            }
+          } catch (err) {
+            console.log("Something wrong, please try again.");
+          } finally {
+            processingElement.style.display = "none";
+          }
+
+        }, 2000); // 2000 milliseconds (2 seconds)
+      }
+  
+      function cancelPressTimer() {
+        clearTimeout(pressTimer);
+      }
+
+
+      cellElement.addEventListener("touchstart", startPressTimer);
+    cellElement.addEventListener('touchend', cancelPressTimer);
+    cellElement.addEventListener('touchcancel', cancelPressTimer);
+
 
       cellElement.addEventListener("click", async function (e) {
         e.preventDefault();
@@ -401,10 +432,8 @@ function drawBoard(newBoard, isGameOver = false) {
 
         revealCell(board, rowIndex, colIndex);
 
+
         try {
-
-
-
           const res = await Move(rowIndex, colIndex, newBoard);
           if (res && res.receipt.logs[0].data && gameStatus !== -1) {
             drawBoard(newBoard);
