@@ -32,7 +32,6 @@ body {
 .container div {
   font-size: 2.5rem;
   text-align: center;
-  transition: all 0.3s ease-out;
 }
 
 #grid {
@@ -110,11 +109,13 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
 }
 
 .square:hover {
-  background-color: #fec200;
+  border: 3px solid #54E7FF;
 }
+
 
 .checked {
   height: var(--square-size);
@@ -353,20 +354,6 @@ body {
   font-size: 80%;
 }
 
-/* .speaker {
-  vertical-align: middle;
-  box-sizing: border-box;
-  display: inline-block;
-  background: #ff7505;
-  background-clip: content-box;
-  width: 1em;
-  height: 1em;
-  border: 0.333em solid transparent;
-  border-right-color: #ff7505;
-  position: relative;
-  left: -0.337em;
-}
-*/
 
 #speaker-off,
 #speaker-on {
@@ -526,6 +513,14 @@ box-shadow: -6px 0px 0px 0px #9CC29F inset, 0px 6px 0px 0px #9CC29F inset, 0px -
   margin-left: auto;
   margin-right: auto;
   cursor: pointer;
+}
+
+#move-processing{
+  position: absolute;
+  z-index: 100;
+  top: -5%;
+  left: -5%;
+  transform: scale(0.5);
 }
 
 
