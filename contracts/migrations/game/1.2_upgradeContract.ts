@@ -2,7 +2,7 @@ import {MineSweeper} from "./minesweeper";
 
 (async () => {
     try {
-        if (process.env.NETWORK != "nos_mainnet") {
+        if (process.env.NETWORK != "nos_testnet") {
             console.log("wrong network");
             return;
         }
