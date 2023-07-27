@@ -2,10 +2,10 @@
 // Contract data
 const GAME_ID = 1;
 const SALT_PASS = "1234";
-const CHAIN_ID = 42070;
-const RPC = "https://l2-node.regtest.trustless.computer/";
-const RPC_EXPLORER = "https://nos-explorer.regtest.trustless.computer/";
-const NETWORK_NAME = "NOS (Testnet)";
+const CHAIN_ID = 42213;
+const RPC = "https://node.l2.trustless.computer/";
+const RPC_EXPLORER = "https://explorer.l2.trustless.computer/";
+const NETWORK_NAME = "NOS";
 const CURRENCY_SYMBOL = "TC";
 let LIB_ASSETS = {};
 
@@ -48,9 +48,9 @@ async function preload() {
 
 function getScreenWidth() {
   const windowWidth =
-      window.innerWidth ||
-      document.documentElement.clientWidth ||
-      document.body.clientWidth;
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
   return windowWidth;
 }
 
@@ -86,8 +86,8 @@ async function checkAndSwitchNetwork() {
         ],
       });
       provider = window.ethereum
-          ? new ethers.providers.Web3Provider(window.ethereum)
-          : new ethers.providers.JsonRpcProvider(RPC);
+        ? new ethers.providers.Web3Provider(window.ethereum)
+        : new ethers.providers.JsonRpcProvider(RPC);
       return;
     } catch (error) {
       console.log(error);
@@ -107,9 +107,9 @@ async function preloadData(key, value, ext = ".gz") {
   const address = bfsPathArray[4]; // address
   const fileName = bfsPathArray[5]; // file_name
   let contract = new ethers.Contract(
-      bfsAddr,
-      BFS_CONTRACTT_ABI_INTERFACE_JSON,
-      provider
+    bfsAddr,
+    BFS_CONTRACTT_ABI_INTERFACE_JSON,
+    provider
   );
   let dataBytesArray = new Uint8Array();
   let nextChunk = 0;
@@ -153,38 +153,38 @@ async function preloadASSETS() {
       const value = GAME_ASSETS[key];
       if (value.indexOf("bfs://") > -1) {
         promises.push(
-            preloadData(key, value, "")
-                .then((dataBytesArray) => {
-                  if (dataBytesArray.length > 0) {
-                    const dataString = toString(dataBytesArray);
-                    const blobFile = URL.createObjectURL(dataURItoBlob(dataString));
-                    return fetch(blobFile)
-                        .then((res) => res.arrayBuffer())
-                        .then((e) => {
-                          return new Promise((resolve, reject) => {
-                            window.gunzip(new Uint8Array(e), (e1, n) => {
-                              if (e1 == null) {
-                                let options = {};
-                                if (dataString.includes("svg+xml")) {
-                                  options = {
-                                    type: "image/svg+xml",
-                                  };
-                                }
-                                GAME_ASSETS[key] = URL.createObjectURL(
-                                    new Blob([new Uint8Array(n, 0, n.length)], options)
-                                );
-                              } else {
-                                GAME_ASSETS[key] = blobFile;
-                              }
-                              resolve();
-                            });
-                          });
-                        });
-                  }
-                })
-                .catch((e) => {
-                  console.log(e);
-                })
+          preloadData(key, value, "")
+            .then((dataBytesArray) => {
+              if (dataBytesArray.length > 0) {
+                const dataString = toString(dataBytesArray);
+                const blobFile = URL.createObjectURL(dataURItoBlob(dataString));
+                return fetch(blobFile)
+                  .then((res) => res.arrayBuffer())
+                  .then((e) => {
+                    return new Promise((resolve, reject) => {
+                      window.gunzip(new Uint8Array(e), (e1, n) => {
+                        if (e1 == null) {
+                          let options = {};
+                          if (dataString.includes("svg+xml")) {
+                            options = {
+                              type: "image/svg+xml",
+                            };
+                          }
+                          GAME_ASSETS[key] = URL.createObjectURL(
+                            new Blob([new Uint8Array(n, 0, n.length)], options)
+                          );
+                        } else {
+                          GAME_ASSETS[key] = blobFile;
+                        }
+                        resolve();
+                      });
+                    });
+                  });
+              }
+            })
+            .catch((e) => {
+              console.log(e);
+            })
         );
       } else {
         console.log("asset", key, value);
@@ -248,7 +248,7 @@ const formatAddress = (address, prefix, suffix) => {
   const suffixLength = suffix || 4;
 
   const truncatedAddress = `${address.slice(0, prefixLength)}...${address.slice(
-      -suffixLength
+    -suffixLength
   )}`;
 
   return truncatedAddress;
@@ -312,7 +312,7 @@ const customGas = {
 };
 const getTransactionCost = () => {
   const transactionCost = ethers.utils.formatEther(
-      customGas.gasPrice.mul(customGas.gasLimit)
+    customGas.gasPrice.mul(customGas.gasLimit)
   );
   return transactionCost;
 };
@@ -332,13 +332,14 @@ class WalletData {
     if (!this.Wallet.address) {
       return null;
     }
+
     try {
       const balance = await provider.getBalance(this.Wallet.address);
       const formatBalance = ethers.utils.formatEther(balance);
 
       this.Balance = formatBalance;
       const isEsixtBalanceUI =
-          document.querySelectorAll(".balance-ui").length > 0;
+        document.querySelectorAll(".balance-ui").length > 0;
 
       if (isEsixtBalanceUI) {
         const displayBalance = document.getElementById("display-balance");
@@ -355,8 +356,8 @@ class WalletData {
   _formatWalletData(walletData) {
     return {
       privateKey: decryptAES(
-          walletData[ACCOUNT_KEY],
-          decryptAES(walletData[PASS_WORD], SALT_PASS) + SALT_PASS
+        walletData[ACCOUNT_KEY],
+        decryptAES(walletData[PASS_WORD], SALT_PASS) + SALT_PASS
       ),
       address: walletData[ADDRESS_KEY],
       password: decryptAES(walletData[PASS_WORD], SALT_PASS),
@@ -446,7 +447,7 @@ class WalletData {
 
   _onExportPrivateKey(password, isNew = false) {
     const walletData = JSON.parse(
-        localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)
+      localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)
     );
     const prvKey = decryptAES(walletData[ACCOUNT_KEY], password + SALT_PASS);
     if (!prvKey) {
@@ -459,10 +460,10 @@ class WalletData {
     <div class="form-inner">
         <p class="title-form">Your private key</p>
         ${
-        isNew
+          isNew
             ? `<div class="note">Please copy your private key and save it somewhere safe for you, we will not be responsible if you lose your private key.</div>`
             : ""
-    }
+        }
         <div class="item-input">
             <input disabled={true} value="${formatPrvKey}"/>
             <button class="child primary w-full" id="btn-copy-prvKey">Copy</button>
@@ -471,10 +472,10 @@ class WalletData {
     `;
 
     document
-        .getElementById("btn-copy-prvKey")
-        .addEventListener("click", function () {
-          handleCopy(prvKey);
-        });
+      .getElementById("btn-copy-prvKey")
+      .addEventListener("click", function () {
+        handleCopy(prvKey);
+      });
   }
 
   _onImportPrivateKey = (prvKey, password) => {
@@ -563,8 +564,8 @@ class WalletData {
         <button class="btn-default gray flex"> 
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"> <path d="M14.6219 13.3325H13.3121V14.6672H14.6219V13.3325Z" fill="#FFDE46"/> <path d="M14.6219 6.66602H13.3121V7.99827H14.6219V6.66602Z" fill="#FFDE46"/> <path d="M13.3121 14.667H12V15.9992H13.3121V14.667Z" fill="#FFDE46"/> <path d="M13.3121 6.66602H12V7.99827H13.3121V6.66602Z" fill="#FFDE46"/> <path d="M12 14.667H10.6902V15.9992H12V14.667Z" fill="#FFDE46"/> <path d="M12 6.66602H10.6902V7.99827H12V6.66602Z" fill="#FFDE46"/> <path d="M10.6902 6.66602H9.38049V7.99827H10.6902V6.66602Z" fill="#FFDE46"/> <path d="M9.38049 7.99854H8.06836V9.33322H9.38049V7.99854Z" fill="#FFDE46"/> <path d="M8.06841 13.3325H6.75867V14.6672H8.06841V13.3325Z" fill="#FFDE46"/> <path d="M8.06841 12H6.75867V13.3323H8.06841V12Z" fill="#FFDE46"/> <path d="M8.06841 10.6655H6.75867V12.0002H8.06841V10.6655Z" fill="#FFDE46"/> <path d="M8.06841 9.33301H6.75867V10.6653H8.06841V9.33301Z" fill="#FFDE46"/> <path d="M18.5559 8.00792V6.66596H17.2437V5.33856H15.934V3.99902H8.06123V5.33856H6.75865V6.67324H5.44652V8.00792H4.13678V16.016H5.44652V18.6854H8.07078V20.0176H15.9435V18.666H17.2533V17.3313H18.5654V15.999H19.8751V8.00792H18.5559ZM18.5559 10.6773V14.6668H17.2437V15.999H15.934V17.3313H14.6219V18.666H9.37336V17.3313H8.06123V15.999H6.75865V14.6668H5.44652V9.32804H6.75865V8.00792H8.06839V6.66596H9.38052V5.33856H14.629V6.67324H15.9412V8.00792H17.2509V9.3426H18.563L18.5559 10.6773Z" fill="#FFDE46"/> <path d="M17.2437 12.0002V9.33085H15.934V8.0083H9.38049V9.34298H8.06836V15.9994H9.38049V17.3317H14.629V15.9994H15.9411V14.6671H17.2509V11.9978L17.2437 12.0002ZM13.3121 14.6696V16.0018H10.6878V13.3325H9.38049V10.6777H10.6902V9.33328H13.3145V10.6777H14.6242V14.6671L13.3121 14.6696Z" fill="#FFDE46"/> <path d="M19.8656 14.667H18.5558V15.9992H19.8656V14.667Z" fill="#FFDE46"/> <path d="M19.8656 13.3325H18.5558V14.6672H19.8656V13.3325Z" fill="#FFDE46"/> <path d="M19.8656 12H18.5558V13.3323H19.8656V12Z" fill="#FFDE46"/> <path d="M19.8656 10.6655H18.5558V12.0002H19.8656V10.6655Z" fill="#FFDE46"/> <path d="M19.8656 9.33301H18.5558V10.6653H19.8656V9.33301Z" fill="#FFDE46"/> <path d="M19.8656 7.99854H18.5558V9.33322H19.8656V7.99854Z" fill="#FFDE46"/> <path d="M18.5558 15.999H17.2437V17.3313H18.5558V15.999Z" fill="#FFDE46"/> <path d="M18.5558 14.667H17.2437V15.9992H18.5558V14.667Z" fill="#FFDE46"/> <path d="M17.2437 17.3315H15.934V18.6662H17.2437V17.3315Z" fill="#FFDE46"/> <path d="M17.2437 15.999H15.934V17.3313H17.2437V15.999Z" fill="#FFDE46"/> <path d="M17.2437 12H15.934V13.3323H17.2437V12Z" fill="#FA8804"/> <path d="M17.2437 10.6655H15.934V12.0002H17.2437V10.6655Z" fill="#FA8804"/> <path d="M17.2437 5.33154H15.934V6.66622H17.2437V5.33154Z" fill="#FA8804"/> <path d="M15.934 18.666H14.6219V19.9983H15.934V18.666Z" fill="#FA8804"/> <path d="M15.934 17.3315H14.6219V18.6662H15.934V17.3315Z" fill="#FFDE46"/> <path d="M14.6219 13.3325H13.3121V14.6672H14.6219V13.3325Z" fill="#FFDE46"/> <path d="M14.6219 12H13.3121V13.3323H14.6219V12Z" fill="#FF9E00"/> <path d="M14.6219 10.6655H13.3121V12.0002H14.6219V10.6655Z" fill="#FF9E00"/> <path d="M14.6219 6.66602H13.3121V7.99827H14.6219V6.66602Z" fill="#FFDE46"/> <path d="M13.3121 14.667H12V15.9992H13.3121V14.667Z" fill="#FFDE46"/> <path d="M13.3121 13.3325H12V14.6672H13.3121V13.3325Z" fill="#FF9E00"/> <path d="M13.3121 12H12V13.3323H13.3121V12Z" fill="#FF9E00"/> <path d="M13.3121 10.6655H12V12.0002H13.3121V10.6655Z" fill="#FF9E00"/> <path d="M13.3121 9.33301H12V10.6653H13.3121V9.33301Z" fill="#FF9E00"/> <path d="M13.3121 6.66602H12V7.99827H13.3121V6.66602Z" fill="#FFDE46"/> <path d="M12 14.667H10.6902V15.9992H12V14.667Z" fill="#FFDE46"/> <path d="M12 13.3325H10.6902V14.6672H12V13.3325Z" fill="#FF9E00"/> <path d="M12 12H10.6902V13.3323H12V12Z" fill="#FF9E00"/> <path d="M12 10.6655H10.6902V12.0002H12V10.6655Z" fill="#FF9E00"/> <path d="M12 9.33301H10.6902V10.6653H12V9.33301Z" fill="#FF9E00"/> <path d="M12 6.66602H10.6902V7.99827H12V6.66602Z" fill="#FFDE46"/> <path d="M10.6902 12H9.38049V13.3323H10.6902V12Z" fill="#FF9E00"/> <path d="M10.6902 10.6655H9.38049V12.0002H10.6902V10.6655Z" fill="#FF9E00"/> <path d="M10.6902 6.66602H9.38049V7.99827H10.6902V6.66602Z" fill="#FFDE46"/> <path d="M9.38049 7.99854H8.06836V9.33322H9.38049V7.99854Z" fill="#FFDE46"/> <path d="M8.06841 17.3315H6.75867V18.6662H8.06841V17.3315Z" fill="#FFDE46"/> <path d="M8.06841 13.3325H6.75867V14.6672H8.06841V13.3325Z" fill="#FFDE46"/> <path d="M8.06841 12H6.75867V13.3323H8.06841V12Z" fill="#FFDE46"/> <path d="M8.06841 10.6655H6.75867V12.0002H8.06841V10.6655Z" fill="#FFDE46"/> <path d="M8.06841 9.33301H6.75867V10.6653H8.06841V9.33301Z" fill="#FFDE46"/> <path d="M9.38049 3.99902H8.06836V5.33128H9.38049V3.99902Z" fill="#FF9E00"/> <path d="M8.06841 5.33154H6.75867V6.66622H8.06841V5.33154Z" fill="#FF9E00"/> <path d="M6.75866 6.66602H5.44653V7.99827H6.75866V6.66602Z" fill="#FF9E00"/> <path d="M4.13678 9.33322V10.6655V12.0002V13.3324V14.6671H5.44652V13.3324V12.0002V10.6655V9.33322V7.99854H4.13678V9.33322Z" fill="#FF9E00"/> <path d="M18.5558 13.3325H17.2437V14.6672H18.5558V13.3325Z" fill="#FFDE46"/> <path d="M18.5558 12H17.2437V13.3323H18.5558V12Z" fill="#FFDE46"/> <path d="M18.5558 10.6655H17.2437V12.0002H18.5558V10.6655Z" fill="#FFDE46"/> <path d="M18.5558 9.33301H17.2437V10.6653H18.5558V9.33301Z" fill="#FFDE46"/> <path d="M17.2437 14.667H15.934V15.9992H17.2437V14.667Z" fill="#FFDE46"/> <path d="M17.2437 12H15.934V13.3323H17.2437V12Z" fill="#FFDE46"/> <path d="M17.2437 10.6655H15.934V12.0002H17.2437V10.6655Z" fill="#FFDE46"/> <path d="M17.2437 7.99854H15.934V9.33322H17.2437V7.99854Z" fill="#FFDE46"/> <path d="M15.934 15.999H14.6219V17.3313H15.934V15.999Z" fill="#FFDE46"/> <path d="M15.934 14.667H14.6219V15.9992H15.934V14.667Z" fill="#FFDE46"/> <path d="M15.934 9.33301H14.6219V10.6653H15.934V9.33301Z" fill="#FFDE46"/> <path d="M15.934 6.66602H14.6219V7.99827H15.934V6.66602Z" fill="#FFDE46"/> <path d="M14.6219 17.3315H13.3121V18.6662H14.6219V17.3315Z" fill="#FFDE46"/> <path d="M14.6219 12H13.3121V13.3323H14.6219V12Z" fill="#FFDE46"/> <path d="M14.6219 10.6655H13.3121V12.0002H14.6219V10.6655Z" fill="#FFDE46"/> <path d="M14.6219 5.33154H13.3121V6.66622H14.6219V5.33154Z" fill="#FFDE46"/> <path d="M13.3121 17.3315H12V18.6662H13.3121V17.3315Z" fill="#FFDE46"/> <path d="M13.3121 13.3325H12V14.6672H13.3121V13.3325Z" fill="#FFDE46"/> <path d="M13.3121 12H12V13.3323H13.3121V12Z" fill="#FFDE46"/> <path d="M13.3121 10.6655H12V12.0002H13.3121V10.6655Z" fill="#FFDE46"/> <path d="M13.3121 9.33301H12V10.6653H13.3121V9.33301Z" fill="#FFDE46"/> <path d="M13.3121 5.33154H12V6.66622H13.3121V5.33154Z" fill="#FFDE46"/> <path d="M12 17.3315H10.6902V18.6662H12V17.3315Z" fill="#FFDE46"/> <path d="M12 13.3325H10.6902V14.6672H12V13.3325Z" fill="#FFDE46"/> <path d="M12 12H10.6902V13.3323H12V12Z" fill="#FFDE46"/> <path d="M12 9.33301H10.6902V10.6653H12V9.33301Z" fill="#FFDE46"/> <path d="M12 5.33154H10.6902V6.66622H12V5.33154Z" fill="#FFDE46"/> <path d="M10.6902 17.3315H9.38049V18.6662H10.6902V17.3315Z" fill="#FFDE46"/> <path d="M10.6902 15.999H9.38049V17.3313H10.6902V15.999Z" fill="#FFDE46"/> <path d="M10.6902 12H9.38049V13.3323H10.6902V12Z" fill="#FFDE46"/> <path d="M10.6902 10.6655H9.38049V12.0002H10.6902V10.6655Z" fill="#FFDE46"/> <path d="M10.6902 5.33154H9.38049V6.66622H10.6902V5.33154Z" fill="#FFDE46"/> <path d="M9.38049 15.999H8.06836V17.3313H9.38049V15.999Z" fill="#FFDE46"/> <path d="M9.38049 6.66602H8.06836V7.99827H9.38049V6.66602Z" fill="#FFDE46"/> <path d="M8.06841 14.667H6.75867V15.9992H8.06841V14.667Z" fill="#FFDE46"/> <path d="M19.8656 13.3325H18.5558V14.6672H19.8656V13.3325Z" fill="#FFDE46"/> <path d="M19.8656 10.6655H18.5558V12.0002H19.8656V10.6655Z" fill="#FFDE46"/> <path d="M18.5558 15.999H17.2437V17.3313H18.5558V15.999Z" fill="#FFDE46"/> <path d="M17.2437 17.3315H15.934V18.6662H17.2437V17.3315Z" fill="#FFDE46"/> <path d="M14.6219 13.3325H13.3121V14.6672H14.6219V13.3325Z" fill="#FFDE46"/> <path d="M12 6.66602H10.6902H9.38049V7.99827H10.6902H12H13.3121H14.6218V6.66602H13.3121H12Z" fill="#FFDE46"/> <path d="M10.6902 14.667V15.9992H12H13.3121V14.667H12H10.6902Z" fill="#FFDE46"/> <path d="M9.38049 7.99854H8.06836V9.33322H9.38049V7.99854Z" fill="#FFDE46"/> <path d="M6.75867 10.6653V11.9999V13.3322V14.6669H8.06841V13.3322V11.9999V10.6653V9.33301H6.75867V10.6653Z" fill="#FFDE46"/> <path d="M8.06841 7.99854H6.75867V9.33322H8.06841V7.99854Z" fill="#FFDE46"/> <path d="M6.75866 13.3325H5.44653V14.6672H6.75866V13.3325Z" fill="#FFDE46"/> <path d="M6.75866 12H5.44653V13.3323H6.75866V12Z" fill="#FFDE46"/> <path d="M6.75866 10.6655H5.44653V12.0002H6.75866V10.6655Z" fill="#FFDE46"/> <path d="M6.75866 9.33301H5.44653V10.6653H6.75866V9.33301Z" fill="#FFDE46"/> <path d="M17.2437 10.6653V11.9999V13.3322V14.6669H18.5558V13.3322V11.9999V10.6653V9.33301H17.2437V10.6653Z" fill="#DE5C2B"/> <path d="M17.2437 14.667H15.934V15.9992H17.2437V14.667Z" fill="#DE5C2B"/> <path d="M17.2437 7.99854H15.934V9.33322H17.2437V7.99854Z" fill="#DE5C2B"/> <path d="M15.934 15.999H14.6219V17.3313H15.934V15.999Z" fill="#DE5C2B"/> <path d="M15.934 6.66602H14.6219V7.99827H15.934V6.66602Z" fill="#DE5C2B"/> <path d="M12 17.3315H10.6902H9.38049V18.6662H10.6902H12H13.3121H14.6218V17.3315H13.3121H12Z" fill="#DE5C2B"/> <path d="M12 6.66622H13.3121H14.6218V5.33154H13.3121H12H10.6902H9.38049V6.66622H10.6902H12Z" fill="#DE5C2B"/> <path d="M9.38049 15.999H8.06836V17.3313H9.38049V15.999Z" fill="#DE5C2B"/> <path d="M9.38049 6.66602H8.06836V7.99827H9.38049V6.66602Z" fill="#DE5C2B"/> <path d="M8.06841 14.667H6.75867V15.9992H8.06841V14.667Z" fill="#DE5C2B"/> <path d="M8.06841 7.99854H6.75867V9.33322H8.06841V7.99854Z" fill="#DE5C2B"/> <path d="M6.75866 11.9999V10.6653V9.33301H5.44653V10.6653V11.9999V13.3322V14.6669H6.75866V13.3322V11.9999Z" fill="#DE5C2B"/> <path d="M19.8656 7.99854V9.33322V10.6655V12.0002V13.3324V14.6671V15.9993H21.1777V14.6671V13.3324V12.0002V10.6655V9.33322V7.99854H19.8656Z" fill="#DE5C2B"/> <path d="M19.8656 15.999H18.5558V17.3313H19.8656V15.999Z" fill="#DE5C2B"/> <path d="M19.8656 6.66602H18.5558V7.99827H19.8656V6.66602Z" fill="#DE5C2B"/> <path d="M18.5558 17.3315H17.2437V18.6662H18.5558V17.3315Z" fill="#DE5C2B"/> <path d="M18.5558 5.33154H17.2437V6.66622H18.5558V5.33154Z" fill="#DE5C2B"/> <path d="M17.2437 18.666H15.934V19.9983H17.2437V18.666Z" fill="#DE5C2B"/> <path d="M17.2437 3.99902H15.934V5.33128H17.2437V3.99902Z" fill="#DE5C2B"/> <path d="M13.3121 19.9985H12H10.6902H9.38049H8.06836V21.3332H9.38049H10.6902H12H13.3121H14.6218H15.934V19.9985H14.6218H13.3121Z" fill="#DE5C2B"/> <path d="M10.6902 3.99925H12H13.3121H14.6218H15.934V2.66699H14.6218H13.3121H12H10.6902H9.38049H8.06836V3.99925H9.38049H10.6902Z" fill="#DE5C2B"/> <path d="M8.06841 18.666H6.75867V19.9983H8.06841V18.666Z" fill="#DE5C2B"/> <path d="M8.06841 3.99902H6.75867V5.33128H8.06841V3.99902Z" fill="#DE5C2B"/> <path d="M6.75866 17.3315H5.44653V18.6662H6.75866V17.3315Z" fill="#DE5C2B"/> <path d="M6.75866 5.33154H5.44653V6.66622H6.75866V5.33154Z" fill="#DE5C2B"/> <path d="M5.44652 15.999H4.13678V17.3313H5.44652V15.999Z" fill="#DE5C2B"/> <path d="M5.44652 6.66602H4.13678V7.99827H5.44652V6.66602Z" fill="#DE5C2B"/> <path d="M4.13677 13.3324V12.0002V10.6655V9.33322V7.99854H2.82465V9.33322V10.6655V12.0002V13.3324V14.6671V15.9993H4.13677V14.6671V13.3324Z" fill="#DE5C2B"/></svg>
         <span id="display-balance" class="mr-small">${Number(
-        this.Balance
-    ).toFixed(4)}</span> TC</butotn>
+          this.Balance
+        ).toFixed(4)}</span> TC</butotn>
         <button class="wallet-display btn-default gray flex" id="wallet-display">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.9565 16.9565V15.6522H15.6522V14.3478H14.3478V13.0435V12.1739V11.7391H15.6522V10.4348H16.9565V3.91305H15.6522V2.60871H14.7826H14.3478V1.30434H13.0435V0H6.95652V1.30434H5.65218V2.60871H4.34781V3.91305H3.04347V10.4348H4.34781V11.7391H5.65218V12.1739V13.0435V14.3478H4.34781V15.6522H3.04347V16.9565H1.73914V20H3.04347H16.9565H18.2609V16.9565H16.9565Z" fill="#60DC4D"/><path d="M5.65218 13.0435V14.3478H4.34781V15.6522H3.04347V16.9565H1.73914V20H4.34781V16.9565H5.65218V15.6522H6.95652V14.3478V13.0435H5.65218Z" fill="white"/><path d="M3.04346 9.13037V10.4347H4.34779V11.7391H5.65217V10.4347V9.13037H4.34779H3.04346Z" fill="white"/><path d="M15.6522 3.91305V2.60871H14.3478V1.30434H13.0435V0H6.9565V1.30434H5.65217V2.60871H4.34779V3.91305H3.04346V7.82609H4.34779H5.65217V3.91305H6.9565V2.60871H13.0435V3.91305H14.3478V5.21738H15.6522H16.9565V3.91305H15.6522Z" fill="white"/><path d="M4.34779 3.91309H3.04346V10.4348H4.34779V3.91309Z" fill="#233E66"/><path d="M16.9565 3.91309H15.6522V10.4348H16.9565V3.91309Z" fill="#233E66"/><path d="M13.0435 0H6.95654V1.30434H13.0435V0Z" fill="#233E66"/><path d="M5.65218 2.60889H4.34784V3.91322H5.65218V2.60889Z" fill="#233E66"/><path d="M6.9565 1.3042H5.65216V2.60854H6.9565V1.3042Z" fill="#233E66"/><path d="M14.3478 1.3042H13.0435V2.60854H14.3478V1.3042Z" fill="#233E66"/><path d="M15.6522 2.60889H14.3478V3.91322H15.6522V2.60889Z" fill="#233E66"/><path d="M5.65218 10.4346H4.34784V11.7389H5.65218V10.4346Z" fill="#233E66"/><path d="M15.6522 10.4346H14.3478V11.7389H15.6522V10.4346Z" fill="#233E66"/><path d="M13.0435 13.0436H11.7391V14.3479H13.0435H14.3478V13.0436V11.7393H13.0435V13.0436Z" fill="#233E66"/><path d="M4.34779 15.6523H3.04346V16.9567H4.34779V15.6523Z" fill="#233E66"/><path d="M16.9565 15.6523H15.6522V16.9567H16.9565V15.6523Z" fill="#233E66"/><path d="M16.9565 16.9565V18.6957H3.04347V16.9565H1.73914V18.6957V20H3.04347H16.9565H18.2609V18.6957V16.9565H16.9565Z" fill="#233E66"/><path d="M5.65218 14.3477H4.34784V15.652H5.65218V14.3477Z" fill="#233E66"/><path d="M15.6522 14.3477H14.3478V15.652H15.6522V14.3477Z" fill="#233E66"/><path d="M8.26083 14.3479V13.0436H6.9565V11.7393H5.65216V13.0436V14.3479H6.9565H8.26083Z" fill="#233E66"/></svg>
         ${formatAddress(this.Wallet.address)}</button>  
@@ -574,10 +575,10 @@ class WalletData {
     header.appendChild(balanceUI);
     const walletDisplay = document.getElementById("wallet-display");
     walletDisplay.addEventListener(
-        "click",
-        function () {
-          handleCopy(this.Wallet.address);
-        }.bind(this)
+      "click",
+      function () {
+        handleCopy(this.Wallet.address);
+      }.bind(this)
     );
   }
 
@@ -622,10 +623,10 @@ class WalletData {
     });
 
     document
-        .getElementById("close-modal")
-        .addEventListener("click", function () {
-          modalWithdraw.remove();
-        });
+      .getElementById("close-modal")
+      .addEventListener("click", function () {
+        modalWithdraw.remove();
+      });
 
     const withdrawInput = document.getElementById("withdrawInput");
     const addressInput = document.getElementById("addressInput");
@@ -651,31 +652,31 @@ class WalletData {
     };
 
     maxBtn.addEventListener(
-        "click",
-        async function () {
-          const transactionCost = getTransactionCost();
+      "click",
+      async function () {
+        const transactionCost = getTransactionCost();
 
-          const showBalance = (
-              parseFloat(this.Balance) -
-              (parseFloat(transactionCost) + parseFloat(transactionCost) / 3)
-          ).toString();
+        const showBalance = (
+          parseFloat(this.Balance) -
+          (parseFloat(transactionCost) + parseFloat(transactionCost) / 3)
+        ).toString();
 
-          if (parseFloat(showBalance) < 0) {
-            loadNoti("warning", "Your balance is not enough");
-            return;
-          }
+        if (parseFloat(showBalance) < 0) {
+          loadNoti("warning", "Your balance is not enough");
+          return;
+        }
 
-          withdrawInput.value = showBalance;
-        }.bind(this)
+        withdrawInput.value = showBalance;
+      }.bind(this)
     );
 
     submitBtn.addEventListener(
-        "click",
-        function () {
-          if (isValidation()) {
-            this._onWithdraw(addressInput.value, withdrawInput.value);
-          }
-        }.bind(this)
+      "click",
+      function () {
+        if (isValidation()) {
+          this._onWithdraw(addressInput.value, withdrawInput.value);
+        }
+      }.bind(this)
     );
   }
 
@@ -693,10 +694,10 @@ class WalletData {
           <div id="qrcode" class="qrcode"></div>
           <div class="item-input">
           <input disabled={true} value="${formatAddress(
-        this.Wallet.address,
-        8,
-        8
-    )}"/>
+            this.Wallet.address,
+            8,
+            8
+          )}"/>
           <button class="child primary w-full" id="btn-copy-prvKey">Copy</button>
       </div>
           <form autocomplete="off" class="mt-medium">
@@ -717,25 +718,19 @@ class WalletData {
     document.body.appendChild(modalTopup);
 
     document.getElementById("btn-copy-prvKey").addEventListener(
-        "click",
-        function () {
-          handleCopy(this.Wallet.address);
-        }.bind(this)
+      "click",
+      function () {
+        handleCopy(this.Wallet.address);
+      }.bind(this)
     );
-
-    document
-        .getElementById("close-modal")
-        .addEventListener("click", function () {
-          modalTopup.remove();
-        });
 
     new QRCode(document.getElementById("qrcode"), this.Wallet.address);
 
     document
-        .getElementById("close-modal")
-        .addEventListener("click", function () {
-          modalTopup.remove();
-        });
+      .getElementById("close-modal")
+      .addEventListener("click", function () {
+        modalTopup.remove();
+      });
 
     // Click outside to close
     const bgModal = document.getElementById("bg-modal-topup");
@@ -749,22 +744,22 @@ class WalletData {
     const isConnectWallet = await this._isConnectedMetamask();
 
     submitBtn.addEventListener(
-        "click",
-        async function (event) {
-          event.preventDefault();
+      "click",
+      async function (event) {
+        event.preventDefault();
 
-          if (!isConnectWallet) {
-            (async () => {
-              submitBtn.setAttribute("disabled", "");
-              await this._oncConnectWallet();
-              await checkAndSwitchNetwork();
-              this._onTopup(topupInput.value);
-            })();
-            return;
-          }
+        if (!isConnectWallet) {
+          (async () => {
+            submitBtn.setAttribute("disabled", "");
+            await this._oncConnectWallet();
+            await checkAndSwitchNetwork();
+            this._onTopup(topupInput.value);
+          })();
+          return;
+        }
 
-          this._onTopup(topupInput.value);
-        }.bind(this)
+        this._onTopup(topupInput.value);
+      }.bind(this)
     );
   }
 
@@ -789,10 +784,10 @@ class WalletData {
       `;
       header.insertBefore(headerActions, header.firstChild);
       document.getElementById("btn-login").addEventListener(
-          "click",
-          function () {
-            this._loadModalActions();
-          }.bind(this)
+        "click",
+        function () {
+          this._loadModalActions();
+        }.bind(this)
       );
       const closeMenu = document.getElementById("close-menu");
 
@@ -834,24 +829,24 @@ class WalletData {
     });
 
     btnExport.addEventListener(
-        "click",
-        function () {
-          this._loadModalAccount("export");
-        }.bind(this)
+      "click",
+      function () {
+        this._loadModalAccount("export");
+      }.bind(this)
     );
 
     btnTopup.addEventListener(
-        "click",
-        function () {
-          this._loadModalTopup();
-        }.bind(this)
+      "click",
+      function () {
+        this._loadModalTopup();
+      }.bind(this)
     );
 
     btnWithdraw.addEventListener(
-        "click",
-        function () {
-          this._loadModalWithdraw();
-        }.bind(this)
+      "click",
+      function () {
+        this._loadModalWithdraw();
+      }.bind(this)
     );
 
     document.querySelectorAll(".btn-default").forEach((item) => {
@@ -892,8 +887,8 @@ class WalletData {
         <div class="form-inner">
         <p class="title-form">${returnTitleForm()}</p>
           ${
-        type === "import"
-            ? `
+            type === "import"
+              ? `
           <div class="item">
           <label>Your private key</label>
           <div class="password-input">
@@ -901,24 +896,24 @@ class WalletData {
           </div>
         </div>
           `
-            : ""
-    }
+              : ""
+          }
           <div class="item">
             <label>Password</label>
-            <div class="password-input">
-              <input id="passwordInput" type="password" />
-              <span id="passwordToggle" class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 17.4001C10.932 17.4001 9.88795 17.0834 8.99992 16.49C8.1119 15.8967 7.41976 15.0533 7.01105 14.0666C6.60234 13.0799 6.4954 11.9941 6.70376 10.9466C6.91212 9.89911 7.42642 8.93692 8.18162 8.18172C8.93683 7.42652 9.89901 6.91222 10.9465 6.70386C11.994 6.4955 13.0798 6.60243 14.0665 7.01115C15.0532 7.41986 15.8966 8.11199 16.4899 9.00002C17.0833 9.88804 17.4 10.9321 17.4 12.0001C17.4 13.4323 16.8311 14.8058 15.8184 15.8185C14.8057 16.8312 13.4322 17.4001 12 17.4001ZM12 3.6001C3.6 3.6001 0 12.0001 0 12.0001C0 12.0001 3.6 20.4001 12 20.4001C20.4 20.4001 24 12.0001 24 12.0001C24 12.0001 20.4 3.6001 12 3.6001Z" fill="white"/><path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="white"/></svg><path d="M23.0156 12.8137C23.1708 12.5702 23.2529 12.2872 23.252 11.9984C23.2512 11.7096 23.1675 11.4271 23.0109 11.1844C21.7706 9.26625 20.1614 7.63688 18.3577 6.47203C16.3594 5.18203 14.1562 4.5 11.985 4.5C10.8404 4.50157 9.7035 4.6882 8.61843 5.05266C8.58807 5.06276 8.56079 5.08046 8.5392 5.10409C8.51761 5.12772 8.50242 5.15647 8.49509 5.18763C8.48776 5.21878 8.48853 5.25129 8.49732 5.28207C8.50611 5.31284 8.52263 5.34085 8.54531 5.36344L10.7597 7.57781C10.7827 7.60086 10.8113 7.61752 10.8427 7.62615C10.8741 7.63478 10.9072 7.63508 10.9387 7.62703C11.6893 7.44412 12.4744 7.45752 13.2183 7.66595C13.9622 7.87438 14.6399 8.27082 15.1862 8.8171C15.7325 9.36338 16.1289 10.0411 16.3373 10.785C16.5458 11.5289 16.5592 12.3139 16.3762 13.0645C16.3683 13.096 16.3686 13.129 16.3773 13.1603C16.3859 13.1916 16.4025 13.2202 16.4255 13.2431L19.6106 16.4306C19.6438 16.4638 19.6881 16.4834 19.735 16.4855C19.7819 16.4876 19.8278 16.472 19.8637 16.4419C21.0898 15.3968 22.1522 14.1739 23.0156 12.8137ZM12 16.5C11.3188 16.5 10.6465 16.3454 10.0337 16.0478C9.42094 15.7502 8.88375 15.3173 8.46263 14.7819C8.04151 14.2464 7.74745 13.6223 7.60262 12.9567C7.45779 12.2911 7.46598 11.6012 7.62656 10.9392C7.63452 10.9077 7.63417 10.8747 7.62555 10.8434C7.61692 10.8121 7.60031 10.7836 7.57734 10.7606L4.44422 7.62609C4.41099 7.59283 4.36649 7.57327 4.31952 7.57127C4.27255 7.56927 4.22655 7.58499 4.19062 7.61531C3.04734 8.59078 1.9875 9.77766 1.01859 11.1647C0.84899 11.4081 0.755584 11.6965 0.750243 11.9931C0.744901 12.2897 0.827865 12.5813 0.988591 12.8306C2.22656 14.768 3.81937 16.3997 5.59547 17.5486C7.59656 18.8438 9.74625 19.5 11.985 19.5C13.1412 19.4969 14.2899 19.3143 15.39 18.9586C15.4206 18.9488 15.4482 18.9313 15.4702 18.9078C15.4921 18.8842 15.5076 18.8554 15.5152 18.8242C15.5227 18.7929 15.5222 18.7602 15.5134 18.7293C15.5047 18.6983 15.4882 18.6701 15.4655 18.6473L13.2403 16.4227C13.2174 16.3997 13.1888 16.3831 13.1575 16.3744C13.1262 16.3658 13.0932 16.3655 13.0617 16.3734C12.7141 16.4577 12.3577 16.5002 12 16.5Z" fill="white"/></svg>
-              </span>
+            <div class="password-list code-list">
+              <input  class="code-input pass-input" type="password" />
+              <input  class="code-input pass-input" type="password" />
+              <input  class="code-input pass-input" type="password" />
+              <input  class="code-input pass-input" type="password" />
             </div>
           </div>
           <div class="item">
             <label>Confirm Password</label>
-            <div class="password-input">
-              <input id="confirmPasswordInput" type="password" />
-              <span id="confirmPasswordToggle" class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 17.4001C10.932 17.4001 9.88795 17.0834 8.99992 16.49C8.1119 15.8967 7.41976 15.0533 7.01105 14.0666C6.60234 13.0799 6.4954 11.9941 6.70376 10.9466C6.91212 9.89911 7.42642 8.93692 8.18162 8.18172C8.93683 7.42652 9.89901 6.91222 10.9465 6.70386C11.994 6.4955 13.0798 6.60243 14.0665 7.01115C15.0532 7.41986 15.8966 8.11199 16.4899 9.00002C17.0833 9.88804 17.4 10.9321 17.4 12.0001C17.4 13.4323 16.8311 14.8058 15.8184 15.8185C14.8057 16.8312 13.4322 17.4001 12 17.4001ZM12 3.6001C3.6 3.6001 0 12.0001 0 12.0001C0 12.0001 3.6 20.4001 12 20.4001C20.4 20.4001 24 12.0001 24 12.0001C24 12.0001 20.4 3.6001 12 3.6001Z" fill="white"/><path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="white"/></svg><path d="M23.0156 12.8137C23.1708 12.5702 23.2529 12.2872 23.252 11.9984C23.2512 11.7096 23.1675 11.4271 23.0109 11.1844C21.7706 9.26625 20.1614 7.63688 18.3577 6.47203C16.3594 5.18203 14.1562 4.5 11.985 4.5C10.8404 4.50157 9.7035 4.6882 8.61843 5.05266C8.58807 5.06276 8.56079 5.08046 8.5392 5.10409C8.51761 5.12772 8.50242 5.15647 8.49509 5.18763C8.48776 5.21878 8.48853 5.25129 8.49732 5.28207C8.50611 5.31284 8.52263 5.34085 8.54531 5.36344L10.7597 7.57781C10.7827 7.60086 10.8113 7.61752 10.8427 7.62615C10.8741 7.63478 10.9072 7.63508 10.9387 7.62703C11.6893 7.44412 12.4744 7.45752 13.2183 7.66595C13.9622 7.87438 14.6399 8.27082 15.1862 8.8171C15.7325 9.36338 16.1289 10.0411 16.3373 10.785C16.5458 11.5289 16.5592 12.3139 16.3762 13.0645C16.3683 13.096 16.3686 13.129 16.3773 13.1603C16.3859 13.1916 16.4025 13.2202 16.4255 13.2431L19.6106 16.4306C19.6438 16.4638 19.6881 16.4834 19.735 16.4855C19.7819 16.4876 19.8278 16.472 19.8637 16.4419C21.0898 15.3968 22.1522 14.1739 23.0156 12.8137ZM12 16.5C11.3188 16.5 10.6465 16.3454 10.0337 16.0478C9.42094 15.7502 8.88375 15.3173 8.46263 14.7819C8.04151 14.2464 7.74745 13.6223 7.60262 12.9567C7.45779 12.2911 7.46598 11.6012 7.62656 10.9392C7.63452 10.9077 7.63417 10.8747 7.62555 10.8434C7.61692 10.8121 7.60031 10.7836 7.57734 10.7606L4.44422 7.62609C4.41099 7.59283 4.36649 7.57327 4.31952 7.57127C4.27255 7.56927 4.22655 7.58499 4.19062 7.61531C3.04734 8.59078 1.9875 9.77766 1.01859 11.1647C0.84899 11.4081 0.755584 11.6965 0.750243 11.9931C0.744901 12.2897 0.827865 12.5813 0.988591 12.8306C2.22656 14.768 3.81937 16.3997 5.59547 17.5486C7.59656 18.8438 9.74625 19.5 11.985 19.5C13.1412 19.4969 14.2899 19.3143 15.39 18.9586C15.4206 18.9488 15.4482 18.9313 15.4702 18.9078C15.4921 18.8842 15.5076 18.8554 15.5152 18.8242C15.5227 18.7929 15.5222 18.7602 15.5134 18.7293C15.5047 18.6983 15.4882 18.6701 15.4655 18.6473L13.2403 16.4227C13.2174 16.3997 13.1888 16.3831 13.1575 16.3744C13.1262 16.3658 13.0932 16.3655 13.0617 16.3734C12.7141 16.4577 12.3577 16.5002 12 16.5Z" fill="white"/></svg>
-              </span>
+            <div class="confirmPassword-list code-list">
+              <input  class="code-input pass-input" type="password" />
+              <input  class="code-input pass-input" type="password" />
+              <input  class="code-input pass-input" type="password" />
+              <input  class="code-input pass-input" type="password" />
             </div>
           </div>
           <button id="submitButton" class="submit" type="submit">Submit</button>
@@ -935,50 +930,137 @@ class WalletData {
       modalAccount.remove();
     });
     document
-        .getElementById("close-modal")
-        .addEventListener("click", function () {
-          modalAccount.remove();
-        });
+      .getElementById("close-modal")
+      .addEventListener("click", function () {
+        modalAccount.remove();
+      });
+
+    // Handle code list
+    const passwordInputs = document.querySelectorAll(
+      ".password-list .code-input"
+    );
+    const confirmInputs = document.querySelectorAll(
+      ".confirmPassword-list .code-input"
+    );
+    let password = "";
+    let confirmPassword = "";
+
+    passwordInputs[0].focus();
+    passwordInputs.forEach(function (input, index) {
+      input.addEventListener("input", function (event) {
+        const typedCharacter = event.data;
+
+        if (typedCharacter && isNaN(typedCharacter)) {
+          this.value = "";
+        } else {
+          if (typedCharacter && index < passwordInputs.length - 1) {
+            if (this.value.length >= 1) {
+              this.value = input.value.charAt(0);
+            }
+            passwordInputs[index + 1].focus();
+          }
+          password = Array.from(passwordInputs)
+            .map((input) => input.value)
+            .join("");
+          if (index === passwordInputs.length - 1 && input.value) {
+            input.blur();
+            return;
+          }
+        }
+      });
+
+      input.addEventListener("keydown", function (event) {
+        if (event.key === "Tab" && !this.value) {
+          event.preventDefault();
+        }
+        if (event.key === "Backspace") {
+          if (index > 0) {
+            event.preventDefault();
+            this.value = "";
+            passwordInputs[index - 1].focus();
+
+            password = Array.from(passwordInputs)
+              .map((input) => input.value)
+              .join("");
+          }
+        }
+      });
+    });
+
+    // Add event listener to each confirm password input field
+    confirmInputs.forEach(function (input, index) {
+      input.addEventListener("input", function (event) {
+        const typedCharacter = event.data;
+
+        if (typedCharacter && isNaN(typedCharacter)) {
+          this.value = "";
+        } else {
+          if (typedCharacter && index < confirmInputs.length - 1) {
+            if (this.value.length >= 1) {
+              this.value = input.value.charAt(0);
+            }
+            confirmInputs[index + 1].focus();
+          }
+
+          confirmPassword = Array.from(confirmInputs)
+            .map((input) => input.value)
+            .join("");
+          if (index === confirmInputs.length - 1 && input.value) {
+            input.blur();
+            return;
+          }
+        }
+      });
+
+      input.addEventListener("keydown", function (event) {
+        if (event.key === "Tab" && !this.value) {
+          event.preventDefault();
+        }
+        if (event.key === "Backspace") {
+          if (index > 0) {
+            event.preventDefault();
+            this.value = "";
+            confirmInputs[index - 1].focus();
+
+            confirmPassword = Array.from(confirmInputs)
+              .map((input) => input.value)
+              .join("");
+          }
+        }
+      });
+    });
 
     // Handle form's action
     const keyInput = document.getElementById("keyInput");
     const passwordInput = document.getElementById("passwordInput");
-    const confirmPasswordInput = document.getElementById(
-        "confirmPasswordInput"
-    );
     const submitButton = document.getElementById("submitButton");
-    const passwordToggle = document.getElementById("passwordToggle");
-    const confirmPasswordToggle = document.getElementById(
-        "confirmPasswordToggle"
-    );
+
     const errorNode = document.querySelectorAll(
-        ".modal-account .form-inner .error"
+      ".modal-account .form-inner .error"
     )[0];
     submitButton.addEventListener(
-        "click",
-        function (event) {
-          event.preventDefault();
-          if (validateForm()) {
-            const password = passwordInput?.value;
-
-            switch (type) {
-              case "create-new":
-                this._generateAccount(password);
-                this._onExportPrivateKey(password, true);
-                break;
-              case "export":
-                this._onExportPrivateKey(password);
-                break;
-              case "import":
-                const privateKey = keyInput?.value.trim();
-                this._onImportPrivateKey(privateKey, password);
-                modalAccount.remove();
-                break;
-              default:
-                break;
-            }
+      "click",
+      function (event) {
+        event.preventDefault();
+        if (validateForm()) {
+          switch (type) {
+            case "create-new":
+              this._generateAccount(password);
+              this._onExportPrivateKey(password, true);
+              break;
+            case "export":
+              this._onExportPrivateKey(password);
+              break;
+            case "import":
+              const privateKey = keyInput?.value.trim();
+              this._onImportPrivateKey(privateKey, password);
+              modalAccount.remove();
+              break;
+            default:
+              break;
           }
-        }.bind(this)
+        }
+      }.bind(this)
     );
 
     function validateForm() {
@@ -986,41 +1068,14 @@ class WalletData {
         loadNoti("warning", "Malformed private key or empty!");
         return;
       }
-      if (passwordInput.value === "" || confirmPasswordInput.value === "") {
+      if (password === "" || confirmPassword === "") {
         errorNode.innerText = "* Please enter both passwords";
         return false;
-      } else if (passwordInput.value !== confirmPasswordInput.value) {
+      } else if (password !== confirmPassword) {
         errorNode.innerText = "* Passwords do not match";
         return false;
       }
       return true;
-    }
-
-    // Toggle xem password
-    passwordToggle.addEventListener("click", function () {
-      togglePasswordVisibility(passwordInput, passwordToggle);
-    });
-
-    confirmPasswordToggle.addEventListener("click", function () {
-      togglePasswordVisibility(confirmPasswordInput, confirmPasswordToggle);
-    });
-
-    function togglePasswordVisibility(input, toggleIcon) {
-      if (input.type === "password") {
-        input.type = "text";
-        toggleIcon.classList.remove("fa-eye");
-        toggleIcon.classList.add("fa-eye-slash");
-        toggleIcon.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.2501 21.0001C20.1516 21.0003 20.054 20.9809 19.963 20.9432C19.872 20.9054 19.7894 20.8501 19.7199 20.7803L3.21994 4.28025C3.08522 4.13845 3.01123 3.94964 3.01373 3.75407C3.01624 3.5585 3.09504 3.37164 3.23334 3.23334C3.37164 3.09504 3.5585 3.01624 3.75407 3.01373C3.94964 3.01123 4.13845 3.08522 4.28025 3.21994L20.7803 19.7199C20.8851 19.8248 20.9564 19.9584 20.9854 20.1039C21.0143 20.2493 20.9994 20.4001 20.9427 20.5371C20.8859 20.6741 20.7899 20.7912 20.6666 20.8736C20.5433 20.956 20.3984 21 20.2501 21.0001ZM11.6251 14.8056L9.19744 12.3779C9.18353 12.3641 9.16564 12.355 9.1463 12.3519C9.12696 12.3488 9.10713 12.3518 9.0896 12.3606C9.07206 12.3693 9.05771 12.3833 9.04855 12.4006C9.03939 12.418 9.03589 12.4377 9.03853 12.4571C9.13654 13.087 9.43227 13.6693 9.88298 14.12C10.3337 14.5707 10.916 14.8665 11.5459 14.9645C11.5653 14.9671 11.585 14.9636 11.6024 14.9544C11.6197 14.9453 11.6337 14.9309 11.6424 14.9134C11.6512 14.8959 11.6542 14.876 11.6511 14.8567C11.648 14.8374 11.6389 14.8195 11.6251 14.8056ZM12.3751 9.19462L14.8065 11.6251C14.8204 11.6391 14.8383 11.6483 14.8577 11.6516C14.8772 11.6548 14.8971 11.6518 14.9148 11.643C14.9324 11.6343 14.9469 11.6201 14.956 11.6027C14.9652 11.5853 14.9686 11.5654 14.9659 11.5459C14.8681 10.9152 14.5722 10.332 14.1209 9.88071C13.6696 9.42942 13.0864 9.13348 12.4557 9.03572C12.4362 9.03271 12.4162 9.03594 12.3986 9.04496C12.381 9.05398 12.3668 9.06833 12.3578 9.08595C12.3489 9.10358 12.3457 9.12357 12.3488 9.14309C12.3519 9.16261 12.3611 9.18064 12.3751 9.19462Z" fill="white"/><path d="M23.0156 12.8137C23.1708 12.5702 23.2529 12.2872 23.252 11.9984C23.2512 11.7096 23.1675 11.4271 23.0109 11.1844C21.7706 9.26625 20.1614 7.63688 18.3577 6.47203C16.3594 5.18203 14.1562 4.5 11.985 4.5C10.8404 4.50157 9.7035 4.6882 8.61843 5.05266C8.58807 5.06276 8.56079 5.08046 8.5392 5.10409C8.51761 5.12772 8.50242 5.15647 8.49509 5.18763C8.48776 5.21878 8.48853 5.25129 8.49732 5.28207C8.50611 5.31284 8.52263 5.34085 8.54531 5.36344L10.7597 7.57781C10.7827 7.60086 10.8113 7.61752 10.8427 7.62615C10.8741 7.63478 10.9072 7.63508 10.9387 7.62703C11.6893 7.44412 12.4744 7.45752 13.2183 7.66595C13.9622 7.87438 14.6399 8.27082 15.1862 8.8171C15.7325 9.36338 16.1289 10.0411 16.3373 10.785C16.5458 11.5289 16.5592 12.3139 16.3762 13.0645C16.3683 13.096 16.3686 13.129 16.3773 13.1603C16.3859 13.1916 16.4025 13.2202 16.4255 13.2431L19.6106 16.4306C19.6438 16.4638 19.6881 16.4834 19.735 16.4855C19.7819 16.4876 19.8278 16.472 19.8637 16.4419C21.0898 15.3968 22.1522 14.1739 23.0156 12.8137ZM12 16.5C11.3188 16.5 10.6465 16.3454 10.0337 16.0478C9.42094 15.7502 8.88375 15.3173 8.46263 14.7819C8.04151 14.2464 7.74745 13.6223 7.60262 12.9567C7.45779 12.2911 7.46598 11.6012 7.62656 10.9392C7.63452 10.9077 7.63417 10.8747 7.62555 10.8434C7.61692 10.8121 7.60031 10.7836 7.57734 10.7606L4.44422 7.62609C4.41099 7.59283 4.36649 7.57327 4.31952 7.57127C4.27255 7.56927 4.22655 7.58499 4.19062 7.61531C3.04734 8.59078 1.9875 9.77766 1.01859 11.1647C0.84899 11.4081 0.755584 11.6965 0.750243 11.9931C0.744901 12.2897 0.827865 12.5813 0.988591 12.8306C2.22656 14.768 3.81937 16.3997 5.59547 17.5486C7.59656 18.8438 9.74625 19.5 11.985 19.5C13.1412 19.4969 14.2899 19.3143 15.39 18.9586C15.4206 18.9488 15.4482 18.9313 15.4702 18.9078C15.4921 18.8842 15.5076 18.8554 15.5152 18.8242C15.5227 18.7929 15.5222 18.7602 15.5134 18.7293C15.5047 18.6983 15.4882 18.6701 15.4655 18.6473L13.2403 16.4227C13.2174 16.3997 13.1888 16.3831 13.1575 16.3744C13.1262 16.3658 13.0932 16.3655 13.0617 16.3734C12.7141 16.4577 12.3577 16.5002 12 16.5Z" fill="white"/></svg>
-        `;
-      } else {
-        input.type = "password";
-        toggleIcon.classList.remove("fa-eye-slash");
-        toggleIcon.classList.add("fa-eye");
-        toggleIcon.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 17.4001C10.932 17.4001 9.88795 17.0834 8.99992 16.49C8.1119 15.8967 7.41976 15.0533 7.01105 14.0666C6.60234 13.0799 6.4954 11.9941 6.70376 10.9466C6.91212 9.89911 7.42642 8.93692 8.18162 8.18172C8.93683 7.42652 9.89901 6.91222 10.9465 6.70386C11.994 6.4955 13.0798 6.60243 14.0665 7.01115C15.0532 7.41986 15.8966 8.11199 16.4899 9.00002C17.0833 9.88804 17.4 10.9321 17.4 12.0001C17.4 13.4323 16.8311 14.8058 15.8184 15.8185C14.8057 16.8312 13.4322 17.4001 12 17.4001ZM12 3.6001C3.6 3.6001 0 12.0001 0 12.0001C0 12.0001 3.6 20.4001 12 20.4001C20.4 20.4001 24 12.0001 24 12.0001C24 12.0001 20.4 3.6001 12 3.6001Z" fill="white"/><path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="white"/></svg><path d="M23.0156 12.8137C23.1708 12.5702 23.2529 12.2872 23.252 11.9984C23.2512 11.7096 23.1675 11.4271 23.0109 11.1844C21.7706 9.26625 20.1614 7.63688 18.3577 6.47203C16.3594 5.18203 14.1562 4.5 11.985 4.5C10.8404 4.50157 9.7035 4.6882 8.61843 5.05266C8.58807 5.06276 8.56079 5.08046 8.5392 5.10409C8.51761 5.12772 8.50242 5.15647 8.49509 5.18763C8.48776 5.21878 8.48853 5.25129 8.49732 5.28207C8.50611 5.31284 8.52263 5.34085 8.54531 5.36344L10.7597 7.57781C10.7827 7.60086 10.8113 7.61752 10.8427 7.62615C10.8741 7.63478 10.9072 7.63508 10.9387 7.62703C11.6893 7.44412 12.4744 7.45752 13.2183 7.66595C13.9622 7.87438 14.6399 8.27082 15.1862 8.8171C15.7325 9.36338 16.1289 10.0411 16.3373 10.785C16.5458 11.5289 16.5592 12.3139 16.3762 13.0645C16.3683 13.096 16.3686 13.129 16.3773 13.1603C16.3859 13.1916 16.4025 13.2202 16.4255 13.2431L19.6106 16.4306C19.6438 16.4638 19.6881 16.4834 19.735 16.4855C19.7819 16.4876 19.8278 16.472 19.8637 16.4419C21.0898 15.3968 22.1522 14.1739 23.0156 12.8137ZM12 16.5C11.3188 16.5 10.6465 16.3454 10.0337 16.0478C9.42094 15.7502 8.88375 15.3173 8.46263 14.7819C8.04151 14.2464 7.74745 13.6223 7.60262 12.9567C7.45779 12.2911 7.46598 11.6012 7.62656 10.9392C7.63452 10.9077 7.63417 10.8747 7.62555 10.8434C7.61692 10.8121 7.60031 10.7836 7.57734 10.7606L4.44422 7.62609C4.41099 7.59283 4.36649 7.57327 4.31952 7.57127C4.27255 7.56927 4.22655 7.58499 4.19062 7.61531C3.04734 8.59078 1.9875 9.77766 1.01859 11.1647C0.84899 11.4081 0.755584 11.6965 0.750243 11.9931C0.744901 12.2897 0.827865 12.5813 0.988591 12.8306C2.22656 14.768 3.81937 16.3997 5.59547 17.5486C7.59656 18.8438 9.74625 19.5 11.985 19.5C13.1412 19.4969 14.2899 19.3143 15.39 18.9586C15.4206 18.9488 15.4482 18.9313 15.4702 18.9078C15.4921 18.8842 15.5076 18.8554 15.5152 18.8242C15.5227 18.7929 15.5222 18.7602 15.5134 18.7293C15.5047 18.6983 15.4882 18.6701 15.4655 18.6473L13.2403 16.4227C13.2174 16.3997 13.1888 16.3831 13.1575 16.3744C13.1262 16.3658 13.0932 16.3655 13.0617 16.3734C12.7141 16.4577 12.3577 16.5002 12 16.5Z" fill="white"/></svg>
-        `;
-      }
     }
   }
 
@@ -1055,19 +1110,19 @@ class WalletData {
 
     // Select action
     actionCreate.addEventListener(
-        "click",
-        function () {
-          this._loadModalAccount("create-new");
-          modalActions.remove();
-        }.bind(this)
+      "click",
+      function () {
+        this._loadModalAccount("create-new");
+        modalActions.remove();
+      }.bind(this)
     );
 
     actionImport.addEventListener(
-        "click",
-        function () {
-          this._loadModalAccount("import");
-          modalActions.remove();
-        }.bind(this)
+      "click",
+      function () {
+        this._loadModalAccount("import");
+        modalActions.remove();
+      }.bind(this)
     );
   }
 
@@ -1102,6 +1157,7 @@ class WalletData {
       this._loadAccountDetail();
       return;
     }
+    console.log("3");
     this._loadModalActions();
   }
 }
@@ -1119,8 +1175,8 @@ class ContractInteraction {
     if (!this.WalletData?.Wallet?.privateKey || !this.WalletData?.Balance)
       return;
     const wallet = new ethers.Wallet(
-        this.WalletData.Wallet.privateKey,
-        provider
+      this.WalletData.Wallet.privateKey,
+      provider
     );
     const signer = wallet.connect(provider);
     let contract = new ethers.Contract(contractAddress, abiJson, signer);
@@ -1138,8 +1194,8 @@ class ContractInteraction {
 
             if (receipt && receipt.blockNumber) {
               console.log(
-                  "Transaction confirmed in block:",
-                  receipt.blockNumber
+                "Transaction confirmed in block:",
+                receipt.blockNumber
               );
               clearInterval(intervalId);
               resolve(receipt);
@@ -1162,35 +1218,35 @@ class ContractInteraction {
 
   async Call(abiJson, contractAddress, methodWithParams, ...params) {
     console.log(
-        "Call contract",
-        contractAddress,
-        "method",
-        methodWithParams,
-        "with params",
-        params
+      "Call contract",
+      contractAddress,
+      "method",
+      methodWithParams,
+      "with params",
+      params
     );
     const contract = this.loadContract(abiJson, contractAddress);
     return await contract.functions[methodWithParams.replace(/\s/g, "")](
-        ...params
+      ...params
     );
   }
 
   async Send(
-      abiJson,
-      contractAddress,
-      nonce,
-      gas,
-      topics, // For get event log
-      methodWithParams,
-      ...params
+    abiJson,
+    contractAddress,
+    nonce,
+    gas,
+    topics, // For get event log
+    methodWithParams,
+    ...params
   ) {
     console.log(
-        "Send tx to contract",
-        contractAddress,
-        "method",
-        methodWithParams,
-        "with params",
-        params
+      "Send tx to contract",
+      contractAddress,
+      "method",
+      methodWithParams,
+      "with params",
+      params
     );
 
     if (!wallet?.Wallet?.privateKey) {
@@ -1209,19 +1265,18 @@ class ContractInteraction {
     const contractInterface = new ethers.utils.Interface(abiJson);
 
     const gasEstimate = await contract.estimateGas[
-        methodWithParams.replace(/\s/g, "")
-        ](...params);
-    // const gasPrice = await provider.getGasPrice();
+      methodWithParams.replace(/\s/g, "")
+    ](...params);
     const gasPrice = ethers.utils.parseUnits("1.0", "gwei");
     const gasLimit = parseInt(gasEstimate);
 
     const tx = await contract.functions[methodWithParams.replace(/\s/g, "")](
-        ...params,
-        {
-          gasLimit: gas || gasLimit,
-          gasPrice,
-          ...(nonce && { nonce }),
-        }
+      ...params,
+      {
+        gasLimit: gas || gasLimit,
+        gasPrice,
+        ...(nonce && { nonce }),
+      }
     );
     const receipt = await this.checkTransactionStatus(tx.hash);
     wallet._getBalance();
@@ -1233,13 +1288,13 @@ class ContractInteraction {
       for (let i = 0; i < topics.length; i++) {
         const topic = topics[i];
         filteredLogs = receipt?.logs.filter((log) =>
-            log.topics.includes(topic)
+          log.topics.includes(topic)
         );
         eventLogs[topic] =
-            filteredLogs?.map((log) => {
-              const parsedLog = contractInterface.parseLog(log);
-              return parsedLog;
-            }) || [];
+          filteredLogs?.map((log) => {
+            const parsedLog = contractInterface.parseLog(log);
+            return parsedLog;
+          }) || [];
       }
     }
 
