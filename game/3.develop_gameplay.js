@@ -1,9 +1,5 @@
-window.callBackLoadResourcesComplete = () => {
-  // console.log("Complete load resources", GAME_ASSETS);
-  injectFonts();
-  // injectGame();
-};
 
+const GameModule = (() => {
 // Game play
 let rows = 10;
 let columns = 10;
@@ -18,6 +14,7 @@ let intervalId = null;
 let placeMineList = [];
 let gameId = 0;
 let factor = 1;
+
 
 //// Call Contract
 async function InitGame(level) {
@@ -263,11 +260,10 @@ function startNewGame() {
 }
 
 function triggerGameOver() {
-  const firstMine = placeMineList[0];
-  const mineCellElement = document.querySelector(
-    `[data-row="${firstMine.x}"][data-col="${firstMine.y}"]`
-  );
-  mineCellElement.click();
+  gameStatus = -1;
+  showGameOverScreen(board);
+  stopPlayingTime();
+  return;
 }
 
 // Function to reveal a cell
@@ -309,6 +305,7 @@ async function revealCell(board, row, col) {
 
 function drawBoard(newBoard, isGameOver = false) {
   // Code to redraw the board
+
 
   const processingElement = document.getElementById("processing");
 
@@ -431,6 +428,9 @@ function drawBoard(newBoard, isGameOver = false) {
         }
 
         revealCell(board, rowIndex, colIndex);
+
+        // drawBoard(newBoard);
+        // processingElement.style.display = "none";
 
 
         try {
@@ -586,7 +586,7 @@ async function chooseGameLevel(level) {
     processingElement.style.display = "none";
   }
 
-  processingElement.style.display = "none";
+  // processingElement.style.display = "none";
 }
 
 async function getLeaderBoardData() {
@@ -649,11 +649,11 @@ function addChooseGameLevelEvents() {
     .addEventListener("click", function () {
       chooseGameLevel(2);
     });
-  document
-    .getElementById("game-level-pro")
-    .addEventListener("click", function () {
-      chooseGameLevel(3);
-    });
+  // document
+  //   .getElementById("game-level-pro")
+  //   .addEventListener("click", function () {
+  //     chooseGameLevel(3);
+  //   });
 
   //Show leaderboard
   const viewLeaderboardEl = document.getElementById("go-to-leaderboard");
@@ -705,26 +705,7 @@ function addNewGameEvents() {
     });
 }
 
-function injectFonts() {
-  // Create a new style element
-  const style = document.createElement("style");
 
-  // Define the @font-face rule as a CSS string
-  const fontFaceRule = `
-    @font-face {
-      font-family: "LilitaOne";
-      src: url(${GAME_ASSETS["font_1"]});
-      font-weight: normal;
-      font-style: normal;ƒ
-    }
-`;
-
-  // Set the innerHTML of the style element to the @font-face rule
-  style.innerHTML = fontFaceRule;
-
-  // Append the style element to the document head
-  document.head.appendChild(style);
-}
 
 function injectGameMusic(file) {
   // Create a new anchor element
@@ -867,5 +848,36 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.onbeforeunload = function (event) {
-  triggerGameOver();
+  if(document.getElementById('grid').hasChildNodes()){
+    triggerGameOver();
+}
+};
+
+});
+
+function injectFonts() {
+  // Create a new style element
+  const style = document.createElement("style");
+
+  // Define the @font-face rule as a CSS string
+  const fontFaceRule = `
+    @font-face {
+      font-family: "LilitaOne";
+      src: url(${GAME_ASSETS["font_1"]});
+      font-weight: normal;
+      font-style: normal;ƒ
+    }
+`;
+
+  // Set the innerHTML of the style element to the @font-face rule
+  style.innerHTML = fontFaceRule;
+
+  // Append the style element to the document head
+  document.head.appendChild(style);
+}
+
+window.callBackLoadResourcesComplete = () => {
+  console.log("Complete load resources", GAME_ASSETS);
+  injectFonts();
+  GameModule();
 };
