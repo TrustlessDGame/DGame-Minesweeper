@@ -364,7 +364,7 @@ body {
 .leaderboard {
   position: fixed;
   z-index: 99;
-  top: 60px;
+  top: 10px;
   left: 0;
   width: 100vw;
   height: calc(100vh - 60px);
