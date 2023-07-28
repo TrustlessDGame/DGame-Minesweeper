@@ -59,8 +59,7 @@ function getScreenWidth() {
 
 async function checkAndSwitchNetwork() {
   const sW = getScreenWidth();
-
-  if (sW < 800) {
+  if(sW < 800) {
     return;
   }
 
@@ -1163,15 +1162,13 @@ class WalletData {
       return;
     }
 
+
     try {
       let walletData = JSON.parse(
         localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)
       );
-
-      if (walletData) {
         this.Wallet = this._formatWalletData(walletData);
         await this._getBalance();
-        this._loadAccountDetail();
         return;
       }
       this._loadModalActions();
@@ -1179,6 +1176,7 @@ class WalletData {
       console.log(error);
       loadNoti("warning", error);
     }
+
   }
 }
 

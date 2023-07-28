@@ -42,4 +42,14 @@ library GameData {
         uint256 maxTime;
         uint256 minMoves;
     }
+
+    struct PlayerSig {
+        address player;
+        uint256 playerNonce;
+        bytes playerSig;
+    }
+
+    struct Move {
+        uint256 gameId; uint8 row; uint8 col; bool isMined;
+    }
 }
