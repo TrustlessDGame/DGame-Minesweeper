@@ -16,13 +16,21 @@ const GameModule = () => {
 
   //// Call Contract
   async function InitGame(level) {
+    const nonce = (new Date()).getTime();
+    const sign = await contractInteraction.SignMessage(["uint256"],  nonce);
+    console.log({sign})
     return await contractInteraction.Send(
       GAME_CONTRACT_ABI_INTERFACE_JSON,
       GAME_CONTRACT_ADDRESS,
       null,
       0,
       null,
-      "InitGame(uint256)",
+      "InitGame((address,uint256,bytes),uint256)",
+      JSON.parse(JSON.stringify({
+        player: contractInteraction.WalletData.Wallet.address,
+        playerNonce: nonce,
+        playerSig: sign,
+      })),
       level
     );
   }
