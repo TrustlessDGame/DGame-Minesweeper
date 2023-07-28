@@ -636,6 +636,7 @@ function addChooseGameLevelEvents() {
   document
     .getElementById("game-level-beginner")
     .addEventListener("click", function (e) {
+      getPlayerSign
       chooseGameLevel(0);
     });
 
@@ -855,6 +856,7 @@ function importGame() {
   // Init event
   addChooseGameLevelEvents();
   addNewGameEvents();
+  
 }
 
 importGame();
