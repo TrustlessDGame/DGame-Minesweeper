@@ -340,6 +340,11 @@ class WalletData {
     }
 
     try {
+      if(PRACTICE_MODE) {
+        this._loadBalanceUI();
+        return;
+      }
+
       const balance = await provider.getBalance(this.Wallet.address);
       const formatBalance = ethers.utils.formatEther(balance);
 
@@ -1163,6 +1168,7 @@ class WalletData {
       return;
     }
 
+
     try {
       let walletData = JSON.parse(
           localStorage.getItem(`${NAME_KEY}_${GAME_ID}`)
@@ -1315,7 +1321,7 @@ class ContractInteraction {
     );
     const transactionCost = getTransactionCost();
 
-    if (!wallet?.Balance || Number(transactionCost) > Number(wallet?.Balance)) {
+    if (!PRACTICE_MODE && (!wallet?.Balance || Number(transactionCost) > Number(wallet?.Balance))) {
       loadNoti("warning", "Your balance is not enough", 3000);
       wallet._loadModalTopup();
       return;
@@ -1324,12 +1330,7 @@ class ContractInteraction {
     const contract = this.loadContract(abiJson, contractAddress);
     const contractInterface = new ethers.utils.Interface(abiJson);
 
-    const gasEstimate = await contract.estimateGas[
-        methodWithParams.replace(/\s/g, "")
-        ](...params);
-    const gasPrice = ethers.utils.parseUnits("1.0", "gwei");
-    const gasLimit = parseInt(gasEstimate);
-
+    let tx = null;
     if (PRACTICE_MODE) {
       const data = contract.interface.encodeFunctionData(
           methodWithParams,
@@ -1339,34 +1340,37 @@ class ContractInteraction {
       let tx = {
         to: GAME_CONTRACT_ADDRESS,
         data,
-        gasPrice,
-        gasLimit,
       };
 
-      let signer = new ethers.Wallet(wallet.Wallet.privateKey, provider);
-      const signedTx = await signer.signTransaction(tx);
-      console.log("Signed Transaction:", signedTx);
+      // let signer = new ethers.Wallet(wallet.Wallet.privateKey, provider);
+      // const signedTx = await signer.signTransaction(tx);
+      // const rawTransaction = ethers.utils.hexlify(signedTx);
+      // console.log("Signed Transaction:", rawTransaction);
 
       // Call api
       const postData = {
-        contract_address: GAME_CONTRACT_ADDRESS,
-        data_hex: signedTx
+        contract_addres: tx.to,
+        data_hex: tx.data
       };
 
-      const result = await this.fetchData("POST", postData);
-      return result;
+      const rs = await this.fetchData("POST", postData);
+      tx.hash = rs.result;
+    } else {
+      const gasEstimate = await contract.estimateGas[
+          methodWithParams.replace(/\s/g, "")
+          ](...params);
+      const gasPrice = ethers.utils.parseUnits("1.0", "gwei");
+      const gasLimit = parseInt(gasEstimate);
+
+      tx = await contract.functions[methodWithParams.replace(/\s/g, "")](
+          ...params,
+          {
+            gasLimit: gas || gasLimit,
+            gasPrice,
+            ...(nonce && { nonce }),
+          }
+      );
     }
-
-    const tx = await contract.functions[methodWithParams.replace(/\s/g, "")](
-        ...params,
-        {
-          gasLimit: gas || gasLimit,
-          gasPrice,
-          ...(nonce && { nonce }),
-        }
-    );
-
-    console.log({ tx });
 
     const receipt = await this.checkTransactionStatus(tx.hash);
     wallet._getBalance();
