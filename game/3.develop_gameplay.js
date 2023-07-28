@@ -14,15 +14,34 @@ const GameModule = () => {
   let gameId = 0;
   let factor = 1;
 
+async function generateSignData() {
+  const nonce = (new Date()).getTime();
+  const sign = await contractInteraction.SignMessage(["uint256"],  nonce);
+
+  let playerSig = PRACTICE_MODE ? sign : "";
+  
+  return {
+    player: contractInteraction.WalletData.Wallet.address,
+    playerNonce: nonce,
+    playerSig: playerSig,
+  }
+}
+
+
   //// Call Contract
   async function InitGame(level) {
+    const playerSignData = await generateSignData();
+
     return await contractInteraction.Send(
       GAME_CONTRACT_ABI_INTERFACE_JSON,
       GAME_CONTRACT_ADDRESS,
       null,
       0,
       null,
-      "InitGame(uint256)",
+      "InitGame((address,uint256,bytes),uint256)",
+      JSON.parse(JSON.stringify(
+        playerSignData
+      )),
       level
     );
   }
@@ -38,6 +57,15 @@ const GameModule = () => {
     });
 
     const cell = boardState[row][col];
+    const playerSignData = await generateSignData();
+
+    const payload = {
+      gameId,
+      row,
+      col,
+      _isMine: cell._isMine,
+    }
+
 
     return await contractInteraction.Send(
       GAME_CONTRACT_ABI_INTERFACE_JSON,
@@ -45,27 +73,34 @@ const GameModule = () => {
       null,
       0,
       null,
-      "Move(uint256, uint8, uint8, bool, (uint8,bool)[][])",
-      gameId,
-      row,
-      col,
-      cell._isMine,
+      "Move((address, uint256, bytes),(uint256, uint8, uint8, bool), (uint8,bool)[][])",
+      JSON.parse(JSON.stringify(playerSignData)),
+      JSON.parse(JSON.stringify(payload)),
       JSON.parse(JSON.stringify(hideMineBoardState))
     );
   }
 
   async function Flag(row, col, isFlag) {
+    const playerSignData = await generateSignData();
+
+    const payload = {
+      gameId,
+      row,
+      col,
+      isFlag
+    }
+  
+
     return await contractInteraction.Send(
       GAME_CONTRACT_ABI_INTERFACE_JSON,
       GAME_CONTRACT_ADDRESS,
       null,
       0,
       null,
-      "Flag(uint256, uint8, uint8, bool)",
+      "Flag((address, uint256, bytes),uint256,(uint256, uint8, uint8, bool))",
+      JSON.parse(JSON.stringify(playerSignData)),
       gameId,
-      row,
-      col,
-      isFlag
+      JSON.parse(JSON.stringify(payload))
     );
   }
 
@@ -78,7 +113,7 @@ const GameModule = () => {
       null,
       "CheckFinish(uint256, (bool,uint8,bool,bool)[][])",
       gameId,
-      finalBoardState
+      JSON.parse(JSON.stringify(finalBoardState))
     );
   }
 

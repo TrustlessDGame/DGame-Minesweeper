@@ -45,7 +45,7 @@ contract Minesweeper is Initializable, ReentrancyGuardUpgradeable, OwnableUpgrad
         if (playerSigData.playerSig.length == 0) {
             require(msg.sender == playerSigData.player, Errors.INV_ADD);
         } else {
-            require(_playersNonce[playerSigData.player][playerSigData.playerNonce], Errors.INV_ADD);
+            require(!_playersNonce[playerSigData.player][playerSigData.playerNonce], Errors.INV_ADD);
             _playersNonce[playerSigData.player][playerSigData.playerNonce] = true;
             uint256 chainId;
             assembly {

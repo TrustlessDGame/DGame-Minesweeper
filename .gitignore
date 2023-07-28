@@ -10,3 +10,5 @@ contracts/artifacts
 contracts/.openzeppelin
 
 contracts/cache
+
+game/dist

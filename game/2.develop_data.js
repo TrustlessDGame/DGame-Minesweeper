@@ -84,24 +84,58 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
   {
     "inputs": [
       {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "player",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "playerNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "playerSig",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct GameData.PlayerSig",
+        "name": "playerSigData",
+        "type": "tuple"
+      },
+      {
         "internalType": "uint256",
         "name": "gameId",
         "type": "uint256"
       },
       {
-        "internalType": "uint8",
-        "name": "row",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "col",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bool",
-        "name": "flag",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "gameId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "row",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "col",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bool",
+            "name": "isMined",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct GameData.Move",
+        "name": "move",
+        "type": "tuple"
       }
     ],
     "name": "Flag",
@@ -111,6 +145,28 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
   },
   {
     "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "player",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "playerNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "playerSig",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct GameData.PlayerSig",
+        "name": "playerSigData",
+        "type": "tuple"
+      },
       {
         "internalType": "uint256",
         "name": "level",
@@ -125,24 +181,53 @@ const GAME_CONTRACT_ABI_INTERFACE_JSON = [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "gameId",
-        "type": "uint256"
+        "components": [
+          {
+            "internalType": "address",
+            "name": "player",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "playerNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bytes",
+            "name": "playerSig",
+            "type": "bytes"
+          }
+        ],
+        "internalType": "struct GameData.PlayerSig",
+        "name": "playerSigData",
+        "type": "tuple"
       },
       {
-        "internalType": "uint8",
-        "name": "row",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "col",
-        "type": "uint8"
-      },
-      {
-        "internalType": "bool",
-        "name": "isMined",
-        "type": "bool"
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "gameId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "row",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint8",
+            "name": "col",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bool",
+            "name": "isMined",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct GameData.Move",
+        "name": "move",
+        "type": "tuple"
       },
       {
         "components": [
