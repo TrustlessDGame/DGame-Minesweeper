@@ -659,59 +659,6 @@ const GameModule = () => {
     <div class="leaderboard_table_data_time">${item.score.toString()}</div>
     `;
 
-  leaderboardTableEl.appendChild(leaderboardDataRowEl);
-}
-
-function addChooseGameLevelEvents() {
-  document
-    .getElementById("game-level-beginner")
-    .addEventListener("click", function (e) {
-      chooseGameLevel(0);
-    });
-
-  document
-    .getElementById("game-level-intermediate")
-    .addEventListener("click", function () {
-      chooseGameLevel(1);
-    });
-  document
-    .getElementById("game-level-expert")
-    .addEventListener("click", function () {
-      chooseGameLevel(2);
-    });
-  document
-    .getElementById("game-level-pro")
-    .addEventListener("click", function () {
-      chooseGameLevel(3);
-    });
-
-  //Show leaderboard
-  const viewLeaderboardEl = document.getElementById("go-to-leaderboard");
-
-  viewLeaderboardEl.addEventListener("click", function (e) {
-    document.querySelector(".leaderboard").style.display = "block";
-    const leaderboardDataRows = document.querySelectorAll(
-      ".leaderboard_table_data_row"
-    );
-    leaderboardDataRows.forEach((row) => {
-      row.remove();
-    });
-    getLeaderBoardData();
-  });
-
-  // Back to choose level screen
-
-  document.querySelector("#back-btn").addEventListener("click", function (e) {
-    document.querySelector(".leaderboard").style.display = "none";
-  });
-}
-
-function restartGame() {
-  if (gameStatus === -1 || gameStatus === 2) {
-    hideGameOverScreen();
-    hideGameWinScreen();
-    hideGameValidateScreen();
-    showChooseGameLevelScreen();
     leaderboardTableEl.appendChild(leaderboardDataRowEl);
   }
 
