@@ -96,9 +96,10 @@ async function generateSignData() {
       null,
       0,
       null,
-      "Flag((address, uint256, bytes),(uint256, uint8, uint8, bool))",
+      "Flag((address, uint256, bytes),uint256,(uint256, uint8, uint8, bool))",
       JSON.parse(JSON.stringify(playerSignData)),
-      JSON.parse(JSON.stringify(payload)),
+      gameId,
+      JSON.parse(JSON.stringify(payload))
     );
   }
 
